@@ -13,60 +13,54 @@ namespace UI.Game
         public static Transform EnemyHealthBars { get; private set; }
         public static Transform GameEventIndicators { get; private set; }
 
-        private readonly MainCanvasView _mainCanvasView;
-
-        private Canvas _playerStatusBarCanvas;
-        private Canvas _playerSpeedometerCanvas;
-        private Canvas _playerWeaponCanvas;
-        private Canvas _playerDestroyedCanvas;
-
-        private PlayerStatusBarView _playerStatusBarView;
-        private PlayerSpeedometerView _playerSpeedometerView;
-        private PlayerWeaponView _playerWeaponView;
+        private GameCanvasView _gameCanvasView;
         private DestroyPlayerMessageView _playerDestroyedMessageView;
 
+        private readonly ResourcePath _gameCanvasPath = new(Constants.Prefabs.Canvas.Game.GameCanvas);
         private readonly ResourcePath _playerStatusBarCanvasPath = new(Constants.Prefabs.Canvas.Game.StatusBarCanvas);
         private readonly ResourcePath _playerSpeedometerCanvasPath = new(Constants.Prefabs.Canvas.Game.SpeedometerCanvas);
         private readonly ResourcePath _playerWeaponCanvasPath = new(Constants.Prefabs.Canvas.Game.WeaponCanvas);
         private readonly ResourcePath _playerDestroyedCanvasPath = new(Constants.Prefabs.Canvas.Game.DestroyPlayerCanvas);
 
-        private Action _exitToMenu;
+        private readonly Action _exitToMenu;
 
         public GameUIController(Canvas mainCanvas, Action exitToMenu)
         {
-            _mainCanvasView = mainCanvas.GetComponent<MainCanvasView>();
+            AddGameCanvas(mainCanvas.transform);
             _exitToMenu = exitToMenu;
 
-            EnemyHealthBars = _mainCanvasView.EnemyHealthBars;
-            GameEventIndicators = _mainCanvasView.GameEventIndicators;
+            EnemyHealthBars = _gameCanvasView.EnemyHealthBars;
 
             AddPlayerStatusBar();
             AddPlayerSpeedometer();
             AddPlayerWeapon();
         }
 
+        private void AddGameCanvas(Transform transform)
+        {
+            _gameCanvasView = ResourceLoader.LoadPrefabAsChild<GameCanvasView>(_gameCanvasPath, transform);
+            AddGameObject(_gameCanvasView.gameObject);
+        }
+
         private void AddPlayerStatusBar()
         {
-            _playerStatusBarCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerStatusBarCanvasPath, _mainCanvasView.PlayerInfo);
-            _playerStatusBarView = _playerStatusBarCanvas.GetComponent<PlayerStatusBarView>();
-            PlayerStatusBarView = _playerStatusBarView;
-            AddGameObject(_playerStatusBarCanvas.gameObject);
+            PlayerStatusBarView = ResourceLoader.LoadPrefabAsChild<PlayerStatusBarView>
+                (_playerStatusBarCanvasPath, _gameCanvasView.PlayerInfo);
+            AddGameObject(PlayerStatusBarView.gameObject);
         }
 
         private void AddPlayerSpeedometer()
         {
-            _playerSpeedometerCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerSpeedometerCanvasPath, _mainCanvasView.PlayerInfo);
-            _playerSpeedometerView = _playerSpeedometerCanvas.GetComponent<PlayerSpeedometerView>();
-            PlayerSpeedometerView = _playerSpeedometerView;
-            AddGameObject(_playerSpeedometerCanvas.gameObject);
+            PlayerSpeedometerView = ResourceLoader.LoadPrefabAsChild<PlayerSpeedometerView>
+                (_playerSpeedometerCanvasPath, _gameCanvasView.PlayerInfo);
+            AddGameObject(PlayerSpeedometerView.gameObject);
         }
 
         private void AddPlayerWeapon()
         {
-            _playerWeaponCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerWeaponCanvasPath, _mainCanvasView.PlayerInfo);
-            _playerWeaponView = _playerWeaponCanvas.GetComponent<PlayerWeaponView>();
-            PlayerWeaponView = _playerWeaponView;
-            AddGameObject(_playerWeaponCanvas.gameObject);
+            PlayerWeaponView = ResourceLoader.LoadPrefabAsChild<PlayerWeaponView>
+                (_playerWeaponCanvasPath, _gameCanvasView.PlayerInfo);
+            AddGameObject(PlayerWeaponView.gameObject);
         }
 
         protected override void OnDispose()
@@ -80,10 +74,10 @@ namespace UI.Game
             
         public void AddDestroyPlayerMessage()
         {
-            _playerDestroyedCanvas = ResourceLoader.LoadPrefabAsChild<Canvas>(_playerDestroyedCanvasPath, _mainCanvasView.transform);
-            _playerDestroyedMessageView = _playerDestroyedCanvas.GetComponent<DestroyPlayerMessageView>();
+            _playerDestroyedMessageView = ResourceLoader.LoadPrefabAsChild<DestroyPlayerMessageView>
+                (_playerDestroyedCanvasPath, _gameCanvasView.transform);
             _playerDestroyedMessageView.Init(_exitToMenu);
-            AddGameObject(_playerDestroyedCanvas.gameObject);
+            AddGameObject(_playerDestroyedMessageView.gameObject);
         }
     }
 }

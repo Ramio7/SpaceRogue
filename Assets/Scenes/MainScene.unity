@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiPosition: {fileID: 412195273}
+  initialGameState: 1
 --- !u!4 &211433251
 Transform:
   m_ObjectHideFlags: 0

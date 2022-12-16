@@ -19,7 +19,7 @@ public sealed class MainController : BaseController
     {
         _currentState = currentState;
 
-        _mainUIController = new MainUIController(uiPosition);
+        _mainUIController = new(uiPosition);
         AddController(_mainUIController);
         
         _currentState.CurrentGameState.Subscribe(OnGameStateChange);
