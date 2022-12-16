@@ -9,6 +9,7 @@ namespace Gameplay.Input
         private const string Vertical = "Vertical";
         private const KeyCode PrimaryFire = KeyCode.Mouse0;
         private const KeyCode ChangeWeapon = KeyCode.Q;
+        private const KeyCode NextLevel = KeyCode.Return;
 
         private void Start()
         {
@@ -16,6 +17,7 @@ namespace Gameplay.Input
             EntryPoint.SubscribeToUpdate(CheckFiringInput);
             EntryPoint.SubscribeToUpdate(CheckMousePositionInput);
             EntryPoint.SubscribeToUpdate(CheckChangeWeaponInput);
+            EntryPoint.SubscribeToUpdate(CheckNextLevelInput);
         }
 
         private void OnDestroy()
@@ -24,6 +26,7 @@ namespace Gameplay.Input
             EntryPoint.UnsubscribeFromUpdate(CheckFiringInput);
             EntryPoint.UnsubscribeFromUpdate(CheckMousePositionInput);
             EntryPoint.UnsubscribeFromUpdate(CheckChangeWeaponInput);
+            EntryPoint.UnsubscribeFromUpdate(CheckNextLevelInput);
         }
 
         private void CheckVerticalInput()
@@ -49,6 +52,12 @@ namespace Gameplay.Input
         {
             bool value = UnityEngine.Input.GetKeyDown(ChangeWeapon);
             OnChangeWeaponInput(value);
+        }
+
+        private void CheckNextLevelInput()
+        {
+            bool value = UnityEngine.Input.GetKeyDown(NextLevel);
+            OnNextLevelInputInput(value);
         }
 
         private static float CalculateInputValue(float axisOffset, float inputMultiplier)

@@ -19,11 +19,19 @@ namespace Gameplay.Health
 
         protected float RegenAmountPerDeltaTime => HealthRegenAmount * Time.deltaTime;
 
-        internal BaseHealthModel(HealthConfig healthConfig)
+        internal BaseHealthModel(HealthConfig healthConfig, float health = 0)
         {
             MaximumHealth = new SubscribedProperty<float>(healthConfig.MaximumHealth);
-            var correctHealth = Mathf.Clamp(healthConfig.StartingHealth, 0f, healthConfig.MaximumHealth);
-            CurrentHealth = new SubscribedProperty<float>(correctHealth);
+
+            if(Mathf.Approximately(health, 0))
+            {
+                CurrentHealth = new SubscribedProperty<float>(healthConfig.StartingHealth);
+            }
+            else
+            {
+                CurrentHealth = new SubscribedProperty<float>(health);
+            }
+
             HealthRegenAmount = healthConfig.HealthRegen;
             DamageImmunityFrameDuration = healthConfig.DamageImmunityFrameDuration;
         }

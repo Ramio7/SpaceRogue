@@ -4,7 +4,6 @@ using Gameplay.Player;
 using Scriptables;
 using System;
 using UI.Game;
-using Utilities.ResourceManagement;
 
 namespace Gameplay.LevelProgress
 {
@@ -13,34 +12,66 @@ namespace Gameplay.LevelProgress
         private readonly LevelProgressConfig _config;
         private readonly Timer _levelTimer;
         private readonly LevelTimerView _levelTimerView;
+        private readonly LevelNumberView _levelNumberView;
         private readonly PlayerController _playerController;
 
-        private readonly ResourcePath _configPath = new(Constants.Configs.LevelProgressConfig);
+        public event Action<float> LevelComplete = _ => { };
 
-        public LevelProgressController(PlayerController playerController)
+        public LevelProgressController(LevelProgressConfig levelProgressConfig, PlayerController playerController)
         {
-            _config = ResourceLoader.LoadObject<LevelProgressConfig>(_configPath);
+            _config = levelProgressConfig;
+            _config.ResetPlayerHealthAndShield();
             _levelTimer = new(_config.LevelTimerInSeconds);
             _levelTimer.Start();
+            
             _levelTimerView = GameUIController.LevelTimerView;
             _levelTimerView.Init(GetTimerText(_levelTimer.CurrentValue));
 
+            _levelNumberView = GameUIController.LevelNumberView;
+            _levelNumberView.InitNumber(_config.CompletedLevels + 1);
+
             _playerController = playerController;
-            _playerController.PlayerDestroyed += OnPlayerDestroyed;
+            _playerController.PlayerDestroyed += StopExecute;
+            _playerController.NextLevelInput.Subscribe(NextLevel);
+
+            LevelComplete += OnLevelComplete;
 
             EntryPoint.SubscribeToUpdate(CheckProgress);
         }
 
         protected override void OnDispose()
         {
-            _playerController.PlayerDestroyed -= OnPlayerDestroyed;
+            StopExecute();
+        }
+
+        public void UpdatePlayerHealthAndShieldInfo(float health, float shield)
+        {
+            _config.SetPlayerCurrentHealth(health);
+            _config.SetPlayerCurrentShield(shield);
+        }
+
+        private void OnLevelComplete(float levelNumber)
+        {
+            StopExecute();
+            _playerController.ControllerDispose();
+        }
+
+        private void StopExecute()
+        {
+            LevelComplete -= OnLevelComplete;
+            _playerController.PlayerDestroyed -= StopExecute;
+            _playerController.NextLevelInput.Unsubscribe(NextLevel);
             EntryPoint.UnsubscribeFromUpdate(CheckProgress);
         }
 
-        private void OnPlayerDestroyed()
+        private void NextLevel(bool isNextLevel)
         {
-            _playerController.PlayerDestroyed -= OnPlayerDestroyed;
-            EntryPoint.UnsubscribeFromUpdate(CheckProgress);
+            if (isNextLevel)
+            {
+                _config.AddCompletedLevels();
+                _config.UpdateRecord();
+                LevelComplete(_config.CompletedLevels);
+            }
         }
 
         private void CheckProgress()

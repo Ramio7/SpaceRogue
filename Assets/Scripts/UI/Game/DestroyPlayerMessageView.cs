@@ -2,12 +2,15 @@ using System;
 using UI.Common;
 using UnityEngine;
 
-public sealed class DestroyPlayerMessageView : MonoBehaviour
+namespace UI.Game
 {
-    [field: SerializeField] public ButtonView DestroyPlayerButton;
-
-    public void Init(Action onClickAction)
+    public sealed class DestroyPlayerMessageView : MonoBehaviour
     {
-        DestroyPlayerButton.Init(onClickAction);
-    }
+        [field: SerializeField] public ButtonView DestroyPlayerButton;
+
+        public void Init(Action onClickAction)
+        {
+            DestroyPlayerButton.Init(onClickAction);
+        }
+    } 
 }

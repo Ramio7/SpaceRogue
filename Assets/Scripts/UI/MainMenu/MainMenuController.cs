@@ -14,16 +14,15 @@ namespace UI.MainMenu
         private readonly LevelProgressConfig _levelProgressConfig;
         
         private readonly ResourcePath _mainMenuCanvasPath = new(Constants.Prefabs.Canvas.Menu.MainMenuCanvas);
-        private readonly ResourcePath _levelProgressConfigPath = new(Constants.Configs.LevelProgressConfig);
         
         private MainMenuCanvasView _mainMenuCanvasView;
 
-        public MainMenuController(CurrentState currentState, Canvas mainUICanvas)
+        public MainMenuController(CurrentState currentState, Canvas mainUICanvas, LevelProgressConfig levelProgressConfig)
         {
             _currentState = currentState;
-            _levelProgressConfig = ResourceLoader.LoadObject<LevelProgressConfig>(_levelProgressConfigPath);
-            _levelProgressConfig.ResetCompletedLevels();
+            _levelProgressConfig = levelProgressConfig;
             AddMainMenuCanvas(mainUICanvas.transform);
+            _levelProgressConfig.ResetCompletedLevels();
 
 
             var menuBackgroundController = new MenuBackgroundController();
@@ -33,7 +32,7 @@ namespace UI.MainMenu
         private void AddMainMenuCanvas(Transform transform)
         {
             _mainMenuCanvasView = ResourceLoader.LoadPrefabAsChild<MainMenuCanvasView>(_mainMenuCanvasPath, transform);
-            _mainMenuCanvasView.Init(StartGame, ExitGame, 
+            _mainMenuCanvasView.Init(StartGame, ResetRecord, ExitGame, 
                 _levelProgressConfig.CompletedLevels, _levelProgressConfig.RecordCompletedLevels);
             AddGameObject(_mainMenuCanvasView.gameObject);
         }
@@ -41,6 +40,12 @@ namespace UI.MainMenu
         private void StartGame()
         {
             _currentState.CurrentGameState.Value = GameState.Game;
+        }
+
+        private void ResetRecord()
+        {
+            _levelProgressConfig.ResetRecord();
+            _mainMenuCanvasView.UpdateRecordNumber(_levelProgressConfig.RecordCompletedLevels);
         }
 
         private void ExitGame()
