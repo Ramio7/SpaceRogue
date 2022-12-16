@@ -12,6 +12,7 @@ namespace UI.Game
         public static PlayerWeaponView PlayerWeaponView { get; private set; }
         public static LevelTimerView LevelTimerView { get; private set; }
         public static LevelNumberView LevelNumberView { get; private set; }
+        public static EnemiesCountView EnemiesCountView { get; private set; }
         public static Transform EnemyHealthBars { get; private set; }
         public static Transform GameEventIndicators { get; private set; }
 
@@ -25,6 +26,7 @@ namespace UI.Game
         private readonly ResourcePath _playerWeaponCanvasPath = new(Constants.Prefabs.Canvas.Game.WeaponCanvas);
         private readonly ResourcePath _levelTimerCanvasPath = new(Constants.Prefabs.Canvas.Game.LevelTimerCanvas);
         private readonly ResourcePath _levelNumberCanvasPath = new(Constants.Prefabs.Canvas.Game.LevelNumberCanvas);
+        private readonly ResourcePath _enemiesCountCanvasPath = new(Constants.Prefabs.Canvas.Game.EnemiesCountCanvas);
         private readonly ResourcePath _playerDestroyedCanvasPath = new(Constants.Prefabs.Canvas.Game.DestroyPlayerCanvas);
         private readonly ResourcePath _nextLevelCanvasPath = new(Constants.Prefabs.Canvas.Game.NextLevelCanvas);
 
@@ -44,6 +46,7 @@ namespace UI.Game
             AddPlayerWeapon();
             AddLevelTimer();
             AddLevelNumber();
+            AddEnemiesCount();
         }
 
         private void AddGameCanvas(Transform transform)
@@ -86,6 +89,13 @@ namespace UI.Game
                 (_levelNumberCanvasPath, _gameCanvasView.LevelInfo);
             AddGameObject(LevelTimerView.gameObject);
         }
+        
+        private void AddEnemiesCount()
+        {
+            EnemiesCountView = ResourceLoader.LoadPrefabAsChild<EnemiesCountView>
+                (_enemiesCountCanvasPath, _gameCanvasView.LevelInfo);
+            AddGameObject(EnemiesCountView.gameObject);
+        }
 
         protected override void OnDispose()
         {
@@ -94,6 +104,7 @@ namespace UI.Game
             PlayerWeaponView = null;
             LevelTimerView = null;
             LevelNumberView = null;
+            EnemiesCountView = null;
             EnemyHealthBars = null;
             GameEventIndicators = null;
         }

@@ -1,8 +1,10 @@
 using Abstracts;
+using Gameplay.Enemy;
 using Gameplay.Mechanics.Timer;
 using Gameplay.Player;
 using Scriptables;
 using System;
+using System.Collections.Generic;
 using UI.Game;
 
 namespace Gameplay.LevelProgress
@@ -14,10 +16,12 @@ namespace Gameplay.LevelProgress
         private readonly LevelTimerView _levelTimerView;
         private readonly LevelNumberView _levelNumberView;
         private readonly PlayerController _playerController;
+        private readonly List<EnemyView> _enemyViews;
+        private readonly EnemiesCountView _enemiesCountView;
 
         public event Action<float> LevelComplete = _ => { };
 
-        public LevelProgressController(LevelProgressConfig levelProgressConfig, PlayerController playerController)
+        public LevelProgressController(LevelProgressConfig levelProgressConfig, PlayerController playerController, List<EnemyView> enemyViews)
         {
             _config = levelProgressConfig;
             _config.ResetPlayerHealthAndShield();
@@ -33,6 +37,10 @@ namespace Gameplay.LevelProgress
             _playerController = playerController;
             _playerController.PlayerDestroyed += StopExecute;
             _playerController.NextLevelInput.Subscribe(NextLevel);
+
+            _enemyViews = enemyViews;
+            _enemiesCountView = GameUIController.EnemiesCountView;
+            _enemiesCountView.Init(0, _enemyViews.Count);
 
             LevelComplete += OnLevelComplete;
 
@@ -81,6 +89,22 @@ namespace Gameplay.LevelProgress
             if (_levelTimer.IsExpired)
             {
                 _playerController.DestroyPlayer();
+                return;
+            }
+
+            var countEnemyDestroyed = default(int);
+            foreach (var view in _enemyViews)
+            {
+                if(view == null)
+                {
+                    countEnemyDestroyed++;
+                }
+            }
+            _enemiesCountView.Update—ounter(countEnemyDestroyed);
+
+            if(countEnemyDestroyed == _enemyViews.Count)
+            {
+                _playerController.NextLevelInput.Value = true;
             }
         }
 
