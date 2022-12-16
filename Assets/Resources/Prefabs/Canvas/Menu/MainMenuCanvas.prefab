@@ -68,7 +68,7 @@ GameObject:
   - component: {fileID: 7258675083752646190}
   - component: {fileID: 2706775966177055530}
   m_Layer: 0
-  m_Name: PassedLevelsRecord
+  m_Name: RecordCompletedLevels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -418,7 +418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <StartGameButton>k__BackingField: {fileID: 1323452248953871524}
   <ExitGameButton>k__BackingField: {fileID: 3199496370255712398}
-  <PassedLevelsNumber>k__BackingField: {fileID: 2326317998031608966}
+  <LevelsNumber>k__BackingField: {fileID: 2326317998031608966}
   <RecordNumber>k__BackingField: {fileID: 4857414369200768102}
 --- !u!1 &2997558254700805525
 GameObject:
@@ -756,7 +756,7 @@ GameObject:
   - component: {fileID: 7877456199221122189}
   - component: {fileID: 861397219902575158}
   m_Layer: 0
-  m_Name: PassedLevels
+  m_Name: CompletedLevels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1128,7 +1128,7 @@ GameObject:
   - component: {fileID: 7117539020673084420}
   - component: {fileID: 5147121936315595864}
   m_Layer: 0
-  m_Name: PassedLevelsRecordText
+  m_Name: RecordCompletedLevelsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1214,7 +1214,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Record of levels passed:'
+  m_text: 'Record of levels completed:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1354,7 +1354,7 @@ GameObject:
   - component: {fileID: 522276041602361693}
   - component: {fileID: 3502750853219469965}
   m_Layer: 0
-  m_Name: PassedLevelsText
+  m_Name: CompletedLevelsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1440,7 +1440,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Passed levels for this session:'
+  m_text: 'Completed levels for this session:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

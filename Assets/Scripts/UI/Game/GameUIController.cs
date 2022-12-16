@@ -10,6 +10,7 @@ namespace UI.Game
         public static PlayerStatusBarView PlayerStatusBarView { get; private set; }
         public static PlayerSpeedometerView PlayerSpeedometerView { get; private set; }
         public static PlayerWeaponView PlayerWeaponView { get; private set; }
+        public static LevelTimerView LevelTimerView { get; private set; }
         public static Transform EnemyHealthBars { get; private set; }
         public static Transform GameEventIndicators { get; private set; }
 
@@ -20,6 +21,7 @@ namespace UI.Game
         private readonly ResourcePath _playerStatusBarCanvasPath = new(Constants.Prefabs.Canvas.Game.StatusBarCanvas);
         private readonly ResourcePath _playerSpeedometerCanvasPath = new(Constants.Prefabs.Canvas.Game.SpeedometerCanvas);
         private readonly ResourcePath _playerWeaponCanvasPath = new(Constants.Prefabs.Canvas.Game.WeaponCanvas);
+        private readonly ResourcePath _levelTimerCanvasPath = new(Constants.Prefabs.Canvas.Game.LevelTimerCanvas);
         private readonly ResourcePath _playerDestroyedCanvasPath = new(Constants.Prefabs.Canvas.Game.DestroyPlayerCanvas);
 
         private readonly Action _exitToMenu;
@@ -34,6 +36,7 @@ namespace UI.Game
             AddPlayerStatusBar();
             AddPlayerSpeedometer();
             AddPlayerWeapon();
+            AddLevelTimer();
         }
 
         private void AddGameCanvas(Transform transform)
@@ -63,11 +66,19 @@ namespace UI.Game
             AddGameObject(PlayerWeaponView.gameObject);
         }
 
+        private void AddLevelTimer()
+        {
+            LevelTimerView = ResourceLoader.LoadPrefabAsChild<LevelTimerView>
+                (_levelTimerCanvasPath, _gameCanvasView.LevelInfo);
+            AddGameObject(LevelTimerView.gameObject);
+        }
+
         protected override void OnDispose()
         {
             PlayerStatusBarView = null;
             PlayerSpeedometerView = null;
             PlayerWeaponView = null;
+            LevelTimerView = null;
             EnemyHealthBars = null;
             GameEventIndicators = null;
         }

@@ -6,7 +6,7 @@ public static class Constants
     {
         private static readonly string CONFIGS = nameof(Configs);
 
-        public static readonly string CompletedLevelsConfig = Path.Combine(CONFIGS, nameof(CompletedLevelsConfig));
+        public static readonly string LevelProgressConfig = Path.Combine(CONFIGS, nameof(LevelProgressConfig));
 
         public record Player
         {
@@ -105,6 +105,7 @@ public static class Constants
                 public static readonly string StatusBarCanvas = Path.Combine(GAME, nameof(StatusBarCanvas));
                 public static readonly string SpeedometerCanvas = Path.Combine(GAME, nameof(SpeedometerCanvas));
                 public static readonly string WeaponCanvas = Path.Combine(GAME, nameof(WeaponCanvas));
+                public static readonly string LevelTimerCanvas = Path.Combine(GAME, nameof(LevelTimerCanvas));
                 public static readonly string DestroyPlayerCanvas = Path.Combine(GAME, nameof(DestroyPlayerCanvas));
                 public static readonly string EnemyHealthStatusBarCanvas = Path.Combine(GAME, nameof(EnemyHealthStatusBarCanvas));
                 public static readonly string EnemyHealthShieldStatusBarCanvas = Path.Combine(GAME, nameof(EnemyHealthShieldStatusBarCanvas));

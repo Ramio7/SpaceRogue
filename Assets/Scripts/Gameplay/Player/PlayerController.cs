@@ -33,6 +33,8 @@ namespace Gameplay.Player
         private readonly SubscribedProperty<bool> _primaryFireInput = new();
         private readonly SubscribedProperty<bool> _changeWeaponInput = new ();
 
+        private readonly HealthController _healthController;
+
         private const byte MaxCountOfPlayerSpawnTries = 10;
         private const float PlayerSpawnClearanceRadius = 40.0f;
 
@@ -49,8 +51,13 @@ namespace Gameplay.Player
             var inventoryController = AddInventoryController(_config.Inventory);
             var movementController = AddMovementController(_config.Movement, _view);
             var frontalGunsController = AddFrontalGunsController(inventoryController.Turrets, _view);
-            var healthController = AddHealthController(_config.HealthConfig, _config.ShieldConfig);
+            _healthController = AddHealthController(_config.HealthConfig, _config.ShieldConfig);
             AddCrosshair();
+        }
+
+        public void DestroyPlayer()
+        {
+            _healthController.DestroyUnit();
         }
 
         private HealthController AddHealthController(HealthConfig healthConfig, ShieldConfig shieldConfig)

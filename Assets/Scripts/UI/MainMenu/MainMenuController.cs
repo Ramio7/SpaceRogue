@@ -11,18 +11,18 @@ namespace UI.MainMenu
     public sealed class MainMenuController : BaseController
     {
         private readonly CurrentState _currentState;
-        private readonly CompletedLevelsConfig _completedLevelsConfig;
+        private readonly LevelProgressConfig _levelProgressConfig;
         
         private readonly ResourcePath _mainMenuCanvasPath = new(Constants.Prefabs.Canvas.Menu.MainMenuCanvas);
-        private readonly ResourcePath _completedLevelsConfigPath = new(Constants.Configs.CompletedLevelsConfig);
+        private readonly ResourcePath _levelProgressConfigPath = new(Constants.Configs.LevelProgressConfig);
         
         private MainMenuCanvasView _mainMenuCanvasView;
 
         public MainMenuController(CurrentState currentState, Canvas mainUICanvas)
         {
             _currentState = currentState;
-            _completedLevelsConfig = ResourceLoader.LoadObject<CompletedLevelsConfig>(_completedLevelsConfigPath);
-            _completedLevelsConfig.ResetCompletedLevels();
+            _levelProgressConfig = ResourceLoader.LoadObject<LevelProgressConfig>(_levelProgressConfigPath);
+            _levelProgressConfig.ResetCompletedLevels();
             AddMainMenuCanvas(mainUICanvas.transform);
 
 
@@ -34,7 +34,7 @@ namespace UI.MainMenu
         {
             _mainMenuCanvasView = ResourceLoader.LoadPrefabAsChild<MainMenuCanvasView>(_mainMenuCanvasPath, transform);
             _mainMenuCanvasView.Init(StartGame, ExitGame, 
-                _completedLevelsConfig.CompletedLevels, _completedLevelsConfig.CompletedLevelsRecord);
+                _levelProgressConfig.CompletedLevels, _levelProgressConfig.RecordCompletedLevels);
             AddGameObject(_mainMenuCanvasView.gameObject);
         }
 
