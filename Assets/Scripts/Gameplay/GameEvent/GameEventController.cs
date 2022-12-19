@@ -35,7 +35,6 @@ namespace Gameplay.GameEvent
 
         protected override void OnDispose()
         {
-            base.OnDispose();
             _timer.Dispose();
             _playerController.PlayerDestroyed -= OnPlayerDestroyed;
             EntryPoint.UnsubscribeFromUpdate(CheckEvent);
@@ -70,7 +69,7 @@ namespace Gameplay.GameEvent
             Dispose();
         }
 
-        protected void AddGameEventObjectToUIController(GameObject gameObject)
+        protected void AddGameEventObjectToUIController(GameObject gameObject, bool showUntilItIsVisibleOnce = false)
         {
             if (gameObject.TryGetComponent(out Collider2D collider))
             {
@@ -78,7 +77,8 @@ namespace Gameplay.GameEvent
                     AddGameEventIndicatorView(GameUIController.GameEventIndicators), 
                     collider,
                     _config.Icon,
-                    _config.IndicatorDiameter);
+                    _config.IndicatorDiameter,
+                    showUntilItIsVisibleOnce);
                 AddController(gameEventUIController);
             }
         }
