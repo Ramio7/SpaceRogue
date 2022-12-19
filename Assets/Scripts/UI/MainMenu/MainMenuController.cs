@@ -1,7 +1,6 @@
 using Abstracts;
 using Gameplay.Background;
 using Gameplay.GameState;
-using Scriptables;
 using UI.Game;
 using UnityEngine;
 using Utilities.ResourceManagement;
@@ -11,18 +10,18 @@ namespace UI.MainMenu
     public sealed class MainMenuController : BaseController
     {
         private readonly CurrentState _currentState;
-        private readonly LevelProgressConfig _levelProgressConfig;
+        private readonly GameDataController _gameDataController;
         
         private readonly ResourcePath _mainMenuCanvasPath = new(Constants.Prefabs.Canvas.Menu.MainMenuCanvas);
         
         private MainMenuCanvasView _mainMenuCanvasView;
 
-        public MainMenuController(CurrentState currentState, Canvas mainUICanvas, LevelProgressConfig levelProgressConfig)
+        public MainMenuController(CurrentState currentState, Canvas mainUICanvas, GameDataController gameDataController)
         {
             _currentState = currentState;
-            _levelProgressConfig = levelProgressConfig;
+            _gameDataController = gameDataController;
             AddMainMenuCanvas(mainUICanvas.transform);
-            _levelProgressConfig.ResetCompletedLevels();
+            _gameDataController.ResetCompletedLevels();
 
 
             var menuBackgroundController = new MenuBackgroundController();
@@ -32,8 +31,7 @@ namespace UI.MainMenu
         private void AddMainMenuCanvas(Transform transform)
         {
             _mainMenuCanvasView = ResourceLoader.LoadPrefabAsChild<MainMenuCanvasView>(_mainMenuCanvasPath, transform);
-            _mainMenuCanvasView.Init(StartGame, ResetRecord, ExitGame, 
-                _levelProgressConfig.CompletedLevels, _levelProgressConfig.RecordCompletedLevels);
+            _mainMenuCanvasView.Init(StartGame, ResetRecord, ExitGame, _gameDataController.RecordCompletedLevels);
             AddGameObject(_mainMenuCanvasView.gameObject);
         }
 
@@ -44,8 +42,8 @@ namespace UI.MainMenu
 
         private void ResetRecord()
         {
-            _levelProgressConfig.ResetRecord();
-            _mainMenuCanvasView.UpdateRecordNumber(_levelProgressConfig.RecordCompletedLevels);
+            _gameDataController.ResetRecord();
+            _mainMenuCanvasView.UpdateRecordNumber(_gameDataController.RecordCompletedLevels);
         }
 
         private void ExitGame()

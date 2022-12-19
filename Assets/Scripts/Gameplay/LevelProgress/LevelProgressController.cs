@@ -6,11 +6,13 @@ using Scriptables;
 using System;
 using System.Collections.Generic;
 using UI.Game;
+using Utilities.ResourceManagement;
 
 namespace Gameplay.LevelProgress
 {
     public sealed class LevelProgressController : BaseController
     {
+        private readonly GameDataController _gameDataController;
         private readonly LevelProgressConfig _config;
         private readonly Timer _levelTimer;
         private readonly LevelTimerView _levelTimerView;
@@ -19,12 +21,15 @@ namespace Gameplay.LevelProgress
         private readonly List<EnemyView> _enemyViews;
         private readonly EnemiesCountView _enemiesCountView;
 
+        private readonly ResourcePath _levelProgressConfigPath = new(Constants.Configs.LevelProgressConfig);
+
         public event Action<float> LevelComplete = _ => { };
 
-        public LevelProgressController(LevelProgressConfig levelProgressConfig, PlayerController playerController, List<EnemyView> enemyViews)
+        public LevelProgressController(GameDataController gameDataController, PlayerController playerController, List<EnemyView> enemyViews)
         {
-            _config = levelProgressConfig;
-            _config.ResetPlayerHealthAndShield();
+            _gameDataController = gameDataController;
+            _config = ResourceLoader.LoadObject<LevelProgressConfig>(_levelProgressConfigPath);
+            _gameDataController.ResetPlayerHealthAndShield();
             _levelTimer = new(_config.LevelTimerInSeconds);
             _levelTimer.Start();
             
@@ -32,7 +37,7 @@ namespace Gameplay.LevelProgress
             _levelTimerView.Init(GetTimerText(_levelTimer.CurrentValue));
 
             _levelNumberView = GameUIController.LevelNumberView;
-            _levelNumberView.InitNumber(_config.CompletedLevels + 1);
+            _levelNumberView.InitNumber(_gameDataController.CompletedLevels + 1);
 
             _playerController = playerController;
             _playerController.PlayerDestroyed += StopExecute;
@@ -54,8 +59,8 @@ namespace Gameplay.LevelProgress
 
         public void UpdatePlayerHealthAndShieldInfo(float health, float shield)
         {
-            _config.SetPlayerCurrentHealth(health);
-            _config.SetPlayerCurrentShield(shield);
+            _gameDataController.SetPlayerCurrentHealth(health);
+            _gameDataController.SetPlayerCurrentShield(shield);
         }
 
         private void OnLevelComplete(float levelNumber)
@@ -76,9 +81,9 @@ namespace Gameplay.LevelProgress
         {
             if (isNextLevel)
             {
-                _config.AddCompletedLevels();
-                _config.UpdateRecord();
-                LevelComplete(_config.CompletedLevels);
+                _gameDataController.AddCompletedLevels();
+                _gameDataController.UpdateRecord();
+                LevelComplete(_gameDataController.CompletedLevels);
             }
         }
 
@@ -100,7 +105,7 @@ namespace Gameplay.LevelProgress
                     countEnemyDestroyed++;
                 }
             }
-            _enemiesCountView.Update—ounter(countEnemyDestroyed);
+            _enemiesCountView.UpdateCounter(countEnemyDestroyed);
 
             if(countEnemyDestroyed == _enemyViews.Count)
             {

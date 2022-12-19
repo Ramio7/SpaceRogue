@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 012d965102a15c94493acb8f28e4c3b9, type: 3}
   m_Name: LevelProgressConfig
   m_EditorClassIdentifier: 
-  <LevelTimerInSeconds>k__BackingField: 60
+  <LevelTimerInSeconds>k__BackingField: 300

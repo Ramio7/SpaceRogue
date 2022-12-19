@@ -14,7 +14,7 @@ namespace UI.Game
             EnemiesCount.Init(enemiesCount.ToString());
         }
 
-        public void Update—ounter(float enemiesDestroyedCount)
+        public void UpdateCounter(float enemiesDestroyedCount)
         {
             EnemiesDestroyedCount.UpdateText(enemiesDestroyedCount.ToString());
         }
