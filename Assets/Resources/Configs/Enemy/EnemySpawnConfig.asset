@@ -16,3 +16,11 @@ MonoBehaviour:
   <EnemyGroupsSpawnPoints>k__BackingField:
   - <GroupSpawnPoint>k__BackingField: {x: 30, y: -30, z: 0}
     <GroupCount>k__BackingField: 3
+  - <GroupSpawnPoint>k__BackingField: {x: -40, y: 50, z: 0}
+    <GroupCount>k__BackingField: 5
+  - <GroupSpawnPoint>k__BackingField: {x: 100, y: 100, z: 0}
+    <GroupCount>k__BackingField: 6
+  - <GroupSpawnPoint>k__BackingField: {x: -50, y: 180, z: 0}
+    <GroupCount>k__BackingField: 10
+  - <GroupSpawnPoint>k__BackingField: {x: -100, y: -150, z: 0}
+    <GroupCount>k__BackingField: 7

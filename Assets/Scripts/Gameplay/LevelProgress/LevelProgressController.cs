@@ -6,6 +6,7 @@ using Scriptables;
 using System;
 using System.Collections.Generic;
 using UI.Game;
+using UnityEngine;
 using Utilities.ResourceManagement;
 
 namespace Gameplay.LevelProgress
@@ -24,6 +25,8 @@ namespace Gameplay.LevelProgress
         private readonly ResourcePath _levelProgressConfigPath = new(Constants.Configs.LevelProgressConfig);
 
         public event Action<float> LevelComplete = _ => { };
+
+        private int _enemiesCountToWin;
 
         public LevelProgressController(GameDataController gameDataController, PlayerController playerController, List<EnemyView> enemyViews)
         {
@@ -45,7 +48,8 @@ namespace Gameplay.LevelProgress
 
             _enemyViews = enemyViews;
             _enemiesCountView = GameUIController.EnemiesCountView;
-            _enemiesCountView.Init(0, _enemyViews.Count);
+            _enemiesCountToWin = Mathf.Clamp(_config.EnemiesCountToWin, 1, _enemyViews.Count);
+            _enemiesCountView.Init(0, _enemiesCountToWin);
 
             LevelComplete += OnLevelComplete;
 
@@ -107,7 +111,7 @@ namespace Gameplay.LevelProgress
             }
             _enemiesCountView.UpdateCounter(countEnemyDestroyed);
 
-            if(countEnemyDestroyed == _enemyViews.Count)
+            if(countEnemyDestroyed == _enemiesCountToWin)
             {
                 _playerController.NextLevelInput.Value = true;
             }
