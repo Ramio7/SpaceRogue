@@ -40,6 +40,7 @@ namespace UI.Game
             _nextLevel = nextLevel;
 
             EnemyHealthBars = _gameCanvasView.EnemyHealthBars;
+            GameEventIndicators = _gameCanvasView.GameEventIndicators;
 
             AddPlayerStatusBar();
             AddPlayerSpeedometer();

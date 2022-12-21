@@ -8,7 +8,6 @@ using Gameplay.GameState;
 using Gameplay.LevelProgress;
 using Gameplay.Player;
 using Gameplay.Space;
-using Scriptables;
 using UI.Game;
 using UnityEngine;
 
@@ -36,7 +35,6 @@ namespace Gameplay
             _gameUIController = new(mainUICanvas, ExitToMenu, NextLevel);
             AddController(_gameUIController);
 
-            _playerController = new(_gameDataController.PlayerCurrentHealth, _gameDataController.PlayerCurrentShield);
             _backgroundController = new();
             AddController(_backgroundController);
             _spaceController = new();
