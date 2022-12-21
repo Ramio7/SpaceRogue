@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: LevelProgressConfig
   m_EditorClassIdentifier: 
   <LevelTimerInSeconds>k__BackingField: 300
+  <EnemiesCountToWin>k__BackingField: 30
