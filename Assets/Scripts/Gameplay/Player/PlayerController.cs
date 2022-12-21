@@ -130,7 +130,7 @@ namespace Gameplay.Player
             var viewTransform = _view.transform;
             var crosshair = UnityEngine.Object.Instantiate(
                 crosshairView,
-                viewTransform.position + _view.transform.TransformDirection(Vector3.up * (viewTransform.localScale.y + 20f)),
+                viewTransform.position + _view.transform.TransformDirection(Vector3.up * (viewTransform.localScale.y + 15f)),
                 viewTransform.rotation
             );
             crosshair.transform.parent = _view.transform;

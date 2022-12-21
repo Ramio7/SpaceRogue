@@ -111,7 +111,7 @@ namespace Gameplay.LevelProgress
             }
             _enemiesCountView.UpdateCounter(countEnemyDestroyed);
 
-            if(countEnemyDestroyed == _enemiesCountToWin)
+            if(countEnemyDestroyed >= _enemiesCountToWin)
             {
                 _playerController.NextLevelInput.Value = true;
             }
