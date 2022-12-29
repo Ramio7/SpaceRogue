@@ -35,9 +35,6 @@ namespace Gameplay.Player
 
         private readonly HealthController _healthController;
 
-        private const byte MaxCountOfPlayerSpawnTries = 10;
-        private const float PlayerSpawnClearanceRadius = 40.0f;
-
         public event Action PlayerDestroyed = () => { };
         public event Action OnControllerDispose = () => { };
         public SubscribedProperty<bool> NextLevelInput = new ();

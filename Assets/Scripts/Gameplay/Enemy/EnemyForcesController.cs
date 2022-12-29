@@ -11,6 +11,8 @@ namespace Gameplay.Enemy
 {
     public sealed class EnemyForcesController : BaseController
     {
+        private const byte MaxCountSpawnTries = 10;
+        
         private readonly ResourcePath _groupSpawnConfigPath = new(Constants.Configs.Enemy.EnemySpawnConfig);
         private readonly EnemyFactory _enemyFactory;
         private readonly PlayerController _playerController;
@@ -49,11 +51,13 @@ namespace Gameplay.Enemy
         private static Vector3 GetEmptySpawnPoint(Vector3 spawnPoint, Vector3 unitSize, int spawnCircleRadius)
         {
             var unitSpawnPoint = spawnPoint + (Vector3)(Random.insideUnitCircle * spawnCircleRadius);
-            float unitMaxSize = unitSize.MaxVector3CoordinateOnPlane();
+            var unitMaxSize = unitSize.MaxVector3CoordinateOnPlane();
             
-            while (UnityHelper.IsAnyObjectAtPosition(unitSpawnPoint, unitMaxSize))
+            var tryCount = 0;
+            while (UnityHelper.IsAnyObjectAtPosition(unitSpawnPoint, unitMaxSize) && tryCount <= MaxCountSpawnTries)
             {
                 unitSpawnPoint = spawnPoint + (Vector3)(Random.insideUnitCircle * spawnCircleRadius);
+                tryCount++;
             }
 
             return unitSpawnPoint;
