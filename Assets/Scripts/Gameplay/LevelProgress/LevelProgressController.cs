@@ -15,13 +15,11 @@ namespace Gameplay.LevelProgress
     {
         private readonly GameDataController _gameDataController;
         private readonly LevelProgressConfig _config;
-        private readonly Timer _levelTimer;
-        private readonly LevelTimerView _levelTimerView;
         private readonly LevelNumberView _levelNumberView;
         private readonly PlayerController _playerController;
         private readonly List<EnemyView> _enemyViews;
         private readonly EnemiesCountView _enemiesCountView;
-        private int _enemiesCountToWin;
+        private readonly int _enemiesCountToWin;
         
         private readonly ResourcePath _levelProgressConfigPath = new(Constants.Configs.LevelProgressConfig);
 
@@ -32,11 +30,6 @@ namespace Gameplay.LevelProgress
             _gameDataController = gameDataController;
             _config = ResourceLoader.LoadObject<LevelProgressConfig>(_levelProgressConfigPath);
             _gameDataController.ResetPlayerHealthAndShield();
-            _levelTimer = new(_config.LevelTimerInSeconds);
-            _levelTimer.Start();
-            
-            _levelTimerView = GameUIController.LevelTimerView;
-            _levelTimerView.Init(GetTimerText(_levelTimer.CurrentValue));
 
             _levelNumberView = GameUIController.LevelNumberView;
             _levelNumberView.InitNumber(_gameDataController.CompletedLevels + 1);
@@ -92,14 +85,6 @@ namespace Gameplay.LevelProgress
 
         private void CheckProgress()
         {
-            _levelTimerView.UpdateText(GetTimerText(_levelTimer.CurrentValue));
-
-            if (_levelTimer.IsExpired)
-            {
-                _playerController.DestroyPlayer();
-                return;
-            }
-
             var countEnemyDestroyed = default(int);
             foreach (var view in _enemyViews)
             {
@@ -114,12 +99,6 @@ namespace Gameplay.LevelProgress
             {
                 _playerController.NextLevelInput.Value = true;
             }
-        }
-
-        private string GetTimerText(float time)
-        {
-            var timeSpan = TimeSpan.FromSeconds(time);
-            return string.Format($"{timeSpan.Hours:D2}:{timeSpan.Minutes:D2}:{timeSpan.Seconds:D2}");
         }
     }
 }

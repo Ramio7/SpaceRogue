@@ -10,7 +10,6 @@ namespace UI.Game
         public static PlayerStatusBarView PlayerStatusBarView { get; private set; }
         public static PlayerSpeedometerView PlayerSpeedometerView { get; private set; }
         public static PlayerWeaponView PlayerWeaponView { get; private set; }
-        public static LevelTimerView LevelTimerView { get; private set; }
         public static LevelNumberView LevelNumberView { get; private set; }
         public static EnemiesCountView EnemiesCountView { get; private set; }
         public static Transform EnemyHealthBars { get; private set; }
@@ -24,7 +23,6 @@ namespace UI.Game
         private readonly ResourcePath _playerStatusBarCanvasPath = new(Constants.Prefabs.Canvas.Game.StatusBarCanvas);
         private readonly ResourcePath _playerSpeedometerCanvasPath = new(Constants.Prefabs.Canvas.Game.SpeedometerCanvas);
         private readonly ResourcePath _playerWeaponCanvasPath = new(Constants.Prefabs.Canvas.Game.WeaponCanvas);
-        private readonly ResourcePath _levelTimerCanvasPath = new(Constants.Prefabs.Canvas.Game.LevelTimerCanvas);
         private readonly ResourcePath _levelNumberCanvasPath = new(Constants.Prefabs.Canvas.Game.LevelNumberCanvas);
         private readonly ResourcePath _enemiesCountCanvasPath = new(Constants.Prefabs.Canvas.Game.EnemiesCountCanvas);
         private readonly ResourcePath _playerDestroyedCanvasPath = new(Constants.Prefabs.Canvas.Game.DestroyPlayerCanvas);
@@ -45,7 +43,6 @@ namespace UI.Game
             AddPlayerStatusBar();
             AddPlayerSpeedometer();
             AddPlayerWeapon();
-            AddLevelTimer();
             AddLevelNumber();
             AddEnemiesCount();
         }
@@ -77,18 +74,11 @@ namespace UI.Game
             AddGameObject(PlayerWeaponView.gameObject);
         }
 
-        private void AddLevelTimer()
-        {
-            LevelTimerView = ResourceLoader.LoadPrefabAsChild<LevelTimerView>
-                (_levelTimerCanvasPath, _gameCanvasView.LevelInfo);
-            AddGameObject(LevelTimerView.gameObject);
-        }
-
         private void AddLevelNumber()
         {
             LevelNumberView = ResourceLoader.LoadPrefabAsChild<LevelNumberView>
                 (_levelNumberCanvasPath, _gameCanvasView.LevelInfo);
-            AddGameObject(LevelTimerView.gameObject);
+            AddGameObject(LevelNumberView.gameObject);
         }
         
         private void AddEnemiesCount()
@@ -103,7 +93,6 @@ namespace UI.Game
             PlayerStatusBarView = null;
             PlayerSpeedometerView = null;
             PlayerWeaponView = null;
-            LevelTimerView = null;
             LevelNumberView = null;
             EnemiesCountView = null;
             EnemyHealthBars = null;
