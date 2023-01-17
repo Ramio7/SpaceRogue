@@ -39,7 +39,7 @@ namespace Gameplay.Player
         public event Action OnControllerDispose = () => { };
         public SubscribedProperty<bool> NextLevelInput = new ();
 
-        public PlayerController(float health = 0, float shield = 0)
+        public PlayerController(Vector3 playerPosition, HealthInfo healthInfo, ShieldInfo shieldInfo)
         {
             _config = ResourceLoader.LoadObject<PlayerConfig>(_configPath);
             _view = LoadView<PlayerView>(_viewPath, playerPosition);
@@ -51,7 +51,7 @@ namespace Gameplay.Player
             var inventoryController = AddInventoryController(_config.Inventory);
             var movementController = AddMovementController(_config.Movement, _view);
             var frontalGunsController = AddFrontalGunsController(inventoryController.Turrets, _view);
-            _healthController = AddHealthController(_config.HealthConfig, _config.ShieldConfig, health, shield);
+            _healthController = AddHealthController(healthInfo, shieldInfo);
             AddCrosshair();
         }
 
@@ -80,20 +80,18 @@ namespace Gameplay.Player
 
         public void OnPlayerDestroyed()
         {
-            PlayerDestroyed();
+            PlayerDestroyed.Invoke();
         }
 
         public void ControllerDispose()
         {
-            OnControllerDispose();
+            OnControllerDispose.Invoke();
             Dispose();
         }
 
-        private HealthController AddHealthController(HealthConfig healthConfig, ShieldConfig shieldConfig, 
-            float health = 0, float shield = 0)
+        private HealthController AddHealthController(HealthInfo healthInfo, ShieldInfo shieldInfo)
         {
-            var healthController = new HealthController
-                (healthConfig, shieldConfig, GameUIController.PlayerStatusBarView, _view, health, shield);
+            var healthController = new HealthController(healthInfo, shieldInfo, GameUIController.PlayerStatusBarView, _view);
             healthController.SubscribeToOnDestroy(Dispose);
             healthController.SubscribeToOnDestroy(OnPlayerDestroyed);
             AddController(healthController);

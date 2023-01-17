@@ -39,6 +39,8 @@ namespace Gameplay
             AddController(_backgroundController);
             _spaceController = new();
             AddController(_spaceController);
+
+            _playerController = new(_spaceController.GetPlayerSpawnPoint(), _gameDataController.PlayerHealthInfo, _gameDataController.PlayerShieldInfo);
             AddController(_playerController);
             _playerController.PlayerDestroyed += OnPlayerDestroyed;
 

@@ -21,12 +21,11 @@ namespace Gameplay.LevelProgress
         private readonly PlayerController _playerController;
         private readonly List<EnemyView> _enemyViews;
         private readonly EnemiesCountView _enemiesCountView;
-
+        private int _enemiesCountToWin;
+        
         private readonly ResourcePath _levelProgressConfigPath = new(Constants.Configs.LevelProgressConfig);
 
         public event Action<float> LevelComplete = _ => { };
-
-        private int _enemiesCountToWin;
 
         public LevelProgressController(GameDataController gameDataController, PlayerController playerController, List<EnemyView> enemyViews)
         {
