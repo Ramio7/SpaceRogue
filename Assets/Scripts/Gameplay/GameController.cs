@@ -47,7 +47,7 @@ namespace Gameplay
             _enemyForcesController = new(_playerController, _spaceController.GetEnemySpawnPoints());
             AddController(_enemyForcesController);
 
-            _asteroidsController = new AsteroidsController(_playerController);
+            _asteroidsController = new (_spaceController.GetEnemySpawnPoints());
             AddController(_asteroidsController);
 
             _generalGameEventsController = new(_playerController);

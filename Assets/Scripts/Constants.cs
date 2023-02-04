@@ -33,7 +33,7 @@ public static class Constants
         {
             private static readonly string ASTEROID = Path.Combine(CONFIGS, nameof(Asteroid));
 
-            public static readonly string AsteroidSpawnConfig = Path.Combine(ASTEROID, nameof(AsteroidSpawnConfig));
+            public static readonly string AsteroidsSpawnConfig = Path.Combine(ASTEROID, nameof(AsteroidsSpawnConfig));
         }
 
         public record Background

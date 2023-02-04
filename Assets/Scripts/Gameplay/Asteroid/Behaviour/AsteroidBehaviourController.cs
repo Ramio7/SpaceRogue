@@ -1,40 +1,35 @@
 using Abstracts;
 using Asteroid;
-using Gameplay.Player;
+using System;
+
 
 namespace Gameplay.Asteroid.Behaviour
 {
     public class AsteroidBehaviourController : BaseController
     {
         private readonly AsteroidView _view;
-        private readonly AsteroidBehaviourConfig _asteroidConfig;
-        private readonly AsteroidMoveType _moveType;
         private AsteroidBehaviour _currentBehaviour;
-        private readonly PlayerView _playerView;
 
-        public AsteroidBehaviourController(AsteroidView view, PlayerView playerView, AsteroidBehaviourConfig config, AsteroidMoveType moveType)
+        public AsteroidBehaviourController(AsteroidView view, AsteroidBehaviourConfig config)
         {
             _view = view;
-            _asteroidConfig = config;
-            _moveType = moveType;
-            _playerView = playerView;
 
-            switch (_moveType)
-            {
-                case AsteroidMoveType.Static:
-                    _currentBehaviour = new AsteroidStaticBehavior(_view, _playerView, _asteroidConfig);
-                    break;
-                case AsteroidMoveType.LinearMotion:
-                    _currentBehaviour = new AsteroidLinearMotion(_view, _playerView, _asteroidConfig);
-                    break;
-
-                default: return;
-            }
+            _currentBehaviour = CreateAsteroidBehavior(config);
         }
 
         protected override void OnDispose()
         {
             _currentBehaviour.Dispose();
+        }
+
+        private AsteroidBehaviour CreateAsteroidBehavior(AsteroidBehaviourConfig asteroid)
+        {
+            return asteroid.AsteroidMoveType switch
+            {
+                AsteroidMoveType.Static => new AsteroidStaticBehavior(_view, asteroid),
+                AsteroidMoveType.LinearMotion => new AsteroidLinearMotion(_view, asteroid),
+                _ => throw new ArgumentOutOfRangeException(nameof(asteroid.AsteroidMoveType), asteroid.AsteroidMoveType, "A not-existent asteroid behavior type is provided")
+            };
         }
     }
 }

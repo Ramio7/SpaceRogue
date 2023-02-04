@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39dee024d597dad43a4b8189a66d41ce, type: 3}
+  m_Name: AsteroidsSpawnConfig
+  m_EditorClassIdentifier: 
+  MaxAsteroidsInSpace: 30
+  AsteroidRespawnTime: 60
+  AsteroidConfigs:
+  - {fileID: 11400000, guid: 1b12a8f7205478446abc5b0447a0d42b, type: 2}
+  AsteroidSpawnPoints: []

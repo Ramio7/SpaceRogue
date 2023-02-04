@@ -12,14 +12,14 @@ namespace Gameplay.Asteroid
         private AsteroidFactory _asteroidFactory;
         int _spawnCircleRadius = 50;
         private float _currentAsteroidSpawnTime = 1;
-        private AsteroidSpawnConfig _spawnConfig;
+        private AsteroidsSpawnConfig _spawnConfig;
         private float _spawnOffset = 30;
-        private readonly AsteroidSpawnConfig _asteroidSpawnConfig;
+        private readonly AsteroidsSpawnConfig _asteroidSpawnConfig;
         private readonly PlayerView _playerView;
         private readonly AsteroidExplosionController _asteroidExplosionController;
         private readonly CloudAsteroidsSpawnController _cloudAsteroidsSpawnController;
 
-        public SingleAsteroidSpawnController(PlayerView playerView, AsteroidSpawnConfig asteroidSpawnConfig, AsteroidExplosionController asteroidExplosionController, CloudAsteroidsSpawnController cloudAsteroidsSpawnController)
+        public SingleAsteroidSpawnController(PlayerView playerView, AsteroidsSpawnConfig asteroidSpawnConfig, AsteroidExplosionController asteroidExplosionController, CloudAsteroidsSpawnController cloudAsteroidsSpawnController)
         {
             _playerView = playerView;
             _asteroidSpawnConfig = asteroidSpawnConfig;
@@ -27,18 +27,18 @@ namespace Gameplay.Asteroid
             _asteroidExplosionController = asteroidExplosionController;
             _cloudAsteroidsSpawnController = cloudAsteroidsSpawnController;
 
-            if (_spawnConfig.SingleAsteroid.Count != 0 && _spawnConfig.FastAsteroid.Count != 0)
-            {
-                EntryPoint.SubscribeToUpdate(OnUpdate);
-            }
-            if (asteroidSpawnConfig.SpawnOffset > 20) _spawnOffset = asteroidSpawnConfig.SpawnOffset;
+            //if (_spawnConfig.SingleAsteroid.Count != 0 && _spawnConfig.FastAsteroid.Count != 0)
+            //{
+            //    EntryPoint.SubscribeToUpdate(OnUpdate);
+            //}
+            //if (asteroidSpawnConfig.SpawnOffset > 20) _spawnOffset = asteroidSpawnConfig.SpawnOffset;
         }
 
         protected void OnUpdate()
         {
             if (_currentAsteroidSpawnTime<=0.0f)
             {
-                _currentAsteroidSpawnTime = Random.Range(_asteroidSpawnConfig.MinTimeAsteroidSpawn, _asteroidSpawnConfig.MaxTimeAsteroidSpawn);
+                //_currentAsteroidSpawnTime = Random.Range(_asteroidSpawnConfig.MinTimeAsteroidSpawn, _asteroidSpawnConfig.MaxTimeAsteroidSpawn);
                 AsteroidSpawn();
             }
             CooldownAsteroidSpawn();
@@ -51,17 +51,17 @@ namespace Gameplay.Asteroid
 
         private void AsteroidSpawn()
         {
-            var spawnConfig = (Random.Range(0, 10) > 5) ? _spawnConfig.SingleAsteroid[Random.Range(0, _spawnConfig.SingleAsteroid.Count)] : _spawnConfig.FastAsteroid[Random.Range(0, _spawnConfig.FastAsteroid.Count)];
+            //var spawnConfig = (Random.Range(0, 10) > 5) ? _spawnConfig.SingleAsteroid[Random.Range(0, _spawnConfig.SingleAsteroid.Count)] : _spawnConfig.FastAsteroid[Random.Range(0, _spawnConfig.FastAsteroid.Count)];
 
-            _asteroidFactory = new AsteroidFactory(spawnConfig);
+            //_asteroidFactory = new AsteroidFactory(spawnConfig);
 
-            var unitSize = spawnConfig.Prefab.transform.localScale;
+            //var unitSize = spawnConfig.Prefab.transform.localScale;
 
-            var unitSpawnPoint = GetEmptySpawnPoint(_playerView.gameObject.transform.position, unitSize, _spawnCircleRadius);
+            //var unitSpawnPoint = GetEmptySpawnPoint(_playerView.gameObject.transform.position, unitSize, _spawnCircleRadius);
 
-            var asteroidController = _asteroidFactory.CreateAsteroid(unitSpawnPoint,_playerView, _asteroidExplosionController, _cloudAsteroidsSpawnController);
+            //var asteroidController = _asteroidFactory.CreateAsteroid(unitSpawnPoint,_playerView, _asteroidExplosionController, _cloudAsteroidsSpawnController);
            
-            AddController(asteroidController);
+            //AddController(asteroidController);
             
         }
 
