@@ -12,7 +12,6 @@ namespace Gameplay.Asteroid
         private readonly AsteroidView _view;
         private readonly AsteroidConfig _config;
         private readonly AsteroidBehaviourController _behaviourController;
-        private readonly HealthController _healthController;
 
         public AsteroidController(AsteroidConfig config, AsteroidView view)
         {
@@ -33,7 +32,6 @@ namespace Gameplay.Asteroid
         protected override void OnDispose()
         {
             _behaviourController.Dispose();
-            _healthController.Dispose();
         }
 
 
