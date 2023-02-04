@@ -13,15 +13,12 @@ MonoBehaviour:
   m_Name: SingleAsteroidConfig
   m_EditorClassIdentifier: 
   <Id>k__BackingField: aa1bcf28-35aa-4c02-9ef8-952cb201c9f3
+  <Type>k__BackingField: 1
+  SpawnChanceWeight: 100
+  <CollisionDamageAmount>k__BackingField: 50
+  <AsteroidSize>k__BackingField: {x: 1, y: 1, z: 1}
   <Prefab>k__BackingField: {fileID: 7966837340507342344, guid: 27092498023504d41ab84199f3270217, type: 3}
-  <Health>k__BackingField: {fileID: 11400000, guid: 6dd304588d8587e4e9dbee3fae234edf, type: 2}
-  <DamageAmount>k__BackingField: 50
-  <AsteroidSizeType>k__BackingField: 2
-  <MinimumSize>k__BackingField: 3
-  <MaximumSize>k__BackingField: 5
-  <AsteroidMoveType>k__BackingField: 2
   <Behaviour>k__BackingField:
+    <AsteroidMoveType>k__BackingField: 3
     <AsteroidSpeed>k__BackingField: 4
-    <PlayerDetectionRadius>k__BackingField: 150
-  <IsDestroyedOnHit>k__BackingField: 1
-  <AsteroidDestructionView>k__BackingField: {fileID: 5767000743481137879, guid: f9634004e24decf4cb5738f286280e45, type: 3}
+  <Health>k__BackingField: {fileID: 11400000, guid: 6dd304588d8587e4e9dbee3fae234edf, type: 2}

@@ -1,12 +1,9 @@
-using Gameplay.Player;
-
 namespace Gameplay.Asteroid.Behaviour
 {
-    public class AsteroidBehaviour
+    public abstract class AsteroidBehaviour
     {
-        protected readonly AsteroidView View;
-        protected readonly PlayerView PlayerView;
-        protected readonly AsteroidBehaviourConfig Config;
+        protected readonly AsteroidView _view;
+        protected readonly AsteroidBehaviourConfig _config;
 
         private bool _isDisposed;
         public void Dispose()
@@ -17,11 +14,10 @@ namespace Gameplay.Asteroid.Behaviour
             OnDispose();
             EntryPoint.UnsubscribeFromUpdate(OnUpdate);
         }
-        protected AsteroidBehaviour(AsteroidView view, PlayerView playerView, AsteroidBehaviourConfig config)
+        protected AsteroidBehaviour(AsteroidView view, AsteroidBehaviourConfig config)
         {
-            View = view;
-            PlayerView = playerView;
-            Config = config;
+            _view = view;
+            _config = config;
             EntryPoint.SubscribeToUpdate(OnUpdate);
         }
 
