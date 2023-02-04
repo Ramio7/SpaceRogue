@@ -14,7 +14,7 @@ namespace Gameplay.Asteroid.Behaviour
             _speed = config.AsteroidSpeed;
             _asteroidDirection = RandomPicker.PickRandomAngle(0, 360, new());
 
-            if (!_view.TryGetComponent(out Rigidbody2D _rigidbody)) Debug.LogError("Rigidbody not attached to asteroid view");
+            _rigidbody = _view.GetComponentInParent<Rigidbody2D>();
         }
 
         protected override void OnUpdate()
