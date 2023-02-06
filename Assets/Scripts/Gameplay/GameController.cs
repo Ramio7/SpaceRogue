@@ -55,8 +55,6 @@ namespace Gameplay
 
             _generalGameEventsController = new(_playerController);
             AddController(_generalGameEventsController);
-            _enemyForcesController = new(_playerController);
-            AddController(_enemyForcesController);
 
             _levelProgressController = new(_gameDataController, _playerController, _enemyForcesController.EnemyViews);
             _levelProgressController.LevelComplete += LevelComplete;
