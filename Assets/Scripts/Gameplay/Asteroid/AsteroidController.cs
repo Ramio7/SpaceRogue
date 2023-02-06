@@ -2,8 +2,10 @@ using Abstracts;
 using Gameplay.Asteroid.Behaviour;
 using Gameplay.Damage;
 using Gameplay.Health;
+using Gameplay.Player;
 using Scriptables.Asteroid;
 using Scriptables.Health;
+
 
 namespace Gameplay.Asteroid
 {
@@ -13,7 +15,7 @@ namespace Gameplay.Asteroid
         private readonly AsteroidConfig _config;
         private readonly AsteroidBehaviourController _behaviourController;
 
-        public AsteroidController(AsteroidConfig config, AsteroidView view)
+        public AsteroidController(AsteroidConfig config, AsteroidView view, PlayerView player)
         {
             _config = config;
 
@@ -23,7 +25,7 @@ namespace Gameplay.Asteroid
             var damageModel = new DamageModel(config.CollisionDamageAmount);
             _view.Init(damageModel);
 
-            _behaviourController = new AsteroidBehaviourController(view, _config.Behaviour);
+            _behaviourController = new AsteroidBehaviourController(view, _config.Behaviour, player);
             AddController(_behaviourController);
 
             AddHealthController(_config.Health);

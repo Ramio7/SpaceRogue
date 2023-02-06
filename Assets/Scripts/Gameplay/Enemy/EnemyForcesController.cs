@@ -15,6 +15,8 @@ namespace Gameplay.Enemy
         private readonly EnemyFactory _enemyFactory;
         private readonly PlayerController _playerController;
 
+        private const int _maxSpawnTries = 5;
+
         public EnemyForcesController(PlayerController playerController, List<Vector3> enemySpawnPoints)
         {
             _playerController = playerController;
@@ -40,10 +42,11 @@ namespace Gameplay.Enemy
 
         private static Vector3 GetEmptySpawnPoint(Vector3 spawnPoint, Vector3 unitSize, int spawnCircleRadius)
         {
+            int tryCount = 0;
             var unitSpawnPoint = spawnPoint + (Vector3)(Random.insideUnitCircle * spawnCircleRadius);
             float unitMaxSize = unitSize.MaxVector3CoordinateOnPlane();
             
-            while (UnityHelper.IsAnyObjectAtPosition(unitSpawnPoint, unitMaxSize))
+            while (UnityHelper.IsAnyObjectAtPosition(unitSpawnPoint, unitMaxSize) && tryCount <= _maxSpawnTries)
             {
                 unitSpawnPoint = spawnPoint + (Vector3)(Random.insideUnitCircle * spawnCircleRadius);
             }

@@ -1,5 +1,7 @@
 using Abstracts;
+using Asteroid;
 using Gameplay.Mechanics.Timer;
+using Gameplay.Player;
 using Scriptables.Asteroid;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,98 +9,115 @@ using Utilities.Mathematics;
 using Utilities.ResourceManagement;
 using Utilities.Unity;
 
+
 namespace Gameplay.Asteroid
 {
     public class AsteroidsController : BaseController
     {
         private readonly ResourcePath _asteroidsSpawnConfigPath = new(Constants.Configs.Asteroid.AsteroidsSpawnConfig);
-        private readonly Dictionary<AsteroidConfig, AsteroidFactory> _asteroidFactories = new();
-
+        private readonly AsteroidFactory _asteroidFactory;
         private readonly AsteroidsSpawnConfig _config;
+        private readonly System.Random _random = new();
+        private readonly Timer _timer;
 
         private int _asteroidsInSpace;
-        private const int _maxSpawnTries = 5;
+
         private List<Vector3> _asteroidsSpawnPoints;
-        private GameObject _asteroidsPool = new("AsteroidsPool");
 
-        protected System.Random _random = new();
-        protected Timer _timer;
+        private AsteroidConfig _fastAsteroidConfig;
 
-        public AsteroidsController(List<Vector3> asteroidsSpawnPoints)
+
+
+        public AsteroidsController(PlayerController player, List<Vector3> asteroidsSpawnPoints)
         {
-            _asteroidsPool.transform.position = new(9999, 9999);
+            GameObject asteroidsPool = new("AsteroidsPool");
+            asteroidsPool.transform.position = new(9999, 9999);
+
             _config = ResourceLoader.LoadObject<AsteroidsSpawnConfig>(_asteroidsSpawnConfigPath);
+
+            _fastAsteroidConfig = GetConfigByType(AsteroidType.FastAsteroid, _config.AsteroidConfigs);
+
+            _asteroidFactory = new(asteroidsPool, player.View);
+
             _asteroidsSpawnPoints = asteroidsSpawnPoints;
-            _asteroidsInSpace = _config.MaxAsteroidsInSpace;
 
-            for (int i = 0; i < _config.AsteroidConfigs.Count; i++)
-                _asteroidFactories.Add(_config.AsteroidConfigs[i], new AsteroidFactory(_config.AsteroidConfigs[i], _asteroidsPool));
-
-            _timer = new(_config.AsteroidRespawnTime);
-            _timer.Start();
+            _timer = new(_config.FastAsteroidSpawnDelay);
 
             SpawnStartAsteroids();
-            //EntryPoint.SubscribeToFixedUpdate(CheckNewAsteroidSpawn);
+            EntryPoint.SubscribeToFixedUpdate(SpawnNewFastAsteroid);
         }
 
         protected override void OnDispose()
         {
             base.OnDispose();
+            _asteroidFactory.Dispose();
             _timer.Dispose();
+            EntryPoint.UnsubscribeFromFixedUpdate(SpawnNewFastAsteroid);
         }
 
         private void SpawnStartAsteroids()
         {
-            if (_config.MaxAsteroidsInSpace >= _asteroidsInSpace)
+            while (_config.MaxAsteroidsInSpace >= _asteroidsInSpace)
             {
-                for (int i = 0; i < _config.AsteroidConfigs.Count; ++i)
+                for (int i = 0; i < _config.AsteroidConfigs.Count; i++)
                 {
-                    if (RandomPicker.TakeChance(_config.AsteroidConfigs[i].SpawnChanceWeight, _random))
-                    {
-                        for (int j = 0; j < _asteroidsSpawnPoints.Count; ++j)
-                        {
-                            var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints[j], _config.AsteroidConfigs[i].AsteroidSize);
-                            _asteroidFactories[_config.AsteroidConfigs[i]].CreateAsteroid(spawnPoint, _asteroidsPool);
-                            _asteroidsInSpace++;
-                        }
-                    }
+                    AsteroidConfig currentAsteroidConfig = _config.AsteroidConfigs[i];
 
-                    _timer.Start();
+                    if (currentAsteroidConfig.Equals(_fastAsteroidConfig)) break;
+
+                    if (RandomPicker.TakeChance(currentAsteroidConfig.SpawnChance, _random))
+                    {
+                        var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints, currentAsteroidConfig.AsteroidSize);
+                        _asteroidFactory.CreateAsteroid(spawnPoint, currentAsteroidConfig);
+                        _asteroidsInSpace++;
+                    }
                 }
             }
         }
 
-        //private void CheckNewAsteroidSpawn()
-        //{
-        //    if (_timer.IsExpired)
-        //    {
-        //        for (int i = 0; i < _config.AsteroidConfigs.Count; ++i) 
-        //        {
-        //            if (RandomPicker.TakeChance(_config.AsteroidConfigs[i].SpawnChanceWeight, _random))
-        //            {
-        //                var spawnPoint = GetEmptySpawnPoint(_config.AsteroidSpawnPoints, _config.AsteroidConfigs[i].AsteroidSize);
-                        
-        //                _asteroidsInSpace++;
-        //            }
-
-        //            _timer.Start();
-        //        }
-        //    }
-        //}
-
-        private static Vector3 GetEmptySpawnPoint(Vector3 spawnPoint, Vector3 asteroidSize)
+        private void SpawnNewFastAsteroid()
         {
-            int tryCount = 0;
-            var asteroidSpawnPoint = spawnPoint + (Vector3)(Random.insideUnitCircle);
-            float unitMaxSize = asteroidSize.MaxVector3CoordinateOnPlane();
-
-            while (UnityHelper.IsAnyObjectAtPosition(asteroidSpawnPoint, unitMaxSize) && tryCount <= _maxSpawnTries)
+            if (_timer.IsExpired)
             {
-                asteroidSpawnPoint = spawnPoint + (Vector3)Random.insideUnitCircle;
-                tryCount++;
+                var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints, _fastAsteroidConfig.AsteroidSize);
+                _asteroidFactory.CreateAsteroid(spawnPoint, _fastAsteroidConfig);
+            }
+        }
+
+        private Vector3 GetEmptySpawnPoint(List<Vector3> spawnPoints, Vector3 asteroidSize)
+        {
+            Vector3 asteroidSpawnPoint = new();
+            var spawnPointClaimed = false;
+            float asteroidMaxSize = asteroidSize.MaxVector3CoordinateOnPlane();
+
+            while (!spawnPointClaimed)
+            {
+                for (int i = 0; i < spawnPoints.Count; i++)
+                {
+                    if (!UnityHelper.IsAnyObjectAtPosition(spawnPoints[i], asteroidMaxSize))
+                    {
+                        spawnPointClaimed = true;
+                        asteroidSpawnPoint = spawnPoints[i];
+                        break;
+                    }
+                }
             }
 
             return asteroidSpawnPoint;
+        }
+
+        private AsteroidConfig GetConfigByType(AsteroidType asteroidType, List<AsteroidConfig> configList)
+        {
+            Dictionary<AsteroidType, AsteroidConfig> asteroidTypeConfigPairs = new();
+
+            for (int i = 0; i < configList.Count; i++)
+            {
+                asteroidTypeConfigPairs.Add(configList[i].AsteroidType, configList[i]);
+            }
+
+            asteroidTypeConfigPairs.TryGetValue(asteroidType, out var config);
+
+            return config;
         }
     }
 }
