@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39dee024d597dad43a4b8189a66d41ce, type: 3}
   m_Name: AsteroidsSpawnConfig
   m_EditorClassIdentifier: 
-  MaxAsteroidsInSpace: 30
-  AsteroidRespawnTime: 60
+  MaxAsteroidsInSpace: 10
+  FastAsteroidSpawnDelay: 10
   AsteroidConfigs:
   - {fileID: 11400000, guid: 1b12a8f7205478446abc5b0447a0d42b, type: 2}
-  AsteroidSpawnPoints: []
+  - {fileID: 11400000, guid: 461738dae2e7fde4f820b3cd3e0e9c3e, type: 2}

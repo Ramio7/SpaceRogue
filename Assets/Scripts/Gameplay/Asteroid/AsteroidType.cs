@@ -3,8 +3,8 @@ namespace Asteroid
     public enum AsteroidType
     {
         None = 0,
-        Standart = 1,
-        Fast = 2
+        OrdinaryAsteroid = 1,
+        FastAsteroid = 2
     }
     public enum AsteroidMoveType
     {
@@ -25,8 +25,9 @@ namespace Asteroid
 
     public enum AsteroidSizeType
     { 
-        Small = 0,
-        Middle = 1,
-        Big = 2
+        None = 0,
+        Small = 1,
+        Middle = 2,
+        Big = 3
     }
 }
