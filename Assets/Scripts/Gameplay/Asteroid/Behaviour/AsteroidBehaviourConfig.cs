@@ -9,7 +9,8 @@ namespace Gameplay.Asteroid.Behaviour
     {
         [field: SerializeField] public AsteroidMoveType AsteroidMoveType { get; private set; }
         [field: SerializeField] public float AsteroidSpeed { get; private set; }
-        [field: SerializeField, Min(0.1f)] public float SpawnRadius { get; private set; }
+        [field: SerializeField] public float SpawnRadius { get; private set; }
         [field: SerializeField, Min(0.1f)] public float TargetDispersion { get; private set; }
+        [field: SerializeField, Min(0)] public float AsteroidLifeTime { get; private set; }
     }
 }

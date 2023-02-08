@@ -67,20 +67,22 @@ namespace Gameplay.Asteroid
 
                     if (RandomPicker.TakeChance(currentAsteroidConfig.SpawnChance, _random))
                     {
-                        var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints, currentAsteroidConfig.AsteroidSize);
+                        var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints, currentAsteroidConfig.Size.AsteroidScale);
                         _asteroidFactory.CreateAsteroid(spawnPoint, currentAsteroidConfig);
                         _asteroidsInSpace++;
                     }
                 }
             }
+
+            _timer.Start();
         }
 
         private void SpawnNewFastAsteroid()
         {
             if (_timer.IsExpired)
             {
-                var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints, _fastAsteroidConfig.AsteroidSize);
-                _asteroidFactory.CreateAsteroid(spawnPoint, _fastAsteroidConfig);
+                _asteroidFactory.CreateAsteroidNearPlayer(_fastAsteroidConfig);
+                _timer.Start();
             }
         }
 
