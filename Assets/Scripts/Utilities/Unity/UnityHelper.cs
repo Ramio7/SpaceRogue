@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Utilities.Unity
@@ -30,6 +29,22 @@ namespace Utilities.Unity
         public static bool IsObjectVisible(this Camera camera, Bounds bounds)
         {
             return GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(camera), bounds);
+        }
+
+        public static Vector2 GetAPointOnRadius(Vector2 referencePoint, float radius)
+        {
+            GameObject tempTransform = new();
+
+            var tempRotation = Random.Range(0, 359);
+
+            tempTransform.transform.position = new Vector3(referencePoint.x, referencePoint.y, 0);
+            tempTransform.transform.RotateAround(referencePoint, Vector3.forward, tempRotation);
+            tempTransform.transform.Translate(Vector2.up * radius, Space.Self);
+
+            var output = tempTransform.transform.position;
+            Object.Destroy(tempTransform);
+
+            return output;
         }
     }
 }

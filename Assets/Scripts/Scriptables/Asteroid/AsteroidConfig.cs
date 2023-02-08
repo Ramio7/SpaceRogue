@@ -18,7 +18,7 @@ namespace Scriptables.Asteroid
         [field: SerializeField] public AsteroidType AsteroidType { get; private set; }
         [field: SerializeField, Min(0.1f)] public float SpawnChance;
         [field: SerializeField, Min(0.1f)] public float CollisionDamageAmount { get; private set; }
-        [field: SerializeField, Min(0.1f)] public Vector3 AsteroidSize { get; private set; }
+        [field: SerializeField] public AsteroidSizeConfig Size { get; private set; }
         [field: SerializeField] public AsteroidView Prefab { get; private set; }
         [field: SerializeField] public AsteroidBehaviourConfig Behaviour { get; private set; }
         [field: SerializeField] public HealthConfig Health { get; private set; }

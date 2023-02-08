@@ -5,12 +5,14 @@ using Gameplay.Health;
 using Gameplay.Player;
 using Scriptables.Asteroid;
 using Scriptables.Health;
-
+using System;
 
 namespace Gameplay.Asteroid
 {
     public sealed class AsteroidController : BaseController
     {
+        public Action OnDestroy { get; private set; }
+
         private readonly AsteroidView _view;
         private readonly AsteroidConfig _config;
         private readonly AsteroidBehaviourController _behaviourController;
