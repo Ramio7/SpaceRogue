@@ -14,10 +14,10 @@ namespace Gameplay.Asteroid
         public Action OnDestroy { get; private set; }
 
         private readonly AsteroidView _view;
-        private readonly AsteroidConfig _config;
+        private readonly SingleAsteroidConfig _config;
         private readonly AsteroidBehaviourController _behaviourController;
 
-        public AsteroidController(AsteroidConfig config, AsteroidView view, PlayerView player)
+        public AsteroidController(SingleAsteroidConfig config, AsteroidView view, PlayerView player)
         {
             _config = config;
 

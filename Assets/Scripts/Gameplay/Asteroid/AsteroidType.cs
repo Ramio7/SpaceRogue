@@ -18,8 +18,8 @@ namespace Asteroid
     public enum AsteroidCloudType
     {
         None = 0,
-        SingleAsteroid = 1,
-        SmallAsteroidCloud = 2,
+        SmallAsteroidCloud = 1,
+        MediumAsteroidCloud = 2,
         BigAsteroidCloud = 3
     }
 
@@ -27,7 +27,14 @@ namespace Asteroid
     { 
         None = 0,
         Small = 1,
-        Middle = 2,
+        Medium = 2,
         Big = 3
+    }
+
+    public enum AsteroidConfigType
+    {
+        None = 0,
+        SingleAsteroidConfig = 1,
+        AstreoidCloudConfig = 2
     }
 }
