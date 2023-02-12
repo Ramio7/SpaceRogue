@@ -46,9 +46,9 @@ namespace Gameplay.Asteroid
 
             //var currentcloudSpawnConfig = cloudSpawnConfig.AsteroidClouds[Random.Range(0, cloudSpawnConfig.AsteroidClouds.Count)];
             //var unitSize = currentcloudSpawnConfig.Prefab.transform.localScale;
-            //int spawnCircleRadius = Random.Range(cloudSpawnConfig.SmallCloudConfig.MinimumRadius, cloudSpawnConfig.SmallCloudConfig.MaximumRadius);
+            //int spawnCircleRadius = Random.Range(cloudSpawnConfig.SmallAsteroidCloudConfig.MinimumRadius, cloudSpawnConfig.SmallAsteroidCloudConfig.MaximumRadius);
 
-            //for (int i = 0; i < Random.Range(cloudSpawnConfig.SmallCloudConfig.MinimumCount, cloudSpawnConfig.SmallCloudConfig.MaximumCount); i++)
+            //for (int i = 0; i < Random.Range(cloudSpawnConfig.SmallAsteroidCloudConfig.MinimumCount, cloudSpawnConfig.SmallAsteroidCloudConfig.MaximumCount); i++)
             //{
             //    var unitSpawnPoint = GetEmptySpawnPoint(spawnPosition, unitSize, spawnCircleRadius);
             //    var asteroidController = _asteroidFactory.CreateAsteroid(unitSpawnPoint, _playerView, _asteroidExplosionController);
