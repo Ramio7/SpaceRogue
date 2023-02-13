@@ -3,12 +3,13 @@ using Asteroid;
 using Gameplay.Mechanics.Timer;
 using Gameplay.Player;
 using Scriptables.Asteroid;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Utilities.Mathematics;
 using Utilities.ResourceManagement;
 using Utilities.Unity;
-
+using Random = UnityEngine.Random;
 
 namespace Gameplay.Asteroid
 {
@@ -25,8 +26,6 @@ namespace Gameplay.Asteroid
         private List<AsteroidController> _asteroidsControllers = new();
 
         private SingleAsteroidConfig _fastAsteroidConfig;
-
-
 
         public AsteroidsController(PlayerController player, List<Vector3> asteroidsSpawnPoints)
         {
@@ -71,7 +70,7 @@ namespace Gameplay.Asteroid
                     switch (currentAsteroidConfig.ConfigType)
                     {
                         case AsteroidConfigType.None:
-                            throw new System.Exception("Config type is not defiend");
+                            throw new Exception("Config type is not defiend");
 
                         case AsteroidConfigType.SingleAsteroidConfig:
                             var config = currentAsteroidConfig as SingleAsteroidConfig;
@@ -83,7 +82,10 @@ namespace Gameplay.Asteroid
                                 var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints, config.Size.AsteroidScale, out Vector3 spawnCancel);
                                 if (spawnPoint == spawnCancel) break;
 
-                                _asteroidsControllers.Add(_asteroidFactory.CreateAsteroid(spawnPoint, config));
+                                var spawnedAsteroid = _asteroidFactory.CreateAsteroid(spawnPoint, config);
+                                _asteroidsControllers.Add(spawnedAsteroid);
+                                spawnedAsteroid.Id = _asteroidsControllers.Count - 1;
+                                spawnedAsteroid.OnDestroy += DeleteAsteroidController;
                             }
                             break;
 
@@ -100,6 +102,7 @@ namespace Gameplay.Asteroid
                                 for (int j = 0; j < asteroidCloudAsteroids.Count; j++)
                                 {
                                     _asteroidsControllers.Add(asteroidCloudAsteroids[j]);
+                                    asteroidCloudAsteroids[j].Id = _asteroidsControllers.Count - 1;
                                 }
                             }
                             break;
@@ -157,6 +160,12 @@ namespace Gameplay.Asteroid
 
             cancellationToken = Vector3.zero;
             return asteroidSpawnPoint;
+        }
+
+        private void DeleteAsteroidController(AsteroidController asteroidController)
+        {
+            if (asteroidController.Config.Cloud != null) _asteroidFactory.CreateAsteroidCloud(asteroidController.View, asteroidController.Config.Cloud);
+            _asteroidsControllers.Remove(asteroidController);
         }
 
         private SingleAsteroidConfig GetConfigByType(AsteroidType asteroidType, List<AsteroidConfig> configList)
