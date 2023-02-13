@@ -11,7 +11,7 @@ namespace Gameplay.Asteroid
     {
         private GameObject _pool;
         private PlayerView _player;
-        const int _maxSpawnTries = 10;
+        const int _maxSpawnTries = 50;
 
         public AsteroidFactory(GameObject pool, PlayerView player)
         {
@@ -72,7 +72,7 @@ namespace Gameplay.Asteroid
 
         public List<AsteroidController> CreateAsteroidCloud(Vector3 spawnPosition, AsteroidCloudConfig config)
         {
-            var asteroidCloudPool = new GameObject("Asteroid Cloud");
+            var asteroidCloudPool = new GameObject(config.CloudType.ToString());
             asteroidCloudPool.transform.SetParent(_pool.transform, false);
 
             var asteroidControllersOutput = new List<AsteroidController>();
@@ -88,7 +88,7 @@ namespace Gameplay.Asteroid
                 {
                     var currentAsteroid = CreateAsteroidInsideCloudRadius(spawnPosition, config.CloudAsteroidsConfigs[currentConfig], asteroidCloudPool, config.AsteroidCloudSize);
                     if (currentAsteroid == null) spawnTries++;
-                    asteroidControllersOutput.Add(currentAsteroid);
+                    if (currentAsteroid != null) asteroidControllersOutput.Add(currentAsteroid);
                 }
             }
 
