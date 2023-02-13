@@ -20,11 +20,11 @@ namespace Gameplay.Asteroid
         private readonly System.Random _random = new();
         private readonly Timer _timer;
 
-        private int _asteroidsInSpace;
-
         private List<Vector3> _asteroidsSpawnPoints;
+        const int _asteroidSpawnRadius = 20;
+        private List<AsteroidController> _asteroidsControllers = new();
 
-        private AsteroidConfig _fastAsteroidConfig;
+        private SingleAsteroidConfig _fastAsteroidConfig;
 
 
 
@@ -51,27 +51,64 @@ namespace Gameplay.Asteroid
         {
             base.OnDispose();
             _asteroidFactory.Dispose();
+            for (int i = 0; i < _asteroidsControllers.Count; i++)
+            {
+                _asteroidsControllers[i].Dispose();
+            }
+            _asteroidsControllers.Clear();
             _timer.Dispose();
             EntryPoint.UnsubscribeFromFixedUpdate(SpawnNewFastAsteroid);
         }
 
         private void SpawnStartAsteroids()
         {
-            while (_config.MaxAsteroidsInSpace >= _asteroidsInSpace)
+            while (_config.MaxAsteroidsInSpace > _asteroidsControllers.Count)
             {
                 for (int i = 0; i < _config.AsteroidConfigs.Count; i++)
                 {
-                    AsteroidConfig currentAsteroidConfig = _config.AsteroidConfigs[i];
+                    var currentAsteroidConfig = _config.AsteroidConfigs[i];
 
-                    if (currentAsteroidConfig.Equals(_fastAsteroidConfig)) break;
-
-                    if (RandomPicker.TakeChance(currentAsteroidConfig.SpawnChance, _random))
+                    switch (currentAsteroidConfig.ConfigType)
                     {
-                        var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints, currentAsteroidConfig.Size.AsteroidScale);
-                        _asteroidFactory.CreateAsteroid(spawnPoint, currentAsteroidConfig);
-                        _asteroidsInSpace++;
+                        case AsteroidConfigType.None:
+                            throw new System.Exception("Config type is not defiend");
+
+                        case AsteroidConfigType.SingleAsteroidConfig:
+                            var config = currentAsteroidConfig as SingleAsteroidConfig;
+
+                            if (config.Equals(_fastAsteroidConfig)) break;
+
+                            if (RandomPicker.TakeChance(config.SpawnChance, _random))
+                            {
+                                var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints, config.Size.AsteroidScale, out Vector3 spawnCancel);
+                                if (spawnPoint == spawnCancel) break;
+
+                                _asteroidsControllers.Add(_asteroidFactory.CreateAsteroid(spawnPoint, config));
+                            }
+                            break;
+
+                        case AsteroidConfigType.AstreoidCloudConfig:
+                            var cloudConfig = currentAsteroidConfig as AsteroidCloudConfig;
+
+                            if (RandomPicker.TakeChance(cloudConfig.SpawnChance, _random))
+                            {
+                                var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints, cloudConfig.AsteroidCloudSize, out Vector3 spawnCancel);
+                                if (spawnPoint == spawnCancel) break;
+
+                                var asteroidCloudAsteroids = _asteroidFactory.CreateAsteroidCloud(spawnPoint, cloudConfig);
+
+                                for (int j = 0; j < asteroidCloudAsteroids.Count; j++)
+                                {
+                                    _asteroidsControllers.Add(asteroidCloudAsteroids[j]);
+                                }
+                            }
+                            break;
+
+                        default:
+                            throw new System.Exception("No such config type found");
                     }
                 }
+                
             }
 
             _timer.Start();
@@ -81,45 +118,78 @@ namespace Gameplay.Asteroid
         {
             if (_timer.IsExpired)
             {
-                _asteroidFactory.CreateAsteroidNearPlayer(_fastAsteroidConfig);
+                _asteroidsControllers.Add(_asteroidFactory.CreateAsteroidNearPlayer(_fastAsteroidConfig));
                 _timer.Start();
             }
         }
 
-        private Vector3 GetEmptySpawnPoint(List<Vector3> spawnPoints, Vector3 asteroidSize)
+        private Vector3 GetEmptySpawnPoint(List<Vector3> spawnPoints, Vector3 asteroidSize, out Vector3 cancellationToken)
         {
             Vector3 asteroidSpawnPoint = new();
             var spawnPointClaimed = false;
+
+            int tryCount = 0;
+            int maxTries = 5;
+
             float asteroidMaxSize = asteroidSize.MaxVector3CoordinateOnPlane();
 
-            while (!spawnPointClaimed)
+            while (!spawnPointClaimed && tryCount < maxTries)
             {
-                for (int i = 0; i < spawnPoints.Count; i++)
+                var randomSpawnPoint = Random.Range(0, spawnPoints.Count);
+
+                var spawnPoint = spawnPoints[randomSpawnPoint] + (Vector3)Random.insideUnitCircle * _asteroidSpawnRadius;
+                spawnPointClaimed = !UnityHelper.IsAnyObjectAtPosition(spawnPoint, asteroidMaxSize);
+
+                if (spawnPointClaimed)
                 {
-                    if (!UnityHelper.IsAnyObjectAtPosition(spawnPoints[i], asteroidMaxSize))
-                    {
-                        spawnPointClaimed = true;
-                        asteroidSpawnPoint = spawnPoints[i];
-                        break;
-                    }
+                    asteroidSpawnPoint = spawnPoint;
+                    break;
                 }
+
+                tryCount++;
             }
 
+            if (tryCount >= maxTries)
+            {
+                cancellationToken = Vector3.one;
+                return cancellationToken;
+            }
+
+            cancellationToken = Vector3.zero;
             return asteroidSpawnPoint;
         }
 
-        private AsteroidConfig GetConfigByType(AsteroidType asteroidType, List<AsteroidConfig> configList)
+        private SingleAsteroidConfig GetConfigByType(AsteroidType asteroidType, List<AsteroidConfig> configList)
         {
             Dictionary<AsteroidType, AsteroidConfig> asteroidTypeConfigPairs = new();
 
             for (int i = 0; i < configList.Count; i++)
             {
-                asteroidTypeConfigPairs.Add(configList[i].AsteroidType, configList[i]);
+                var currentAsteroidConfig = _config.AsteroidConfigs[i];
+
+                switch (currentAsteroidConfig.ConfigType)
+                {
+                    case AsteroidConfigType.None:
+                        throw new System.Exception("Config type is not defiend");
+
+                    case AsteroidConfigType.SingleAsteroidConfig:
+                        var singleAsteroid = currentAsteroidConfig as SingleAsteroidConfig;
+
+                        if (asteroidTypeConfigPairs.ContainsKey(singleAsteroid.AsteroidType)) break;
+
+                        asteroidTypeConfigPairs.Add(singleAsteroid.AsteroidType, singleAsteroid);
+                        break;
+
+                    case AsteroidConfigType.AstreoidCloudConfig:
+                        break;
+
+                    default:
+                        throw new System.Exception("No such config type found");
+                }
             }
+            asteroidTypeConfigPairs.TryGetValue(asteroidType, out var configOutput);
 
-            asteroidTypeConfigPairs.TryGetValue(asteroidType, out var config);
-
-            return config;
+            return (SingleAsteroidConfig)configOutput;
         }
     }
 }

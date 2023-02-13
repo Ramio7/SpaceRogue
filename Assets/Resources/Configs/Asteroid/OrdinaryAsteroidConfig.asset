@@ -9,20 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4bd0086d4f8d5941b06cb711e3a1125, type: 3}
-  m_Name: SingleAsteroidConfig
+  m_Script: {fileID: 11500000, guid: fecd4d7326d4cc24f8305c49ea348328, type: 3}
+  m_Name: OrdinaryAsteroidConfig
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: aa1bcf28-35aa-4c02-9ef8-952cb201c9f3
+  <Id>k__BackingField: 50ce9cd3-b013-4d45-ac8c-b9c25c565cbb
+  <SpawnChance>k__BackingField: 30
   <AsteroidType>k__BackingField: 1
-  SpawnChance: 70
-  <CollisionDamageAmount>k__BackingField: 50
-  <Size>k__BackingField:
-    <SizeType>k__BackingField: 1
-    <AsteroidScale>k__BackingField: {x: 1, y: 1, z: 1}
   <Prefab>k__BackingField: {fileID: 7966837340507342344, guid: 27092498023504d41ab84199f3270217, type: 3}
+  <CollisionDamageAmount>k__BackingField: 50
+  <SpawnAsteroidCloudOnDestroy>k__BackingField: 1
+  <Size>k__BackingField:
+    <SizeType>k__BackingField: 2
+    <AsteroidScale>k__BackingField: {x: 0.1, y: 0.1, z: 1}
   <Behaviour>k__BackingField:
     <AsteroidMoveType>k__BackingField: 3
-    <AsteroidSpeed>k__BackingField: 10
+    <AsteroidSpeed>k__BackingField: 5
     <SpawnRadius>k__BackingField: 0
     <TargetDispersion>k__BackingField: 0
+    <AsteroidLifeTime>k__BackingField: 0
   <Health>k__BackingField: {fileID: 11400000, guid: 6dd304588d8587e4e9dbee3fae234edf, type: 2}
+  <Cloud>k__BackingField: {fileID: 11400000, guid: cbe6c85802e7f344385a5868b2c96992, type: 2}
