@@ -14,7 +14,6 @@ namespace Gameplay.Asteroid
         public DamageModel DamageModel { get; private set; }
 
         public event Action<DamageModel> DamageTaken = (DamageModel _) => { };
-        public Action OnAppQuit;
 
         public void Init(DamageModel damageModel)
         {
@@ -36,11 +35,6 @@ namespace Gameplay.Asteroid
         public void TakeDamage(IDamagingView damageComponent)
         {
             DamageTaken(damageComponent.DamageModel);
-        }
-
-        private void OnApplicationQuit()
-        {
-            OnAppQuit?.Invoke();
         }
     }
 }

@@ -7,10 +7,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Utilities.Mathematics;
-using Utilities.Reactive.SubscriptionProperty;
 using Utilities.ResourceManagement;
 using Utilities.Unity;
 using Random = UnityEngine.Random;
+
 
 namespace Gameplay.Asteroid
 {
@@ -22,11 +22,11 @@ namespace Gameplay.Asteroid
         private readonly System.Random _random = new();
         private readonly Timer _timer;
 
-        private List<Vector3> _asteroidsSpawnPoints;
+        private readonly List<Vector3> _asteroidsSpawnPoints;
         const int _asteroidSpawnRadius = 20;
         private List<AsteroidController> _asteroidsControllers = new();
 
-        private SingleAsteroidConfig _fastAsteroidConfig;
+        private readonly SingleAsteroidConfig _fastAsteroidConfig;
         private bool _appIsQuiting = false;
 
         public AsteroidsController(PlayerController player, List<Vector3> asteroidsSpawnPoints)
@@ -67,6 +67,7 @@ namespace Gameplay.Asteroid
             _asteroidsControllers.Clear();
         }
 
+        #region MainMethods
         private void SpawnStartAsteroids()
         {
             while (_config.MaxAsteroidsInSpace > _asteroidsControllers.Count)
@@ -102,6 +103,97 @@ namespace Gameplay.Asteroid
             }
 
             _timer.Start();
+        }
+
+        private void SpawnNewFastAsteroid()
+        {
+            if (_timer.IsExpired)
+            {
+                _asteroidsControllers.Add(_asteroidFactory.CreateAsteroidNearPlayer(_fastAsteroidConfig));
+                _timer.Start();
+            }
+        }
+        #endregion
+
+        #region SupportMethods
+        private Vector3 GetEmptySpawnPoint(List<Vector3> spawnPoints, Vector3 asteroidSize, out Vector3 cancellationToken)
+        {
+            Vector3 asteroidSpawnPoint = new();
+            var spawnPointClaimed = false;
+
+            int tryCount = 0;
+            int maxTries = 5;
+
+            float asteroidMaxSize = asteroidSize.MaxVector3CoordinateOnPlane();
+
+            while (!spawnPointClaimed && tryCount < maxTries)
+            {
+                var randomSpawnPoint = Random.Range(0, spawnPoints.Count);
+
+                var spawnPoint = spawnPoints[randomSpawnPoint] + (Vector3)Random.insideUnitCircle * _asteroidSpawnRadius;
+                spawnPointClaimed = !UnityHelper.IsAnyObjectAtPosition(spawnPoint, asteroidMaxSize);
+
+                if (spawnPointClaimed)
+                {
+                    asteroidSpawnPoint = spawnPoint;
+                    break;
+                }
+
+                tryCount++;
+            }
+
+            if (tryCount >= maxTries)
+            {
+                cancellationToken = Vector3.one;
+                return cancellationToken;
+            }
+
+            cancellationToken = Vector3.zero;
+            return asteroidSpawnPoint;
+        }
+
+        private void SetAppQuitTrigger() => _appIsQuiting = true;
+
+        private void DeleteAsteroidController(AsteroidController asteroidController)
+        {
+            if (!_appIsQuiting && asteroidController.Config.Cloud != null) 
+                _asteroidFactory.CreateAsteroidCloud(asteroidController.View, asteroidController.Config.Cloud);
+
+            _asteroidsControllers.Remove(asteroidController);
+            asteroidController.Dispose();
+        }
+
+        private SingleAsteroidConfig GetConfigByType(AsteroidType asteroidType, List<AsteroidConfig> configList)
+        {
+            Dictionary<AsteroidType, AsteroidConfig> asteroidTypeConfigPairs = new();
+
+            for (int i = 0; i < configList.Count; i++)
+            {
+                var currentAsteroidConfig = _config.AsteroidConfigs[i];
+
+                switch (currentAsteroidConfig.ConfigType)
+                {
+                    case AsteroidConfigType.None:
+                        throw new Exception("Config type is not defiend");
+
+                    case AsteroidConfigType.SingleAsteroidConfig:
+                        var singleAsteroid = currentAsteroidConfig as SingleAsteroidConfig;
+
+                        if (asteroidTypeConfigPairs.ContainsKey(singleAsteroid.AsteroidType)) break;
+
+                        asteroidTypeConfigPairs.Add(singleAsteroid.AsteroidType, singleAsteroid);
+                        break;
+
+                    case AsteroidConfigType.AstreoidCloudConfig:
+                        break;
+
+                    default:
+                        throw new Exception("No such config type found");
+                }
+            }
+            asteroidTypeConfigPairs.TryGetValue(asteroidType, out var configOutput);
+
+            return (SingleAsteroidConfig)configOutput;
         }
 
         private void RegisterAsteroidController(AsteroidController spawnedAsteroid)
@@ -144,94 +236,6 @@ namespace Gameplay.Asteroid
                 RegisterAsteroidController(asteroidCloudAsteroids);
             }
         }
-
-        private void SpawnNewFastAsteroid()
-        {
-            if (_timer.IsExpired)
-            {
-                _asteroidsControllers.Add(_asteroidFactory.CreateAsteroidNearPlayer(_fastAsteroidConfig));
-                _timer.Start();
-            }
-        }
-
-        private Vector3 GetEmptySpawnPoint(List<Vector3> spawnPoints, Vector3 asteroidSize, out Vector3 cancellationToken)
-        {
-            Vector3 asteroidSpawnPoint = new();
-            var spawnPointClaimed = false;
-
-            int tryCount = 0;
-            int maxTries = 5;
-
-            float asteroidMaxSize = asteroidSize.MaxVector3CoordinateOnPlane();
-
-            while (!spawnPointClaimed && tryCount < maxTries)
-            {
-                var randomSpawnPoint = Random.Range(0, spawnPoints.Count);
-
-                var spawnPoint = spawnPoints[randomSpawnPoint] + (Vector3)Random.insideUnitCircle * _asteroidSpawnRadius;
-                spawnPointClaimed = !UnityHelper.IsAnyObjectAtPosition(spawnPoint, asteroidMaxSize);
-
-                if (spawnPointClaimed)
-                {
-                    asteroidSpawnPoint = spawnPoint;
-                    break;
-                }
-
-                tryCount++;
-            }
-
-            if (tryCount >= maxTries)
-            {
-                cancellationToken = Vector3.one;
-                return cancellationToken;
-            }
-
-            cancellationToken = Vector3.zero;
-            return asteroidSpawnPoint;
-        }
-
-        private void SetAppQuitTrigger() => _appIsQuiting = true;
-
-        private void DeleteAsteroidController(AsteroidController asteroidController)
-        {
-            if (!_appIsQuiting) 
-                if (asteroidController.Config.Cloud != null) _asteroidFactory.CreateAsteroidCloud(asteroidController.View, asteroidController.Config.Cloud);
-
-            _asteroidsControllers.Remove(asteroidController);
-            asteroidController.Dispose();
-        }
-
-        private SingleAsteroidConfig GetConfigByType(AsteroidType asteroidType, List<AsteroidConfig> configList)
-        {
-            Dictionary<AsteroidType, AsteroidConfig> asteroidTypeConfigPairs = new();
-
-            for (int i = 0; i < configList.Count; i++)
-            {
-                var currentAsteroidConfig = _config.AsteroidConfigs[i];
-
-                switch (currentAsteroidConfig.ConfigType)
-                {
-                    case AsteroidConfigType.None:
-                        throw new Exception("Config type is not defiend");
-
-                    case AsteroidConfigType.SingleAsteroidConfig:
-                        var singleAsteroid = currentAsteroidConfig as SingleAsteroidConfig;
-
-                        if (asteroidTypeConfigPairs.ContainsKey(singleAsteroid.AsteroidType)) break;
-
-                        asteroidTypeConfigPairs.Add(singleAsteroid.AsteroidType, singleAsteroid);
-                        break;
-
-                    case AsteroidConfigType.AstreoidCloudConfig:
-                        break;
-
-                    default:
-                        throw new Exception("No such config type found");
-                }
-            }
-            asteroidTypeConfigPairs.TryGetValue(asteroidType, out var configOutput);
-
-            return (SingleAsteroidConfig)configOutput;
-        }
+        #endregion
     }
 }

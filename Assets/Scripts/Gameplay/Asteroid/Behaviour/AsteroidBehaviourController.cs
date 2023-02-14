@@ -30,7 +30,7 @@ namespace Gameplay.Asteroid.Behaviour
                 AsteroidMoveType.Static => new AsteroidStaticBehavior(_view, asteroid),
                 AsteroidMoveType.LinearMotion => new AsteroidLinearMotionBehavior(_view, asteroid),
                 AsteroidMoveType.PlayerTargeting => new AsteroidPlayerDirectedMotionBehavior(_view, asteroid, player),
-                AsteroidMoveType.PlayerEscaping => new AsteroidCollisionCounterDirectedMotionBehavior(_view, asteroid, player),
+                //AsteroidMoveType.PlayerEscaping => new AsteroidCollisionCounterDirectedMotionBehavior(_view, asteroid, player),
                 _ => throw new ArgumentOutOfRangeException(nameof(asteroid.AsteroidMoveType), asteroid.AsteroidMoveType, "A not-existent asteroid behavior type is provided")
             };
         }
