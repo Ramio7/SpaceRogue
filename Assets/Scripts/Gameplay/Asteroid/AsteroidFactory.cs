@@ -54,7 +54,7 @@ namespace Gameplay.Asteroid
             return CreateAsteroid(spawnPosition, config, _pool);
         }
 
-        public AsteroidController CreateAsteroidInsideCloudRadius(Vector3 spawnPoint, SingleAsteroidConfig config, GameObject pool, Vector3 asteroidCloudSize)
+        public AsteroidController CreateAsteroidInsideRadius(Vector3 spawnPoint, SingleAsteroidConfig config, GameObject pool, Vector3 asteroidCloudSize)
         {
             var spawnRadius = asteroidCloudSize.MaxVector3CoordinateOnPlane() / 2;
             var spawnPosition = (Vector2)spawnPoint + Random.insideUnitCircle * spawnRadius;
@@ -86,7 +86,7 @@ namespace Gameplay.Asteroid
 
                 if (RandomPicker.TakeChance(config.CloudAsteroidsConfigs[currentConfig].SpawnChance, random))
                 {
-                    var currentAsteroid = CreateAsteroidInsideCloudRadius(spawnPosition, config.CloudAsteroidsConfigs[currentConfig], asteroidCloudPool, config.AsteroidCloudSize);
+                    var currentAsteroid = CreateAsteroidInsideRadius(spawnPosition, config.CloudAsteroidsConfigs[currentConfig], asteroidCloudPool, config.AsteroidCloudSize);
                     if (currentAsteroid == null) spawnTries++;
                     if (currentAsteroid != null) asteroidControllersOutput.Add(currentAsteroid);
                 }
@@ -94,6 +94,31 @@ namespace Gameplay.Asteroid
 
             return asteroidControllersOutput;
         }
+
+        public List<AsteroidController> CreateAsteroidCloud(AsteroidView asteroidView, AsteroidCloudConfig config)
+        {
+            var asteroidCloudPool = new GameObject(config.CloudType.ToString());
+            asteroidCloudPool.transform.SetParent(_pool.transform, false);
+
+            var asteroidControllersOutput = new List<AsteroidController>();
+            var asteroidsInCloud = Random.Range(config.MinAsteroidsInCloud, config.MaxAsteroidsInCloud + 1);
+
+            int spawnTries = 0;
+            while (asteroidControllersOutput.Count < asteroidsInCloud && spawnTries <= _maxSpawnTries)
+            {
+                var random = new System.Random();
+                var currentConfig = Random.Range(0, config.CloudAsteroidsConfigs.Count);
+
+                if (RandomPicker.TakeChance(config.CloudAsteroidsConfigs[currentConfig].SpawnChance, random))
+                {
+                    var currentAsteroid = CreateAsteroidInsideRadius(asteroidView.transform.position, config.CloudAsteroidsConfigs[currentConfig], asteroidCloudPool, config.AsteroidCloudSize);
+                    if (currentAsteroid == null) spawnTries++;
+                    if (currentAsteroid != null) asteroidControllersOutput.Add(currentAsteroid);
+                }
+            }
+
+            return asteroidControllersOutput;
+        }        
 
         public AsteroidController CreateAsteroidNearPlayer(SingleAsteroidConfig config) => CreateAsteroidOnRadius(_player.transform.position, config);
 

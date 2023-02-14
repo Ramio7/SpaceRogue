@@ -3,7 +3,6 @@ using Gameplay.Asteroid.Behaviour;
 using Gameplay.Damage;
 using Gameplay.Health;
 using Gameplay.Player;
-using Scriptables.Asteroid;
 using Scriptables.Health;
 using System;
 
@@ -11,7 +10,11 @@ namespace Gameplay.Asteroid
 {
     public sealed class AsteroidController : BaseController
     {
-        public Action OnDestroy { get; private set; }
+        public int Id;
+        public Action<AsteroidController> OnDestroy;
+        
+        public AsteroidView View { get => _view; }
+        public SingleAsteroidConfig Config { get => _config; }
 
         private readonly AsteroidView _view;
         private readonly SingleAsteroidConfig _config;
@@ -36,19 +39,19 @@ namespace Gameplay.Asteroid
         protected override void OnDispose()
         {
             _behaviourController.Dispose();
+            OnDestroy?.Invoke(this);
         }
-
 
         private HealthController AddHealthController(HealthConfig healthConfig)
         {
             var healthController = new HealthController(healthConfig, _view);
 
+            healthController.SubscribeToOnDestroy(OnDispose);
             healthController.SubscribeToOnDestroy(Dispose);
 
             AddController(healthController);
 
             return healthController;
         }
-
     }
 }
