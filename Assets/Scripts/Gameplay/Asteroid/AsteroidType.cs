@@ -12,7 +12,8 @@ namespace Asteroid
         Static = 1,
         OrbitalMotion = 2,
         LinearMotion = 3,
-        PlayerTargeting = 4
+        PlayerTargeting = 4,
+        PlayerEscaping = 5
     }
 
     public enum AsteroidCloudType

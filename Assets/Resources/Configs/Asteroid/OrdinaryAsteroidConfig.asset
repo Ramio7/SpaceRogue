@@ -16,7 +16,7 @@ MonoBehaviour:
   <SpawnChance>k__BackingField: 30
   <AsteroidType>k__BackingField: 1
   <Prefab>k__BackingField: {fileID: 7966837340507342344, guid: 27092498023504d41ab84199f3270217, type: 3}
-  <CollisionDamageAmount>k__BackingField: 50
+  <CollisionDamageAmount>k__BackingField: 40
   <SpawnAsteroidCloudOnDestroy>k__BackingField: 1
   <Size>k__BackingField:
     <SizeType>k__BackingField: 2

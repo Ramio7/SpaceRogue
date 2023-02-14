@@ -31,7 +31,7 @@ namespace Gameplay.Asteroid.Behaviour
         protected void Move(Vector2 direction, float speed)
         {
             if (_rigidbody.velocity.normalized.sqrMagnitude <= speed)
-            _rigidbody.AddForce(direction * speed * Time.deltaTime, ForceMode2D.Force);
+            _rigidbody.AddForce(speed * Time.deltaTime * direction, ForceMode2D.Force);
         }
     }
 }
