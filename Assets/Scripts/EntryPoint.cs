@@ -31,6 +31,7 @@ public sealed class EntryPoint : MonoBehaviour
     private static event Action<float> OnDeltaTimeFixedUpdate = (_) => { };
     private static event Action OnLateUpdate = () => { };
     private static event Action<float> OnDeltaTimeLateUpdate = (_) => { };
+    private static event Action ApplicationQuit = () => { };
     
     public static void SubscribeToUpdate(Action callback) => OnUpdate += callback;
     public static void UnsubscribeFromUpdate(Action callback) => OnUpdate -= callback;
@@ -44,6 +45,9 @@ public sealed class EntryPoint : MonoBehaviour
     
     public static void SubscribeToLateUpdate(Action callback) => OnLateUpdate += callback;
     public static void UnsubscribeFromLateUpdate(Action callback) => OnLateUpdate -= callback;
+
+    public static void SubscribeToApplicationQuit(Action callback) => ApplicationQuit += callback;
+    public static void UnsubscribeToApplicationQuit(Action callback) => ApplicationQuit -= callback;
     
     private void Update()
     {
@@ -60,7 +64,12 @@ public sealed class EntryPoint : MonoBehaviour
         OnLateUpdate.Invoke();
     }
 
+    private void OnApplicationQuit()
+    {
+        ApplicationQuit?.Invoke();
+    }
+
     #endregion
-    
-    
+
+
 }

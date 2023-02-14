@@ -5,7 +5,6 @@ using Gameplay.Health;
 using Gameplay.Player;
 using Scriptables.Health;
 using System;
-using UnityEngine.Events;
 
 namespace Gameplay.Asteroid
 {
@@ -40,12 +39,14 @@ namespace Gameplay.Asteroid
         protected override void OnDispose()
         {
             _behaviourController.Dispose();
+            OnDestroy?.Invoke(this);
         }
 
         private HealthController AddHealthController(HealthConfig healthConfig)
         {
             var healthController = new HealthController(healthConfig, _view);
 
+            healthController.SubscribeToOnDestroy(OnDispose);
             healthController.SubscribeToOnDestroy(Dispose);
 
             AddController(healthController);
