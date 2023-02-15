@@ -65,7 +65,7 @@ namespace Gameplay.Enemy.Behaviour
         {
             EntryPoint.UnsubscribeFromUpdate(DetectPlayer);
             
-            if(_enemyState.Value == EnemyState.InCombat)
+            if(_enemyState.Value == EnemyState.InCombat || _enemyState.Value == EnemyState.InCombatWithRetreat)
             {
                 ChangeState(EnemyState.PassiveRoaming);
             }

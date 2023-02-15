@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 7197148510270988055}
   - component: {fileID: 731842550745446617}
   - component: {fileID: 115876158475015236}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Nebula
   m_TagString: Untagged
   m_Icon: {fileID: 0}

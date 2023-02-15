@@ -38,6 +38,7 @@ namespace Gameplay.Player
         public event Action PlayerDestroyed = () => { };
         public event Action OnControllerDispose = () => { };
         public SubscribedProperty<bool> NextLevelInput = new ();
+        public SubscribedProperty<bool> MapInput = new ();
 
         public PlayerController(Vector3 playerPosition, HealthInfo healthInfo, ShieldInfo shieldInfo)
         {
@@ -45,7 +46,7 @@ namespace Gameplay.Player
             _view = LoadView<PlayerView>(_viewPath, playerPosition);
 
             var inputController = new InputController(_mousePositionInput, _verticalInput, _primaryFireInput, 
-                _changeWeaponInput, NextLevelInput);
+                _changeWeaponInput, NextLevelInput, MapInput);
             AddController(inputController);
 
             var inventoryController = AddInventoryController(_config.Inventory);

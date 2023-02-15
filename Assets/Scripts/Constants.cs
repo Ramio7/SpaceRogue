@@ -7,6 +7,7 @@ public static class Constants
         private static readonly string CONFIGS = nameof(Configs);
 
         public static readonly string LevelProgressConfig = Path.Combine(CONFIGS, nameof(LevelProgressConfig));
+        public static readonly string MinimapConfig = Path.Combine(CONFIGS, nameof(MinimapConfig));
 
         public record Player
         {
@@ -112,6 +113,8 @@ public static class Constants
                 public static readonly string EnemyHealthStatusBarCanvas = Path.Combine(GAME, nameof(EnemyHealthStatusBarCanvas));
                 public static readonly string EnemyHealthShieldStatusBarCanvas = Path.Combine(GAME, nameof(EnemyHealthShieldStatusBarCanvas));
                 public static readonly string GameEventIndicatorCanvas = Path.Combine(GAME, nameof(GameEventIndicatorCanvas));
+                public static readonly string MinimapCamera = Path.Combine(GAME, nameof(MinimapCamera));
+                public static readonly string MinimapCanvas = Path.Combine(GAME, nameof(MinimapCanvas));
             }
 
             public record Menu

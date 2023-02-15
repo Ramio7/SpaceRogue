@@ -6,6 +6,7 @@ using Gameplay.Enemy;
 using Gameplay.GameEvent;
 using Gameplay.GameState;
 using Gameplay.LevelProgress;
+using Gameplay.Minimap;
 using Gameplay.Player;
 using Gameplay.Space;
 using UI.Game;
@@ -26,6 +27,7 @@ namespace Gameplay
         private readonly EnemyForcesController _enemyForcesController;
         private readonly GeneralGameEventsController _generalGameEventsController;
         private readonly LevelProgressController _levelProgressController;
+        private readonly MinimapController _minimapController;
 
         public GameController(CurrentState currentState, Canvas mainUICanvas, GameDataController gameDataController)
         {
@@ -59,6 +61,9 @@ namespace Gameplay
             _levelProgressController = new(_gameDataController, _playerController, _enemyForcesController.EnemyViews);
             _levelProgressController.LevelComplete += LevelComplete;
             AddController(_levelProgressController);
+
+            _minimapController = new(_playerController, _spaceController.GetMapCameraSize());
+            AddController(_minimapController);
         }
 
         private void OnPlayerDestroyed()

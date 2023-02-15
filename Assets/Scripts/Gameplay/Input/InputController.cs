@@ -15,10 +15,11 @@ namespace Gameplay.Input
             SubscribedProperty<float> verticalInput,
             SubscribedProperty<bool> primaryFireInput,
             SubscribedProperty<bool> changeWeaponInput,
-            SubscribedProperty<bool> nextLevelInput)
+            SubscribedProperty<bool> nextLevelInput,
+            SubscribedProperty<bool> mapInput)
         {
             _view = LoadView<BaseInputView>(_viewPrefabPath);
-            _view.Init(mousePositionInput, verticalInput, primaryFireInput, changeWeaponInput, nextLevelInput);
+            _view.Init(mousePositionInput, verticalInput, primaryFireInput, changeWeaponInput, nextLevelInput, mapInput);
         }
 
     }
