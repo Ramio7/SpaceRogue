@@ -89,10 +89,6 @@ namespace Gameplay.Asteroid
             return asteroidControllersOutput;
         }
 
-        public List<AsteroidController> CreateAsteroidCloudOnCollision(AsteroidView spawnerView, SingleAsteroidConfig spawnerConfig, Collision2D collision)
-        {
-            var asteroidCloudPool = CreateAsteroidCloudPool(config);
-
         public List<AsteroidController> CreateAsteroidCloud(AsteroidView asteroidView, AsteroidCloudConfig config)
         {
             var asteroidCloudPool = CreateAsteroidCloudPool(config);
@@ -121,7 +117,7 @@ namespace Gameplay.Asteroid
             return asteroid;
         }
 
-        private static AsteroidView Instantiate(Vector3 spawnPosition, SingleAsteroidConfig config)
+        private AsteroidView Instantiate(Vector3 spawnPosition, SingleAsteroidConfig config)
         {
             var asteroid = Object.Instantiate(config.Prefab, spawnPosition, Quaternion.identity);
             asteroid.transform.name = config.Size.SizeType.ToString() + config.AsteroidType.ToString();
