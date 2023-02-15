@@ -14,34 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Enemy>k__BackingField: {fileID: 11400000, guid: 88dd7a4d77f55e64e95a2188e0db18e2, type: 2}
   <EnemyGroupsSpawnPoints>k__BackingField:
-  - <GroupCount>k__BackingField: 20
-  - <GroupCount>k__BackingField: 10
-  - <GroupCount>k__BackingField: 10
-  - <GroupCount>k__BackingField: 10
-  - <GroupCount>k__BackingField: 10
-  - <GroupCount>k__BackingField: 10
-  - <GroupCount>k__BackingField: 3
-  - <GroupCount>k__BackingField: 3
-  - <GroupCount>k__BackingField: 3
-  - <GroupCount>k__BackingField: 3
-  - <GroupCount>k__BackingField: 3
-  - <GroupCount>k__BackingField: 3
-  - <GroupCount>k__BackingField: 3
-  - <GroupCount>k__BackingField: 3
-  - <GroupCount>k__BackingField: 3
-  - <GroupCount>k__BackingField: 3
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
-  - <GroupCount>k__BackingField: 2
+  - <GroupSpawnPoint>k__BackingField: {x: 30, y: -30, z: 0}
+    <GroupCount>k__BackingField: 3
+  - <GroupSpawnPoint>k__BackingField: {x: -40, y: 50, z: 0}
+    <GroupCount>k__BackingField: 5
+  - <GroupSpawnPoint>k__BackingField: {x: 100, y: 100, z: 0}
+    <GroupCount>k__BackingField: 6
+  - <GroupSpawnPoint>k__BackingField: {x: -50, y: 180, z: 0}
+    <GroupCount>k__BackingField: 10
+  - <GroupSpawnPoint>k__BackingField: {x: -100, y: -150, z: 0}
+    <GroupCount>k__BackingField: 7

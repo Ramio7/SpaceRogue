@@ -25,7 +25,7 @@ namespace Gameplay.Shooting
             var turretPoint = Object.Instantiate(
                 gunPointView,
                 gunPointParentTransform.position + gunPointParentTransform.TransformDirection(
-                    1.5f * gunPointParentTransform.localScale.y * Vector3.up),
+                    0.6f * gunPointParentTransform.localScale.y * Vector3.up),
                 gunPointParentTransform.rotation
             );
             turretPoint.transform.parent = gunPointParentTransform;

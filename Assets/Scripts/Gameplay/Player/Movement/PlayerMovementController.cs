@@ -90,7 +90,7 @@ namespace Gameplay.Player.Movement
             if (UnityHelper.Approximately(angle, 0, Mathf.Abs(_lastTurnRate)))
             {
                 _model.StopTurning();
-                _lastTurnRate = _model.StartingTurnSpeed / 2;
+                _lastTurnRate = _model.StartingTurnSpeed;
 
                 if (angle > 0)
                 {

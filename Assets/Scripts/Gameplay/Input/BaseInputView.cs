@@ -11,17 +11,23 @@ namespace Gameplay.Input
 
         private SubscribedProperty<bool> _primaryFireInput;
         private SubscribedProperty<bool> _changeWeaponInput;
+        private SubscribedProperty<bool> _nextLevelInput;
+        private SubscribedProperty<bool> _mapInput;
         
         public virtual void Init(
             SubscribedProperty<Vector3> mousePositionInput,
             SubscribedProperty<float> verticalMove,
             SubscribedProperty<bool> primaryFireInput,
-            SubscribedProperty<bool> changeWeaponInput)
+            SubscribedProperty<bool> changeWeaponInput,
+            SubscribedProperty<bool> nextLevelInput,
+            SubscribedProperty<bool> mapInput)
         {
             _mousePositionInput = mousePositionInput;
             _verticalAxisInput = verticalMove;
             _primaryFireInput = primaryFireInput;
             _changeWeaponInput = changeWeaponInput;
+            _nextLevelInput = nextLevelInput;
+            _mapInput = mapInput;
         }
 
         protected virtual void OnMousePositionInput(Vector3 value)
@@ -35,5 +41,11 @@ namespace Gameplay.Input
         
         protected virtual void OnChangeWeaponInput(bool value)
             => _changeWeaponInput.Value = value;
+
+        protected virtual void OnNextLevelInput(bool value)
+            => _nextLevelInput.Value = value;
+        
+        protected virtual void OnMapInput(bool value)
+            => _mapInput.Value = value;
     }
 }
