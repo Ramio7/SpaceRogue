@@ -5,6 +5,7 @@ using UnityEngine;
 using Utilities.Mathematics;
 using Utilities.Unity;
 
+
 namespace Gameplay.Asteroid
 {
     public class AsteroidFactory
@@ -26,6 +27,8 @@ namespace Gameplay.Asteroid
         }
 
         #region MainMethods
+
+        public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config) => new(config, CreateAsteroidView(spawnPosition, config));
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config) => new(config, CreateAsteroidView(spawnPosition, config), _player);
 
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool) =>
@@ -55,6 +58,7 @@ namespace Gameplay.Asteroid
         {
             var spawnRadius = asteroidCloudSize.MaxVector3CoordinateOnPlane() / 2;
             var spawnPosition = (Vector2)spawnPoint + Random.insideUnitCircle * spawnRadius;
+
             int spawnTries = TryGetSpawnPoint(spawnPoint, config, spawnRadius, ref spawnPosition);
 
             if (spawnTries > _maxSpawnTries) return null;
@@ -66,12 +70,7 @@ namespace Gameplay.Asteroid
             var spawnRadius = asteroidCloudSize.MaxVector3CoordinateOnPlane() / 2;
             var spawnPosition = (Vector2)spawnPoint + Random.insideUnitCircle * spawnRadius;
 
-            int spawnTries = 0;
-            while (UnityHelper.IsAnyObjectAtPosition(spawnPosition, config.Size.AsteroidScale.MaxVector3CoordinateOnPlane()) && spawnTries <= _maxSpawnTries)
-            {
-                spawnPosition = (Vector2)spawnPoint + Random.insideUnitCircle * spawnRadius;
-                spawnTries++;
-            }
+            int spawnTries = TryGetSpawnPoint(spawnPoint, config, spawnRadius, ref spawnPosition);
 
             if (spawnTries > _maxSpawnTries) return null;
             return CreateAsteroid(spawnPosition, config, pool, collision);

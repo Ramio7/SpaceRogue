@@ -5,6 +5,7 @@ using Gameplay.Player;
 using Scriptables.Asteroid;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utilities.Mathematics;
 using Utilities.ResourceManagement;
@@ -156,8 +157,21 @@ namespace Gameplay.Asteroid
 
         private void DeleteAsteroidController(AsteroidController asteroidController)
         {
-            if (!_appIsQuiting && asteroidController.Config.Cloud != null) 
-                _asteroidFactory.CreateAsteroidCloud(asteroidController.View, asteroidController.Config.Cloud);
+            if (!_appIsQuiting && asteroidController.Config.Cloud != null)
+            {
+                var view = asteroidController.View;
+                var cloud = asteroidController.Config.Cloud;
+                var asteroidControllers = asteroidController.Config.Cloud.Behavior switch
+                {
+                    AsteroidCloudBehaviour.None => throw new Exception("Cloud behaciour not set"),
+                    AsteroidCloudBehaviour.Static => _asteroidFactory.CreateAsteroidCloud(view, cloud),
+                    AsteroidCloudBehaviour.CreatorEscaping => _asteroidFactory.CreateAsteroidCloud(view, cloud),
+                    AsteroidCloudBehaviour.CollisionEscaping => null, //think about this
+                    _ => throw new NotImplementedException(),
+                };
+                RegisterAsteroidController(asteroidControllers);
+            }
+                
 
             _asteroidsControllers.Remove(asteroidController);
             asteroidController.Dispose();
@@ -232,6 +246,8 @@ namespace Gameplay.Asteroid
 
         private void TrySpawnAsteroidCloud(AsteroidCloudConfig config, System.Random random)
         {
+            if (config.Behavior is AsteroidCloudBehaviour.CreatorEscaping or AsteroidCloudBehaviour.CollisionEscaping) return;
+
             if (RandomPicker.TakeChance(config.SpawnChance, random))
             {
                 var spawnPoint = GetEmptySpawnPoint(_asteroidsSpawnPoints, config.AsteroidCloudSize, out Vector3 spawnCancel);

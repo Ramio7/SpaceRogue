@@ -38,17 +38,17 @@ namespace Gameplay.Asteroid
             _healthController = AddHealthController(_config.Health);
         }
 
-        public AsteroidController(SingleAsteroidConfig config, AsteroidView view, Collision2D collision)
+        public AsteroidController(SingleAsteroidConfig config, AsteroidView escapingView, AsteroidView creatorView)
         {
             _config = config;
 
-            _view = view;
+            _view = escapingView;
             AddGameObject(_view.gameObject);
 
             var damageModel = new DamageModel(config.CollisionDamageAmount);
             _view.Init(damageModel);
 
-            _behaviourController = new AsteroidBehaviourController(view, _config.Behaviour, collision);
+            _behaviourController = new AsteroidBehaviourController(escapingView, _config.Behaviour, creatorView);
             AddController(_behaviourController);
 
             _healthController = AddHealthController(_config.Health);

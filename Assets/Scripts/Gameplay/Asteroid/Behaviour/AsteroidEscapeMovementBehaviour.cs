@@ -28,7 +28,6 @@ public class AsteroidEscapeMovementBehaviour : AsteroidLinearMotionBehavior
 
     private Vector2 SetDirection(AsteroidView creatorView)
     {
-
-        return _view.transform.position;
+        return _view.transform.position - creatorView.transform.position;
     }
 }
