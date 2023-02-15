@@ -5,6 +5,7 @@ using Gameplay.Health;
 using Gameplay.Player;
 using Scriptables.Health;
 using System;
+using UnityEngine;
 
 namespace Gameplay.Asteroid
 {
@@ -16,9 +17,10 @@ namespace Gameplay.Asteroid
         public AsteroidView View { get => _view; }
         public SingleAsteroidConfig Config { get => _config; }
 
+        private SingleAsteroidConfig _config;
         private readonly AsteroidView _view;
-        private readonly SingleAsteroidConfig _config;
         private readonly AsteroidBehaviourController _behaviourController;
+        private readonly HealthController _healthController;
 
         public AsteroidController(SingleAsteroidConfig config, AsteroidView view, PlayerView player)
         {
@@ -33,12 +35,30 @@ namespace Gameplay.Asteroid
             _behaviourController = new AsteroidBehaviourController(view, _config.Behaviour, player);
             AddController(_behaviourController);
 
-            AddHealthController(_config.Health);
+            _healthController = AddHealthController(_config.Health);
+        }
+
+        public AsteroidController(SingleAsteroidConfig config, AsteroidView view, PlayerView player, Collision2D collision)
+        {
+            _config = config;
+
+            _view = view;
+            AddGameObject(_view.gameObject);
+
+            var damageModel = new DamageModel(config.CollisionDamageAmount);
+            _view.Init(damageModel);
+
+            _behaviourController = new AsteroidBehaviourController(view, _config.Behaviour, player, collision);
+            AddController(_behaviourController);
+
+            _healthController = AddHealthController(_config.Health);
         }
 
         protected override void OnDispose()
         {
-            _behaviourController.Dispose();
+            _config = null;
+            _behaviourController?.Dispose();
+            _healthController?.Dispose();
             OnDestroy?.Invoke(this);
         }
 

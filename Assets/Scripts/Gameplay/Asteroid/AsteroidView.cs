@@ -30,6 +30,7 @@ namespace Gameplay.Asteroid
             {
                 TakeDamage(agressorView);
             }
+            OnCollision?.Invoke(this, collision);
         }
 
         public void TakeDamage(IDamagingView damageComponent)

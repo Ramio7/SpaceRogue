@@ -163,6 +163,11 @@ namespace Gameplay.Asteroid
             asteroidController.Dispose();
         }
 
+        private void GetCollision(AsteroidView view, Collision2D collision)
+        {
+            //Think about this
+        }
+
         private SingleAsteroidConfig GetConfigByType(AsteroidType asteroidType, List<AsteroidConfig> configList)
         {
             Dictionary<AsteroidType, AsteroidConfig> asteroidTypeConfigPairs = new();
