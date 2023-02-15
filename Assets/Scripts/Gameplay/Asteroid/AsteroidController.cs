@@ -54,6 +54,22 @@ namespace Gameplay.Asteroid
             _healthController = AddHealthController(_config.Health);
         }
 
+        public AsteroidController(SingleAsteroidConfig config, AsteroidView escapingView, Collision2D collision)
+        {
+            _config = config;
+
+            _view = escapingView;
+            AddGameObject(_view.gameObject);
+
+            var damageModel = new DamageModel(config.CollisionDamageAmount);
+            _view.Init(damageModel);
+
+            _behaviourController = new AsteroidBehaviourController(escapingView, _config.Behaviour, collision);
+            AddController(_behaviourController);
+
+            _healthController = AddHealthController(_config.Health);
+        }
+
         protected override void OnDispose()
         {
             _config = null;

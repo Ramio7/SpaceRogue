@@ -28,11 +28,13 @@ namespace Gameplay.Asteroid
 
         #region MainMethods
 
-        public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config) => new(config, CreateAsteroidView(spawnPosition, config));
+        
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config) => new(config, CreateAsteroidView(spawnPosition, config), _player);
-
+        
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool) =>
             new(config, CreateAsteroidView(spawnPosition, config, pool), _player);
+        public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool, AsteroidView creatorView) => 
+            new(config, CreateAsteroidView(spawnPosition, config), creatorView);
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool, Collision2D collision) =>
             new(config, CreateAsteroidView(spawnPosition, config, pool), collision);
 
