@@ -31,7 +31,7 @@ namespace Gameplay.Asteroid
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool) =>
             new(config, CreateAsteroidView(spawnPosition, config, pool), _player);
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool, Collision2D collision) =>
-            new(config, CreateAsteroidView(spawnPosition, config, pool), _player, collision);
+            new(config, CreateAsteroidView(spawnPosition, config, pool), collision);
 
         public AsteroidController CreateAsteroidOnRadius(Vector3 spawnPoint, SingleAsteroidConfig config)
         {
@@ -74,7 +74,7 @@ namespace Gameplay.Asteroid
             }
 
             if (spawnTries > _maxSpawnTries) return null;
-            return CreateAsteroid(spawnPosition, config, pool);
+            return CreateAsteroid(spawnPosition, config, pool, collision);
         }
 
         public List<AsteroidController> CreateAsteroidCloud(Vector3 spawnPosition, AsteroidCloudConfig config)
