@@ -72,10 +72,10 @@ namespace Gameplay.Asteroid
 
         protected override void OnDispose()
         {
-            _config = null;
             _behaviourController?.Dispose();
             _healthController?.Dispose();
             OnDestroy?.Invoke(this);
+            _config = null;
         }
 
         private HealthController AddHealthController(HealthConfig healthConfig)
