@@ -113,6 +113,20 @@ namespace Gameplay.Asteroid
                 _timer.Start();
             }
         }
+
+        private void DeleteAsteroidController(AsteroidController asteroidController)
+        {
+            if (!_appIsQuiting && asteroidController.Config.Cloud != null)
+            {
+                var view = asteroidController.View;
+                var cloud = asteroidController.Config.Cloud;
+                var asteroidControllers = SelectAsteroidsMoveBehaviour(asteroidController, view, cloud);
+                RegisterAsteroidController(asteroidControllers);
+            }
+
+            _asteroidsControllers.Remove(asteroidController);
+            asteroidController.Dispose();
+        }
         #endregion
 
         #region SupportMethods
@@ -153,33 +167,6 @@ namespace Gameplay.Asteroid
         }
 
         private void SetAppQuitTrigger() => _appIsQuiting = true;
-
-        private void DeleteAsteroidController(AsteroidController asteroidController)
-        {
-            if (!_appIsQuiting && asteroidController.Config.Cloud != null)
-            {
-                var view = asteroidController.View;
-                var cloud = asteroidController.Config.Cloud;
-                var asteroidControllers = asteroidController.Config.Cloud.Behavior switch
-                {
-                    AsteroidCloudBehaviour.None => throw new Exception("Cloud behaciour not set"),
-                    AsteroidCloudBehaviour.Static => _asteroidFactory.CreateAsteroidCloud(view, cloud),
-                    AsteroidCloudBehaviour.CreatorEscaping => _asteroidFactory.CreateAsteroidCloud(view, cloud),
-                    AsteroidCloudBehaviour.CollisionEscaping => null, //think about this
-                    _ => throw new NotImplementedException(),
-                };
-                RegisterAsteroidController(asteroidControllers);
-            }
-                
-
-            _asteroidsControllers.Remove(asteroidController);
-            asteroidController.Dispose();
-        }
-
-        private void GetCollision(AsteroidView view, Collision2D collision)
-        {
-            //Think about this
-        }
 
         private SingleAsteroidConfig GetConfigByType(AsteroidType asteroidType, List<AsteroidConfig> configList)
         {
@@ -255,6 +242,17 @@ namespace Gameplay.Asteroid
                 var asteroidCloudAsteroids = _asteroidFactory.CreateAsteroidCloud(spawnPoint, config);
                 RegisterAsteroidController(asteroidCloudAsteroids);
             }
+        }
+
+        private List<AsteroidController> SelectAsteroidsMoveBehaviour(AsteroidController asteroidController, AsteroidView view, AsteroidCloudConfig cloud)
+        {
+            return asteroidController.Config.Cloud.Behavior switch
+            {
+                AsteroidCloudBehaviour.None => throw new Exception("Cloud behaviour not set"),
+                AsteroidCloudBehaviour.Static => _asteroidFactory.CreateAsteroidCloud(view, cloud),
+                AsteroidCloudBehaviour.CreatorEscaping => _asteroidFactory.CreateAsteroidCloud(view, cloud),
+                _ => throw new NotImplementedException(),
+            };
         }
         #endregion
     }

@@ -1,3 +1,4 @@
+using Asteroid;
 using Gameplay.Player;
 using Scriptables.Asteroid;
 using System.Collections.Generic;
@@ -28,12 +29,12 @@ namespace Gameplay.Asteroid
 
         #region MainMethods
 
-        
+
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config) => new(config, CreateAsteroidView(spawnPosition, config), _player);
-        
+
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool) =>
             new(config, CreateAsteroidView(spawnPosition, config, pool), _player);
-        public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool, AsteroidView creatorView) => 
+        public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool, AsteroidView creatorView) =>
             new(config, CreateAsteroidView(spawnPosition, config), creatorView);
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool, Collision2D collision) =>
             new(config, CreateAsteroidView(spawnPosition, config, pool), collision);
@@ -96,11 +97,14 @@ namespace Gameplay.Asteroid
 
             var asteroidControllersOutput = new List<AsteroidController>();
             var asteroidsInCloud = Random.Range(config.MinAsteroidsInCloud, config.MaxAsteroidsInCloud + 1);
+            AsteroidInCloudMoveTypeSwitch(config);
 
             SpawnAsteroids(asteroidView, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud);
 
             return asteroidControllersOutput;
         }
+
+        
 
         public AsteroidController CreateAsteroidNearPlayer(SingleAsteroidConfig config) => CreateAsteroidOnRadius(_player.transform.position, config);
 
@@ -217,6 +221,40 @@ namespace Gameplay.Asteroid
                     if (currentAsteroid == null) spawnTries++;
                     if (currentAsteroid != null) asteroidControllersOutput.Add(currentAsteroid);
                 }
+            }
+        }
+        private void AsteroidInCloudMoveTypeSwitch(AsteroidCloudConfig config)
+        {
+            switch (config.Behavior)
+            {
+                case AsteroidCloudBehaviour.None:
+                    {
+                        throw new System.Exception("Cloud behaviour not set");
+                    }
+                case AsteroidCloudBehaviour.Static:
+                    {
+                        AsteroidMoveTypeSet(config, AsteroidMoveType.Static);
+                        break;
+                    }
+                case AsteroidCloudBehaviour.CreatorEscaping:
+                    {
+                        AsteroidMoveTypeSet(config, AsteroidMoveType.CreatorEscaping);
+                        break;
+                    }
+                case AsteroidCloudBehaviour.CollisionEscaping:
+                    {
+                        AsteroidMoveTypeSet(config, AsteroidMoveType.CollisionEscaping);
+                        break;
+                    }
+                default: throw new System.Exception("No such cloud behavior in switch");
+            }
+        }
+
+        private void AsteroidMoveTypeSet(AsteroidCloudConfig config, AsteroidMoveType asteroidMoveType)
+        {
+            for (int i = 0; i < config.CloudAsteroidsConfigs.Count; i++)
+            {
+                config.CloudAsteroidsConfigs[i].Behaviour.AsteroidMoveType = asteroidMoveType;
             }
         }
         #endregion
