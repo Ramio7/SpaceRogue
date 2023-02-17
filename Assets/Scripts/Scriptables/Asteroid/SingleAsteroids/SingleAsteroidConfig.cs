@@ -19,7 +19,7 @@ public sealed class SingleAsteroidConfig : AsteroidConfig
 
     [field: Header("Special Settings")]
     [field: SerializeField] public AsteroidSizeConfig Size { get; private set; }
-    [field: SerializeField] public AsteroidBehaviourConfig Behaviour { get; private set; }
+    [field: SerializeField] public AsteroidBehaviourConfig Behaviour { get; set; }
     [field: SerializeField] public HealthConfig Health { get; private set; }
     [field: SerializeField] public AsteroidCloudConfig Cloud { get; private set; }
 }

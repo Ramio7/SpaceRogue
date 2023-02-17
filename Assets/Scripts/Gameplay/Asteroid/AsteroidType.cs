@@ -13,7 +13,8 @@ namespace Asteroid
         OrbitalMotion = 2,
         LinearMotion = 3,
         PlayerTargeting = 4,
-        PlayerEscaping = 5
+        CollisionEscaping = 5,
+        CreatorEscaping = 6
     }
 
     public enum AsteroidCloudType
@@ -22,6 +23,14 @@ namespace Asteroid
         SmallAsteroidCloud = 1,
         MediumAsteroidCloud = 2,
         BigAsteroidCloud = 3
+    }
+
+    public enum AsteroidCloudBehaviour
+    {
+        None = 0,
+        Static = 1,
+        CreatorEscaping = 2,
+        CollisionEscaping = 3
     }
 
     public enum AsteroidSizeType

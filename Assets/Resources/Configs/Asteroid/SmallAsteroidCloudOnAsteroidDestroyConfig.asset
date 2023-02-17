@@ -15,6 +15,7 @@ MonoBehaviour:
   <Id>k__BackingField: 90e982f3-7176-42c4-a7c5-33933bd50519
   <SpawnChance>k__BackingField: 100
   <SpawnAsteroidCloudOnStart>k__BackingField: 0
+  <Behavior>k__BackingField: 2
   <AsteroidCloudSize>k__BackingField: {x: 10, y: 10, z: 1}
   <CloudAsteroidsConfigs>k__BackingField:
   - {fileID: 11400000, guid: b8021f1118a466641b236a517ffa4cdd, type: 2}
