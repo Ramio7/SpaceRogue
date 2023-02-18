@@ -9,6 +9,7 @@ namespace Gameplay.Space.Planet
     public sealed class PlanetView : MonoBehaviour, IDamagingView
     {
         public event Action CollisionEnter = () => { };
+        public Action<Collision2D> OnBigObjectCollision;
 
         public DamageModel DamageModel { get; private set; }
 
@@ -21,6 +22,7 @@ namespace Gameplay.Space.Planet
         {
             if (collision.gameObject.TryGetComponent(out StarView starView) || collision.gameObject.TryGetComponent(out PlanetView planetView))
             {
+                OnBigObjectCollision.Invoke(collision);
                 CollisionEnter();
             }
         }

@@ -1,5 +1,6 @@
 using Asteroid;
 using Gameplay.Player;
+using Gameplay.Space.Planet;
 using Scriptables.Asteroid;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,11 @@ namespace Gameplay.Asteroid
         {
             _pool = pool;
             _player = player;
+        }
+
+        public AsteroidFactory(PlanetView planetView)
+        {
+            _pool = new(planetView.name + "Remains");
         }
 
         public void Dispose()
@@ -99,6 +105,18 @@ namespace Gameplay.Asteroid
             AsteroidInCloudMoveTypeSwitch(config);
 
             SpawnAsteroids(asteroidView, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud);
+
+            return asteroidControllersOutput;
+        }
+
+        public List<AsteroidController> CreateAsteroidCloud(Vector3 spawnPosition, AsteroidCloudConfig config, Collision2D collision)
+        {
+            var asteroidCloudPool = CreateAsteroidCloudPool(config);
+
+            var asteroidControllersOutput = new List<AsteroidController>();
+            var asteroidsInCloud = Random.Range(config.MinAsteroidsInCloud, config.MaxAsteroidsInCloud + 1);
+
+            SpawnAsteroids(spawnPosition, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud, collision);
 
             return asteroidControllersOutput;
         }
@@ -197,6 +215,32 @@ namespace Gameplay.Asteroid
             }
         }
 
+        private void SpawnAsteroids(Vector3 spawnPosition,
+                                    AsteroidCloudConfig config,
+                                    GameObject asteroidCloudPool,
+                                    List<AsteroidController> asteroidControllersOutput,
+                                    int asteroidsInCloud,
+                                    Collision2D collision)
+        {
+            int spawnTries = 0;
+            while (asteroidControllersOutput.Count < asteroidsInCloud && spawnTries <= _maxSpawnTries)
+            {
+                var random = new System.Random();
+                var currentConfig = Random.Range(0, config.CloudAsteroidsConfigs.Count);
+
+                if (RandomPicker.TakeChance(config.CloudAsteroidsConfigs[currentConfig].SpawnChance, random))
+                {
+                    var currentAsteroid = CreateAsteroidInsideRadius(spawnPosition,
+                                                                     config.CloudAsteroidsConfigs[currentConfig],
+                                                                     asteroidCloudPool,
+                                                                     config.AsteroidCloudSize,
+                                                                     collision);
+                    if (currentAsteroid == null) spawnTries++;
+                    if (currentAsteroid != null) asteroidControllersOutput.Add(currentAsteroid);
+                }
+            }
+        }
+
         private void SpawnAsteroids(AsteroidView asteroidView,
                                     AsteroidCloudConfig config,
                                     GameObject asteroidCloudPool,
@@ -220,6 +264,7 @@ namespace Gameplay.Asteroid
                 }
             }
         }
+
         private void AsteroidInCloudMoveTypeSwitch(AsteroidCloudConfig config)
         {
             switch (config.Behavior)
