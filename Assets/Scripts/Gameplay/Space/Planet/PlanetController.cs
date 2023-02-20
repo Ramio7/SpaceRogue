@@ -1,6 +1,8 @@
 using Abstracts;
+using Gameplay.Asteroid;
 using Gameplay.Damage;
 using Gameplay.Space.Star;
+using Scriptables.Space;
 using UnityEngine;
 
 namespace Gameplay.Space.Planet
@@ -10,11 +12,15 @@ namespace Gameplay.Space.Planet
         private readonly PlanetView _view;
         private readonly float _currentSpeed;
         private readonly bool _isMovingRetrograde;
+
+        private readonly PlanetConfig _planetConfig;
         
         private readonly StarView _starView;
 
-        public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde, float planetDamage)
+        public PlanetController(PlanetView view, StarView starView, float speed, bool isMovingRetrograde, float planetDamage, PlanetConfig config)
         {
+            _planetConfig= config;
+            
             _view = view;
             _view.transform.parent = starView.transform;
 
@@ -26,14 +32,23 @@ namespace Gameplay.Space.Planet
             _currentSpeed = speed;
             _isMovingRetrograde = isMovingRetrograde;
             _view.CollisionEnter += Dispose;
+            _view.OnBigObjectCollision += CreateAsteroidCloudOnDestroy;
 
             EntryPoint.SubscribeToUpdate(Move);
         }
 
         protected override void OnDispose()
         {
+            _view.OnBigObjectCollision -= CreateAsteroidCloudOnDestroy;
             _view.CollisionEnter -= Dispose;
             EntryPoint.UnsubscribeFromUpdate(Move);
+        }
+
+        private void CreateAsteroidCloudOnDestroy(Collision2D collision)
+        {
+            var asteroidFactory = new AsteroidFactory(_view);
+            asteroidFactory.CreateAsteroidCloud(_view.transform.position, _planetConfig.AsteroidCloudConfig, collision);
+            asteroidFactory.Dispose();
         }
 
         private void Move(float deltaTime)
