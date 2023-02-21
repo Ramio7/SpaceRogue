@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: FastAsteroidConfig
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 4a7381e0-21ea-4feb-8cf8-29bfd132960b
-  <SpawnChance>k__BackingField: 0.1
   <AsteroidType>k__BackingField: 2
   <Prefab>k__BackingField: {fileID: 7966837340507342344, guid: fca845bd830ceef46bff748314154207, type: 3}
   <CollisionDamageAmount>k__BackingField: 70
@@ -23,9 +22,10 @@ MonoBehaviour:
     <AsteroidScale>k__BackingField: {x: 0.1, y: 0.1, z: 1}
   <Behaviour>k__BackingField:
     <AsteroidMoveType>k__BackingField: 4
-    <AsteroidSpeed>k__BackingField: 20
+    <AsteroidStartingForce>k__BackingField: 200
+    <MaxRotationSpeed>k__BackingField: 0
     <SpawnRadius>k__BackingField: 50
     <TargetDispersion>k__BackingField: 10
     <AsteroidLifeTime>k__BackingField: 10
   <Health>k__BackingField: {fileID: 11400000, guid: 6dd304588d8587e4e9dbee3fae234edf, type: 2}
-  <Cloud>k__BackingField: {fileID: 11400000, guid: cbe6c85802e7f344385a5868b2c96992, type: 2}
+  <Cloud>k__BackingField: {fileID: 11400000, guid: 1125f82442aa77d4fb2f64753c84c52e, type: 2}

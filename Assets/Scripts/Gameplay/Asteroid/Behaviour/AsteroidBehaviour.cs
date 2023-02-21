@@ -1,23 +1,24 @@
+using Gameplay.Mechanics.Timer;
+
 namespace Gameplay.Asteroid.Behaviour
 {
     public abstract class AsteroidBehaviour
     {
-        protected readonly AsteroidView _view;
-        protected readonly AsteroidBehaviourConfig _config;
+        protected readonly AsteroidView View;
+        protected readonly AsteroidBehaviourConfig Config;
 
-        private bool _isDisposed;
+        protected Timer Timer;
+
         public void Dispose()
         {
-            if (_isDisposed)
-                return;
-            _isDisposed = true;
             OnDispose();
             EntryPoint.UnsubscribeFromUpdate(OnUpdate);
         }
+
         protected AsteroidBehaviour(AsteroidView view, AsteroidBehaviourConfig config)
         {
-            _view = view;
-            _config = config;
+            View = view;
+            Config = config;
             EntryPoint.SubscribeToUpdate(OnUpdate);
         }
 

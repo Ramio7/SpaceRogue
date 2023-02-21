@@ -19,7 +19,7 @@ namespace Gameplay
         private readonly CurrentState _currentState;
         private readonly GameDataController _gameDataController;
         private readonly GameUIController _gameUIController;
-        private readonly AsteroidsController _asteroidsController;
+        private readonly GeneralAsteroidsController _asteroidsController;
         private readonly BackgroundController _backgroundController;
         private readonly SpaceController _spaceController;
         private readonly PlayerController _playerController;

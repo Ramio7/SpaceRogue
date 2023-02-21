@@ -11,63 +11,68 @@ namespace Gameplay.Asteroid
 {
     public sealed class AsteroidController : BaseController
     {
-        public int Id;
-        public Action<AsteroidController> OnDestroy;
-        
-        public AsteroidView View { get => _view; }
-        public SingleAsteroidConfig Config { get => _config; }
+        public string Id { get; private set; }
 
-        private SingleAsteroidConfig _config;
-        private readonly AsteroidView _view;
+        public event Action<AsteroidController> OnDestroy;
+        
+        public AsteroidView View { get; private set; }
+        public SingleAsteroidConfig Config { get; private set; }
+
         private readonly AsteroidBehaviourController _behaviourController;
         private readonly HealthController _healthController;
 
         public AsteroidController(SingleAsteroidConfig config, AsteroidView view, PlayerView player)
         {
-            _config = config;
+            Id = Guid.NewGuid().ToString();
 
-            _view = view;
-            AddGameObject(_view.gameObject);
+            Config = config;
+
+            View = view;
+            AddGameObject(View.gameObject);
 
             var damageModel = new DamageModel(config.CollisionDamageAmount);
-            _view.Init(damageModel);
+            View.Init(damageModel);
 
-            _behaviourController = new AsteroidBehaviourController(view, _config.Behaviour, player);
+            _behaviourController = new PlayerBasedAsteroidBehaviourController(view, Config.Behaviour, player);
             AddController(_behaviourController);
 
-            _healthController = AddHealthController(_config.Health);
+            _healthController = AddHealthController(Config.Health);
         }
 
         public AsteroidController(SingleAsteroidConfig config, AsteroidView escapingView, AsteroidView creatorView)
         {
-            _config = config;
+            Id = Guid.NewGuid().ToString();
 
-            _view = escapingView;
-            AddGameObject(_view.gameObject);
+            Config = config;
+
+            View = escapingView;
+            AddGameObject(View.gameObject);
 
             var damageModel = new DamageModel(config.CollisionDamageAmount);
-            _view.Init(damageModel);
+            View.Init(damageModel);
 
-            _behaviourController = new AsteroidBehaviourController(escapingView, _config.Behaviour, creatorView);
+            _behaviourController = new CreatorBasedAsteroidBehaviourController(escapingView, Config.Behaviour, creatorView);
             AddController(_behaviourController);
 
-            _healthController = AddHealthController(_config.Health);
+            _healthController = AddHealthController(Config.Health);
         }
 
         public AsteroidController(SingleAsteroidConfig config, AsteroidView escapingView, Collision2D collision)
         {
-            _config = config;
+            Id = Guid.NewGuid().ToString();
 
-            _view = escapingView;
-            AddGameObject(_view.gameObject);
+            Config = config;
+
+            View = escapingView;
+            AddGameObject(View.gameObject);
 
             var damageModel = new DamageModel(config.CollisionDamageAmount);
-            _view.Init(damageModel);
+            View.Init(damageModel);
 
-            _behaviourController = new AsteroidBehaviourController(escapingView, _config.Behaviour, collision);
+            _behaviourController = new CollisionBasedAsteroidBehaviourController(escapingView, Config.Behaviour, collision);
             AddController(_behaviourController);
 
-            _healthController = AddHealthController(_config.Health);
+            _healthController = AddHealthController(Config.Health);
         }
 
         protected override void OnDispose()
@@ -75,12 +80,12 @@ namespace Gameplay.Asteroid
             _behaviourController?.Dispose();
             _healthController?.Dispose();
             OnDestroy?.Invoke(this);
-            _config = null;
+            Config = null;
         }
 
         private HealthController AddHealthController(HealthConfig healthConfig)
         {
-            var healthController = new HealthController(healthConfig, _view);
+            var healthController = new HealthController(healthConfig, View);
 
             healthController.SubscribeToOnDestroy(OnDispose);
             healthController.SubscribeToOnDestroy(Dispose);

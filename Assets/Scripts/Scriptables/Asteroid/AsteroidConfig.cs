@@ -11,7 +11,7 @@ namespace Scriptables.Asteroid
     {
         [field: Header("Base Settings")]
         [field: SerializeField] public string Id { get; private set; } = Guid.NewGuid().ToString();
+
         [NonSerialized] public AsteroidConfigType ConfigType;
-        [field: SerializeField, Min(0.1f)] public float SpawnChance { get; private set; }
     }
 }
