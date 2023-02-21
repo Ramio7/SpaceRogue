@@ -8,7 +8,6 @@ namespace Gameplay.Asteroid
 {
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Rigidbody2D))]
-
     public class AsteroidView : MonoBehaviour, IDamagingView, IDamageableView
     {
         public DamageModel DamageModel { get; private set; }

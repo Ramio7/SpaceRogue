@@ -45,7 +45,7 @@ namespace Gameplay.Asteroid
             _timer = new(_config.FastAsteroidSpawnDelay);
 
             SpawnStartAsteroids();
-            EntryPoint.SubscribeToFixedUpdate(SpawnNewFastAsteroid);
+            _timer.OnExpire += SpawnNewFastAsteroid;
             EntryPoint.SubscribeToApplicationQuit(SetAppQuitTrigger);
         }
 
@@ -54,7 +54,6 @@ namespace Gameplay.Asteroid
             _asteroidFactory.Dispose();
             DisposeAsteroidControllers();
             _timer.Dispose();
-            EntryPoint.UnsubscribeFromFixedUpdate(SpawnNewFastAsteroid);
             EntryPoint.UnsubscribeToApplicationQuit(SetAppQuitTrigger);
         }
 
@@ -99,7 +98,7 @@ namespace Gameplay.Asteroid
                             throw new Exception("No such config type found");
                     }
                 }
-                
+
             }
 
             _timer.Start();
@@ -107,11 +106,8 @@ namespace Gameplay.Asteroid
 
         private void SpawnNewFastAsteroid()
         {
-            if (_timer.IsExpired)
-            {
-                _asteroidsControllers.Add(_asteroidFactory.CreateAsteroidNearPlayer(_fastAsteroidConfig));
-                _timer.Start();
-            }
+            _asteroidsControllers.Add(_asteroidFactory.CreateAsteroidNearPlayer(_fastAsteroidConfig));
+            _timer.Start();
         }
 
         private void DeleteAsteroidController(AsteroidController asteroidController)
@@ -180,18 +176,15 @@ namespace Gameplay.Asteroid
                 {
                     case AsteroidConfigType.None:
                         throw new Exception("Config type is not defiend");
-
                     case AsteroidConfigType.SingleAsteroidConfig:
-                        var singleAsteroid = currentAsteroidConfig as SingleAsteroidConfig;
-
-                        if (asteroidTypeConfigPairs.ContainsKey(singleAsteroid.AsteroidType)) break;
-
-                        asteroidTypeConfigPairs.Add(singleAsteroid.AsteroidType, singleAsteroid);
-                        break;
-
+                        {
+                            var singleAsteroid = currentAsteroidConfig as SingleAsteroidConfig;
+                            if (asteroidTypeConfigPairs.ContainsKey(singleAsteroid.AsteroidType)) break;
+                            asteroidTypeConfigPairs.Add(singleAsteroid.AsteroidType, singleAsteroid);
+                            break;
+                        }
                     case AsteroidConfigType.AstreoidCloudConfig:
                         break;
-
                     default:
                         throw new Exception("No such config type found");
                 }

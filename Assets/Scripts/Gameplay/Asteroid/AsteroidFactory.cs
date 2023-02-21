@@ -96,7 +96,7 @@ namespace Gameplay.Asteroid
 
             var asteroidControllersOutput = new List<AsteroidController>();
             var asteroidsInCloud = Random.Range(config.MinAsteroidsInCloud, config.MaxAsteroidsInCloud + 1);
-            AsteroidInCloudMoveTypeSwitch(config);
+            AsteroidInCloudMoveTypeChange(config);
 
             SpawnAsteroids(asteroidView, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud);
 
@@ -192,7 +192,7 @@ namespace Gameplay.Asteroid
                                                                      asteroidCloudPool,
                                                                      config.AsteroidCloudSize);
                     if (currentAsteroid == null) spawnTries++;
-                    if (currentAsteroid != null) asteroidControllersOutput.Add(currentAsteroid);
+                    else asteroidControllersOutput.Add(currentAsteroid);
                 }
             }
         }
@@ -216,11 +216,11 @@ namespace Gameplay.Asteroid
                                                                      asteroidCloudPool,
                                                                      config.AsteroidCloudSize);
                     if (currentAsteroid == null) spawnTries++;
-                    if (currentAsteroid != null) asteroidControllersOutput.Add(currentAsteroid);
+                    else asteroidControllersOutput.Add(currentAsteroid);
                 }
             }
         }
-        private void AsteroidInCloudMoveTypeSwitch(AsteroidCloudConfig config)
+        private void AsteroidInCloudMoveTypeChange(AsteroidCloudConfig config)
         {
             switch (config.Behavior)
             {
@@ -230,24 +230,24 @@ namespace Gameplay.Asteroid
                     }
                 case AsteroidCloudBehaviour.Static:
                     {
-                        AsteroidMoveTypeSet(config, AsteroidMoveType.Static);
+                        SetAsteroidMoveType(config, AsteroidMoveType.Static);
                         break;
                     }
                 case AsteroidCloudBehaviour.CreatorEscaping:
                     {
-                        AsteroidMoveTypeSet(config, AsteroidMoveType.CreatorEscaping);
+                        SetAsteroidMoveType(config, AsteroidMoveType.CreatorEscaping);
                         break;
                     }
                 case AsteroidCloudBehaviour.CollisionEscaping:
                     {
-                        AsteroidMoveTypeSet(config, AsteroidMoveType.CollisionEscaping);
+                        SetAsteroidMoveType(config, AsteroidMoveType.CollisionEscaping);
                         break;
                     }
-                default: throw new System.Exception("No such cloud behavior in switch");
+                default: throw new System.Exception("No such cloud behavior in method");
             }
         }
 
-        private void AsteroidMoveTypeSet(AsteroidCloudConfig config, AsteroidMoveType asteroidMoveType)
+        private void SetAsteroidMoveType(AsteroidCloudConfig config, AsteroidMoveType asteroidMoveType)
         {
             for (int i = 0; i < config.CloudAsteroidsConfigs.Count; i++)
             {
