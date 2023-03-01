@@ -31,7 +31,7 @@ namespace Gameplay.Asteroid
             var damageModel = new DamageModel(config.CollisionDamageAmount);
             View.Init(damageModel);
 
-            _behaviourController = new AsteroidBehaviourController(view, Config.Behaviour, player);
+            _behaviourController = new PlayerBasedAsteroidBehaviourController(view, Config.Behaviour, player);
             AddController(_behaviourController);
 
             _healthController = AddHealthController(Config.Health);
@@ -47,7 +47,7 @@ namespace Gameplay.Asteroid
             var damageModel = new DamageModel(config.CollisionDamageAmount);
             View.Init(damageModel);
 
-            _behaviourController = new AsteroidBehaviourController(escapingView, Config.Behaviour, creatorView);
+            _behaviourController = new CreatorBasedAsteroidBehaviourController(escapingView, Config.Behaviour, creatorView);
             AddController(_behaviourController);
 
             _healthController = AddHealthController(Config.Health);
@@ -63,7 +63,7 @@ namespace Gameplay.Asteroid
             var damageModel = new DamageModel(config.CollisionDamageAmount);
             View.Init(damageModel);
 
-            _behaviourController = new AsteroidBehaviourController(escapingView, Config.Behaviour, collision);
+            _behaviourController = new CollisionBasedAsteroidBehaviourController(escapingView, Config.Behaviour, collision);
             AddController(_behaviourController);
 
             _healthController = AddHealthController(Config.Health);

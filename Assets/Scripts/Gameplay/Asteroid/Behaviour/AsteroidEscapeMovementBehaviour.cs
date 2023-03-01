@@ -9,15 +9,14 @@ public class AsteroidEscapeMovementBehaviour : AsteroidLinearMotionBehavior
 
     public AsteroidEscapeMovementBehaviour(AsteroidView escapingView, AsteroidBehaviourConfig config, AsteroidView creatorView) : base(escapingView, config)
     {
-        _asteroidDirection = SetDirection(creatorView);
+        var asteroidDirection = SetDirection(creatorView);
         _timer = new(config.AsteroidLifeTime);
         _timer.Start();
+        Move(asteroidDirection, config.AsteroidStartingForce);
     }
 
     protected override void OnUpdate()
     {
-        Move(_asteroidDirection, _speed);
-
         if (_timer.IsExpired && _config.AsteroidLifeTime != 0)
         {
             Object.Destroy(_view.gameObject);

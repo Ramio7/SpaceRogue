@@ -8,47 +8,33 @@ namespace Gameplay.Asteroid.Behaviour
 {
     public class AsteroidBehaviourController : BaseController
     {
-        private readonly AsteroidView _view;
-        private readonly Collision2D _collision;
-        private readonly AsteroidBehaviour _currentBehaviour;
-        private readonly PlayerView _player;
-        private readonly AsteroidView _creatorView;
+        protected AsteroidView View;
+        protected AsteroidBehaviour CurrentBehaviour;
 
-        public AsteroidBehaviourController(AsteroidView view, AsteroidBehaviourConfig config, PlayerView player)
-        {
-            _view = view;
-            _player = player;
-            _currentBehaviour = CreateAsteroidBehavior(config);
-        }
+        protected Collision2D Collision;
+        protected PlayerView Player;
+        protected AsteroidView CreatorView;
 
-        public AsteroidBehaviourController(AsteroidView escapingView, AsteroidBehaviourConfig config, AsteroidView creatorView)
+        public AsteroidBehaviourController(AsteroidView view, AsteroidBehaviourConfig config)
         {
-            _view = escapingView;
-            _creatorView = creatorView;
-            _currentBehaviour = CreateAsteroidBehavior(config);
-        }
-
-        public AsteroidBehaviourController(AsteroidView view, AsteroidBehaviourConfig config, Collision2D collision)
-        {
-            _view = view;
-            _collision = collision;
-            _currentBehaviour = CreateAsteroidBehavior(config);
+            View = view;
+            CurrentBehaviour = CreateAsteroidBehavior(config);
         }
 
         protected override void OnDispose()
         {
-            _currentBehaviour.Dispose();
+            CurrentBehaviour.Dispose();
         }
 
-        private AsteroidBehaviour CreateAsteroidBehavior(AsteroidBehaviourConfig asteroid)
+        protected AsteroidBehaviour CreateAsteroidBehavior(AsteroidBehaviourConfig asteroid)
         {
             return asteroid.AsteroidMoveType switch
             {
-                AsteroidMoveType.Static => new AsteroidStaticBehavior(_view, asteroid),
-                AsteroidMoveType.LinearMotion => new AsteroidLinearMotionBehavior(_view, asteroid),
-                AsteroidMoveType.PlayerTargeting => new AsteroidPlayerDirectedMotionBehavior(_view, asteroid, _player),
-                AsteroidMoveType.CollisionEscaping => new AsteroidCollisionCounterDirectedMotionBehavior(_view, asteroid, _collision),
-                AsteroidMoveType.CreatorEscaping => new AsteroidEscapeMovementBehaviour(_view, asteroid, _creatorView),
+                AsteroidMoveType.Static => new AsteroidStaticBehavior(View, asteroid),
+                AsteroidMoveType.LinearMotion => new AsteroidLinearMotionBehavior(View, asteroid),
+                AsteroidMoveType.PlayerTargeting => new AsteroidPlayerDirectedMotionBehavior(View, asteroid, Player),
+                AsteroidMoveType.CollisionEscaping => new AsteroidCollisionCounterDirectedMotionBehavior(View, asteroid, Collision),
+                AsteroidMoveType.CreatorEscaping => new AsteroidEscapeMovementBehaviour(View, asteroid, CreatorView),
                 _ => throw new ArgumentOutOfRangeException(nameof(asteroid.AsteroidMoveType), asteroid.AsteroidMoveType, "A not-existent asteroid behavior type is provided")
             };
         }

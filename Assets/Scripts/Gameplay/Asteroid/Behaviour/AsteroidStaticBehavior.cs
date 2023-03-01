@@ -5,18 +5,16 @@ namespace Gameplay.Asteroid.Behaviour
 {
     public class AsteroidStaticBehavior : AsteroidBehaviour
     {
-        Transform _asteroidTransform;
-        Vector3 _vector;
+        private Transform _asteroidTransform;
+        private Vector3 _rotationVector;
+        private float _rotationSpeed;
 
-        private float _rotationSpeed = 0.1f;
-
-        public AsteroidStaticBehavior(AsteroidView view,
-                AsteroidBehaviourConfig config) : base(view, config)
+        public AsteroidStaticBehavior(AsteroidView view, AsteroidBehaviourConfig config) : base(view, config)
         {
             _asteroidTransform = view.GetComponent<Transform>();
-            Random random = new Random();
+            Random random = new();
             _rotationSpeed = random.Next(1,10);
-            _vector = (random.Next(2) == 1) ? new Vector3(0, 0, -_rotationSpeed) : new Vector3(0, 0, _rotationSpeed);
+            _rotationVector = (random.Next(2) == 1) ? new Vector3(0, 0, -_rotationSpeed) : new Vector3(0, 0, _rotationSpeed);
         }
         
         protected override void OnUpdate()
@@ -26,7 +24,7 @@ namespace Gameplay.Asteroid.Behaviour
 
         private void AsteroidRotation()
         {
-            _asteroidTransform.Rotate(_vector);
+            _asteroidTransform.Rotate(_rotationVector);
         }   
     }
 }

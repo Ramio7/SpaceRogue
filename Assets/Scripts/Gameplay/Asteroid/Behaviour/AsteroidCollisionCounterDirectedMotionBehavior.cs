@@ -9,15 +9,14 @@ public sealed class AsteroidCollisionCounterDirectedMotionBehavior : AsteroidLin
 
     public AsteroidCollisionCounterDirectedMotionBehavior(AsteroidView view, AsteroidBehaviourConfig config, Collision2D collision) : base(view, config)
     {
-        _asteroidDirection = SetDirection(collision);
+        var asteroidDirection = SetDirection(collision);
         _timer = new(config.AsteroidLifeTime);
         _timer.Start();
+        Move(asteroidDirection, config.AsteroidStartingForce);
     }
 
     protected override void OnUpdate()
     {
-        Move(_asteroidDirection, _speed);
-
         if (_timer.IsExpired && _config.AsteroidLifeTime != 0)
         {
             Object.Destroy(_view.gameObject);

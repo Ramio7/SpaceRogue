@@ -4,6 +4,6 @@ namespace Asteroid
     {
         None = 0,
         SingleAsteroidConfig = 1,
-        AstreoidCloudConfig = 2
+        AsteroidCloudConfig = 2
     }
 }

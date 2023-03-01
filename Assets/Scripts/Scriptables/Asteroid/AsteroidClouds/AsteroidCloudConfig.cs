@@ -10,7 +10,7 @@ namespace Scriptables.Asteroid
     [Serializable]
     public class AsteroidCloudConfig: AsteroidConfig
     {
-        public AsteroidCloudConfig() => ConfigType = AsteroidConfigType.AstreoidCloudConfig;
+        public AsteroidCloudConfig() => ConfigType = AsteroidConfigType.AsteroidCloudConfig;
         [NonSerialized] public AsteroidCloudType CloudType;
         [NonSerialized] public int MinAsteroidsInCloud;
         [NonSerialized] public int MaxAsteroidsInCloud;
