@@ -1,9 +1,13 @@
+using Gameplay.Mechanics.Timer;
+
 namespace Gameplay.Asteroid.Behaviour
 {
     public abstract class AsteroidBehaviour
     {
-        protected readonly AsteroidView _view;
-        protected readonly AsteroidBehaviourConfig _config;
+        protected readonly AsteroidView View;
+        protected readonly AsteroidBehaviourConfig Config;
+
+        protected Timer Timer;
 
         public void Dispose()
         {
@@ -13,8 +17,8 @@ namespace Gameplay.Asteroid.Behaviour
 
         protected AsteroidBehaviour(AsteroidView view, AsteroidBehaviourConfig config)
         {
-            _view = view;
-            _config = config;
+            View = view;
+            Config = config;
             EntryPoint.SubscribeToUpdate(OnUpdate);
         }
 

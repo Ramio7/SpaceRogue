@@ -3,30 +3,23 @@ using Gameplay.Asteroid.Behaviour;
 using Gameplay.Mechanics.Timer;
 using UnityEngine;
 
-public class AsteroidEscapeMovementBehaviour : AsteroidLinearMotionBehavior
+public sealed class AsteroidEscapeMovementBehaviour : AsteroidLinearMotionBehavior
 {
-    private readonly Timer _timer;
+    private readonly AsteroidView _creatorView;
 
     public AsteroidEscapeMovementBehaviour(AsteroidView escapingView, AsteroidBehaviourConfig config, AsteroidView creatorView) : base(escapingView, config)
     {
-        var asteroidDirection = SetDirection(creatorView);
-        _timer = new(config.AsteroidLifeTime);
-        _timer.Start();
-        Move(asteroidDirection, config.AsteroidStartingForce);
+        _creatorView = creatorView;
     }
 
-    protected override void OnUpdate()
+    protected override void AsteroidStart()
     {
-        if (_timer.IsExpired && _config.AsteroidLifeTime != 0)
-        {
-            Object.Destroy(_view.gameObject);
-            _timer.Dispose();
-            Dispose();
-        }
+        AsteroidDirection = SetDirection(_creatorView);
+        Move(AsteroidDirection, Config.AsteroidStartingForce);
     }
 
     private Vector2 SetDirection(AsteroidView creatorView)
     {
-        return _view.transform.position - creatorView.transform.position;
+        return View.transform.position - creatorView.transform.position;
     }
 }

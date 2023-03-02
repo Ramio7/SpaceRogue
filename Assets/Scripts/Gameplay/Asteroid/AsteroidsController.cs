@@ -24,7 +24,7 @@ namespace Gameplay.Asteroid
 
         private readonly List<Vector3> _asteroidsSpawnPoints;
         const int _asteroidSpawnRadius = 20;
-        private List<AsteroidController> _asteroidsControllers = new();
+        private Dictionary<string, AsteroidController> _asteroidControllers = new();
 
         private readonly SingleAsteroidConfig _fastAsteroidConfig;
         private bool _appIsQuiting = false;
@@ -61,11 +61,8 @@ namespace Gameplay.Asteroid
 
         private void DisposeAsteroidControllers()
         {
-            for (int i = 0; i < _asteroidsControllers.Count; i++)
-            {
-                _asteroidsControllers[i].Dispose();
-            }
-            _asteroidsControllers.Clear();
+            foreach (var asteroidController in _asteroidControllers) asteroidController.Value.Dispose();
+            _asteroidControllers.Clear();
         }
 
 
@@ -74,7 +71,7 @@ namespace Gameplay.Asteroid
 
         private void SpawnStartAsteroids()
         {
-            while (_config.MaxAsteroidsInSpace > _asteroidsControllers.Count)
+            while (_config.MaxAsteroidsInSpace > _asteroidControllers.Count)
             {
                 for (int i = 0; i < _config.AsteroidConfigs.Count; i++)
                 {
@@ -111,7 +108,8 @@ namespace Gameplay.Asteroid
 
         private void SpawnNewFastAsteroid()
         {
-            _asteroidsControllers.Add(_asteroidFactory.CreateAsteroidNearPlayer(_fastAsteroidConfig));
+            var newAsteroid = _asteroidFactory.CreateAsteroidNearPlayer(_fastAsteroidConfig);
+            _asteroidControllers.Add(newAsteroid.Id, newAsteroid);
             _timer.Start();
         }
 
@@ -125,7 +123,7 @@ namespace Gameplay.Asteroid
                 RegisterAsteroidController(asteroidControllers);
             }
 
-            _asteroidsControllers.Remove(asteroidController);
+            _asteroidControllers.Remove(asteroidController.Id);
             asteroidController.Dispose();
         }
 
@@ -186,8 +184,7 @@ namespace Gameplay.Asteroid
 
         private void RegisterAsteroidController(AsteroidController spawnedAsteroid)
         {
-            _asteroidsControllers.Add(spawnedAsteroid);
-            spawnedAsteroid.Id = _asteroidsControllers.Count - 1;
+            _asteroidControllers.Add(spawnedAsteroid.Id, spawnedAsteroid);
             spawnedAsteroid.OnDestroy += DeleteAsteroidController;
         }
 
@@ -195,8 +192,7 @@ namespace Gameplay.Asteroid
         {
             for (int j = 0; j < asteroidCloudAsteroids.Count; j++)
             {
-                _asteroidsControllers.Add(asteroidCloudAsteroids[j]);
-                asteroidCloudAsteroids[j].Id = _asteroidsControllers.Count - 1;
+                _asteroidControllers.Add(asteroidCloudAsteroids[j].Id, asteroidCloudAsteroids[j]);
                 asteroidCloudAsteroids[j].OnDestroy += DeleteAsteroidController;
             }
         }

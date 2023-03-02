@@ -11,7 +11,7 @@ namespace Gameplay.Asteroid
 {
     public sealed class AsteroidController : BaseController
     {
-        public int Id;
+        public string Id { get; private set; }
 
         public event Action<AsteroidController> OnDestroy;
         
@@ -23,6 +23,8 @@ namespace Gameplay.Asteroid
 
         public AsteroidController(SingleAsteroidConfig config, AsteroidView view, PlayerView player)
         {
+            Id = Guid.NewGuid().ToString();
+
             Config = config;
 
             View = view;
@@ -39,6 +41,8 @@ namespace Gameplay.Asteroid
 
         public AsteroidController(SingleAsteroidConfig config, AsteroidView escapingView, AsteroidView creatorView)
         {
+            Id = Guid.NewGuid().ToString();
+
             Config = config;
 
             View = escapingView;
@@ -55,6 +59,8 @@ namespace Gameplay.Asteroid
 
         public AsteroidController(SingleAsteroidConfig config, AsteroidView escapingView, Collision2D collision)
         {
+            Id = Guid.NewGuid().ToString();
+
             Config = config;
 
             View = escapingView;

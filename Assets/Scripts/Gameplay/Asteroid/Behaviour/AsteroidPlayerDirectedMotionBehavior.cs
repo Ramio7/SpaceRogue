@@ -1,35 +1,27 @@
 using Gameplay.Asteroid;
 using Gameplay.Asteroid.Behaviour;
-using Gameplay.Mechanics.Timer;
 using Gameplay.Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public sealed class AsteroidPlayerDirectedMotionBehavior : AsteroidLinearMotionBehavior
 {
-    private readonly Timer _timer;
+    private readonly PlayerView _playerView;
 
     public AsteroidPlayerDirectedMotionBehavior(AsteroidView view, AsteroidBehaviourConfig config, PlayerView player) : base(view, config)
     {
-        var asteroidDirection = SetDirection(player);
-        _timer = new(config.AsteroidLifeTime);
-        _timer.Start();
-        Move(asteroidDirection, config.AsteroidStartingForce);
+        _playerView = player;
     }
 
-    protected override void OnUpdate()
+    protected override void AsteroidStart()
     {
-        if (_timer.IsExpired && _config.AsteroidLifeTime != 0)
-        {
-            Object.Destroy(_view.gameObject);
-            _timer.Dispose();
-            Dispose();
-        }
+        AsteroidDirection = SetDirection(_playerView);
+        Move(AsteroidDirection, Config.AsteroidStartingForce);
     }
 
     private Vector2 SetDirection(PlayerView player)
     {
-        var destination = player.transform.position + Random.insideUnitSphere * _config.TargetDispersion;
-        return destination - _view.transform.position;
+        var destination = player.transform.position + Random.insideUnitSphere * Config.TargetDispersion;
+        return destination - View.transform.position;
     }
 }
