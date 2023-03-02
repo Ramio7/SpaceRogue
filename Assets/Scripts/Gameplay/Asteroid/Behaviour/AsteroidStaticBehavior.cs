@@ -7,16 +7,25 @@ namespace Gameplay.Asteroid.Behaviour
     {
         private Transform _asteroidTransform;
         private Vector3 _rotationVector;
+
+        private Random _random = new();
         private float _rotationSpeed;
 
         public AsteroidStaticBehavior(AsteroidView view, AsteroidBehaviourConfig config) : base(view, config)
         {
             _asteroidTransform = view.GetComponent<Transform>();
-            Random random = new();
-            _rotationSpeed = random.Next(1,10);
-            _rotationVector = (random.Next(2) == 1) ? new Vector3(0, 0, -_rotationSpeed) : new Vector3(0, 0, _rotationSpeed);
+
+            _rotationSpeed = (float)(_random.NextDouble() * config.MaxRotationSpeed);
+
+            SetRotationDirection();
         }
-        
+
+        private void SetRotationDirection()
+        {
+            bool isRotatingClockwise = _random.Next(2) == 0;
+            _rotationVector = isRotatingClockwise ? new Vector3(0, 0, -_rotationSpeed) : new Vector3(0, 0, _rotationSpeed);
+        }
+
         protected override void OnUpdate()
         {
             AsteroidRotation();

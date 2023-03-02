@@ -88,7 +88,7 @@ namespace Gameplay.Asteroid
 
             var asteroidControllersOutput = new List<AsteroidController>();
             var asteroidsInCloud = Random.Range(config.MinAsteroidsInCloud, config.MaxAsteroidsInCloud + 1);
-            AsteroidInCloudMoveTypeChange(config);
+            SetAsteroidInCloudMoveType(config);
 
             SpawnAsteroids(asteroidView, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud);
 
@@ -188,7 +188,8 @@ namespace Gameplay.Asteroid
 
                 if (RandomPicker.TakeChance(config.CloudAsteroidsConfigs[currentConfig].SpawnChance, random))
                 {
-                    var currentAsteroid = CreateAsteroidInsideRadius(spawnPosition,
+                    var currentAsteroid = CreateAsteroidInsideRadius(
+                        spawnPosition,
                         config.CloudAsteroidsConfigs[currentConfig],
                         asteroidCloudPool,
                         config.AsteroidCloudSize);
@@ -223,7 +224,8 @@ namespace Gameplay.Asteroid
                 }
             }
         }
-        private void AsteroidInCloudMoveTypeChange(AsteroidCloudConfig config)
+
+        private void SetAsteroidInCloudMoveType(AsteroidCloudConfig config)
         {
             switch (config.Behavior)
             {

@@ -13,7 +13,7 @@ namespace Gameplay.Asteroid
     {
         public int Id;
 
-        public Action<AsteroidController> OnDestroy;
+        public event Action<AsteroidController> OnDestroy;
         
         public AsteroidView View { get; private set; }
         public SingleAsteroidConfig Config { get; private set; }
