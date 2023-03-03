@@ -9,7 +9,7 @@ namespace Gameplay.Asteroid.Behaviour
         private Vector3 _rotationVector;
 
         private Random _random = new();
-        private float _rotationSpeed;
+        private readonly float _rotationSpeed;
 
         public AsteroidStaticBehavior(AsteroidView view, AsteroidBehaviourConfig config) : base(view, config)
         {

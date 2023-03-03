@@ -7,6 +7,6 @@ public class PlayerBasedAsteroidBehaviourController : AsteroidBehaviourControlle
     public PlayerBasedAsteroidBehaviourController(AsteroidView view, AsteroidBehaviourConfig config, PlayerView player) : base(view, config)
     {
         Player = player;
-        CurrentBehaviour = CreateAsteroidBehavior(config);
+        CurrentBehaviour = CreateAsteroidBehavior();
     }
 }

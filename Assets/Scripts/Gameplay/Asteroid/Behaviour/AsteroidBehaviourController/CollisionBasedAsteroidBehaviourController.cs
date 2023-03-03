@@ -7,7 +7,6 @@ public class CollisionBasedAsteroidBehaviourController : AsteroidBehaviourContro
     public CollisionBasedAsteroidBehaviourController(AsteroidView view, AsteroidBehaviourConfig config, Collision2D collision) : base(view, config)
     {
         Collision = collision;
-        CurrentBehaviour = CreateAsteroidBehavior(config);
+        CurrentBehaviour = CreateAsteroidBehavior();
     }
-
 }

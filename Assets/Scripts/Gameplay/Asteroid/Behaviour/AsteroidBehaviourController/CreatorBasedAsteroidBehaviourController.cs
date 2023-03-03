@@ -6,7 +6,6 @@ public class CreatorBasedAsteroidBehaviourController : AsteroidBehaviourControll
     public CreatorBasedAsteroidBehaviourController(AsteroidView escapingView, AsteroidBehaviourConfig config, AsteroidView creatorView) : base(escapingView, config)
     {
         CreatorView = creatorView;
-        CurrentBehaviour = CreateAsteroidBehavior(config);
+        CurrentBehaviour = CreateAsteroidBehavior();
     }
-
 }

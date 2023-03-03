@@ -2,6 +2,7 @@ using Abstracts;
 using Asteroid;
 using Gameplay.Mechanics.Timer;
 using Gameplay.Player;
+using Scriptables;
 using Scriptables.Asteroid;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace Gameplay.Asteroid
 
             _config = ResourceLoader.LoadObject<AsteroidsSpawnConfig>(_asteroidsSpawnConfigPath);
 
-            _fastAsteroidConfig = GetConfigByType(AsteroidType.FastAsteroid, _config.AsteroidConfigs);
+            _fastAsteroidConfig = GetConfigByType(AsteroidType.FastAsteroid, _config.WeightConfigs);
 
             _asteroidFactory = new(asteroidsPool, player.View);
 
@@ -73,32 +74,26 @@ namespace Gameplay.Asteroid
         {
             while (_config.MaxAsteroidsInSpace > _asteroidControllers.Count)
             {
-                for (int i = 0; i < _config.AsteroidConfigs.Count; i++)
+                var asteroidToSpawn = RandomPicker.PickOneElementByWeights(_config.WeightConfigs, new());
+
+                switch (asteroidToSpawn.ConfigType)
                 {
-                    var currentAsteroidConfig = _config.AsteroidConfigs[i];
+                    case AsteroidConfigType.None:
+                        throw new Exception("Config type is not defiend");
 
-                    switch (currentAsteroidConfig.ConfigType)
-                    {
-                        case AsteroidConfigType.None:
-                            throw new Exception("Config type is not defiend");
+                    case AsteroidConfigType.SingleAsteroidConfig:
+                        var config = asteroidToSpawn as SingleAsteroidConfig;
+                        if (config.Equals(_fastAsteroidConfig)) break;
+                        TrySpawnAsteroid(config, _random);
+                        break;
 
-                        case AsteroidConfigType.SingleAsteroidConfig:
-                            var config = currentAsteroidConfig as SingleAsteroidConfig;
+                    case AsteroidConfigType.AsteroidCloudConfig:
+                        var cloudConfig = asteroidToSpawn as AsteroidCloudConfig;
+                        TrySpawnAsteroidCloud(cloudConfig, _random);
+                        break;
 
-                            if (config.Equals(_fastAsteroidConfig)) break;
-
-                            TrySpawnAsteroid(config, _random);
-                            break;
-
-                        case AsteroidConfigType.AsteroidCloudConfig:
-                            var cloudConfig = currentAsteroidConfig as AsteroidCloudConfig;
-
-                            TrySpawnAsteroidCloud(cloudConfig, _random);
-                            break;
-
-                        default:
-                            throw new Exception("No such config type found");
-                    }
+                    default:
+                        throw new Exception("No such config type found");
                 }
 
             }
@@ -152,13 +147,13 @@ namespace Gameplay.Asteroid
 
         private void SetAppQuitTrigger() => _appIsQuiting = true;
 
-        private SingleAsteroidConfig GetConfigByType(AsteroidType asteroidType, List<AsteroidConfig> configList)
+        private SingleAsteroidConfig GetConfigByType(AsteroidType asteroidType, List<WeightConfig<AsteroidConfig>> configList)
         {
             Dictionary<AsteroidType, AsteroidConfig> asteroidTypeConfigPairs = new();
 
             for (int i = 0; i < configList.Count; i++)
             {
-                var currentAsteroidConfig = _config.AsteroidConfigs[i];
+                var currentAsteroidConfig = _config.WeightConfigs[i].Config;
 
                 switch (currentAsteroidConfig.ConfigType)
                 {
@@ -201,7 +196,7 @@ namespace Gameplay.Asteroid
         {
             if (RandomPicker.TakeChance(config.SpawnChance, random))
             {
-                if (GetEmptySpawnPoint(_asteroidsSpawnPoints, config.Size.AsteroidScale, out Vector3 spawnPoint)) 
+                if (GetEmptySpawnPoint(_asteroidsSpawnPoints, config.Size.AsteroidScale, out Vector3 spawnPoint))
                 {
                     var spawnedAsteroid = _asteroidFactory.CreateAsteroid(spawnPoint, config);
                     RegisterAsteroidController(spawnedAsteroid);

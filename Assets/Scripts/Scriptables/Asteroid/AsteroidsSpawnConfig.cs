@@ -8,6 +8,6 @@ namespace Scriptables.Asteroid
     {
         [field: SerializeField] public int MaxAsteroidsInSpace { get; private set; }
         [field: SerializeField] public float FastAsteroidSpawnDelay { get; private set; }
-        [field: SerializeField] public List<AsteroidConfig> AsteroidConfigs { get; private set; }
+        [field: SerializeField] public List<WeightConfig<AsteroidConfig>> WeightConfigs { get; private set; }
     }
 }

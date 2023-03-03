@@ -18,6 +18,9 @@ MonoBehaviour:
   <Behavior>k__BackingField: 1
   <AsteroidCloudSize>k__BackingField: {x: 30, y: 30, z: 1}
   <CloudAsteroidsConfigs>k__BackingField:
-  - {fileID: 11400000, guid: 9488aeefe41ec6d4ab81d42fa6d3fbe7, type: 2}
+  - <Weight>k__BackingField: 100
+    <Config>k__BackingField: {fileID: 11400000, guid: 9488aeefe41ec6d4ab81d42fa6d3fbe7, type: 2}
+  - <Weight>k__BackingField: 100
+    <Config>k__BackingField: {fileID: 11400000, guid: fcb422b69a3c4e6489eeeaf078731c6b, type: 2}
   <MinAsteroidsInCloud>k__BackingField: 12
   <MaxAsteroidsInCloud>k__BackingField: 25
