@@ -1,15 +1,15 @@
 using Gameplay.Asteroid;
 using Gameplay.Asteroid.Behaviour;
-using Gameplay.Mechanics.Timer;
 using UnityEngine;
 
-public sealed class AsteroidEscapeMovementBehaviour : AsteroidLinearMotionBehavior
+public sealed class AsteroidEscapeMovementBehaviour : AsteroidLinearMotionBehaviorBase
 {
     private readonly AsteroidView _creatorView;
 
     public AsteroidEscapeMovementBehaviour(AsteroidView escapingView, AsteroidBehaviourConfig config, AsteroidView creatorView) : base(escapingView, config)
     {
         _creatorView = creatorView;
+        AsteroidStart();
     }
 
     protected override void AsteroidStart()

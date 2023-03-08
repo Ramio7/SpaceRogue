@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39dee024d597dad43a4b8189a66d41ce, type: 3}
   m_Name: AsteroidsSpawnConfig
   m_EditorClassIdentifier: 
-  <MaxAsteroidsInSpace>k__BackingField: 50
+  <MaxAsteroidsInSpace>k__BackingField: 10
   <FastAsteroidSpawnDelay>k__BackingField: 20
   <WeightConfigs>k__BackingField:
   - <Weight>k__BackingField: 100
@@ -20,6 +20,6 @@ MonoBehaviour:
   - <Weight>k__BackingField: 0
     <Config>k__BackingField: {fileID: 11400000, guid: 461738dae2e7fde4f820b3cd3e0e9c3e, type: 2}
   - <Weight>k__BackingField: 75
-    <Config>k__BackingField: {fileID: 11400000, guid: cbe6c85802e7f344385a5868b2c96992, type: 2}
+    <Config>k__BackingField: {fileID: 0}
   - <Weight>k__BackingField: 50
-    <Config>k__BackingField: {fileID: 11400000, guid: c56bcf999cc89f64d8e314de9a71a906, type: 2}
+    <Config>k__BackingField: {fileID: 0}

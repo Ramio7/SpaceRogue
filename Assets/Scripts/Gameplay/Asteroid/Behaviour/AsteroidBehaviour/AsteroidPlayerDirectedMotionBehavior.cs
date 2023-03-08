@@ -4,13 +4,14 @@ using Gameplay.Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public sealed class AsteroidPlayerDirectedMotionBehavior : AsteroidLinearMotionBehavior
+public sealed class AsteroidPlayerDirectedMotionBehavior : AsteroidLinearMotionBehaviorBase
 {
     private readonly PlayerView _playerView;
 
     public AsteroidPlayerDirectedMotionBehavior(AsteroidView view, AsteroidBehaviourConfig config, PlayerView player) : base(view, config)
     {
         _playerView = player;
+        AsteroidStart();
     }
 
     protected override void AsteroidStart()
@@ -22,6 +23,6 @@ public sealed class AsteroidPlayerDirectedMotionBehavior : AsteroidLinearMotionB
     private Vector2 SetDirection(PlayerView player)
     {
         var destination = player.transform.position + Random.insideUnitSphere * Config.TargetDispersion;
-        return destination - View.transform.position;
+        return View.transform.position - destination;
     }
 }

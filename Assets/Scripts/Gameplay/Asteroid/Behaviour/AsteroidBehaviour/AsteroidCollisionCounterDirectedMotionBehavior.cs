@@ -2,13 +2,14 @@ using Gameplay.Asteroid;
 using Gameplay.Asteroid.Behaviour;
 using UnityEngine;
 
-public sealed class AsteroidCollisionCounterDirectedMotionBehavior : AsteroidLinearMotionBehavior
+public sealed class AsteroidCollisionCounterDirectedMotionBehavior : AsteroidLinearMotionBehaviorBase
 {
     private readonly Collision2D _collision;
 
     public AsteroidCollisionCounterDirectedMotionBehavior(AsteroidView view, AsteroidBehaviourConfig config, Collision2D collision) : base(view, config)
     {
         _collision = collision;
+        AsteroidStart();
     }
 
     protected override void AsteroidStart()

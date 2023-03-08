@@ -15,7 +15,7 @@ using Random = UnityEngine.Random;
 
 namespace Gameplay.Asteroid
 {
-    public class AsteroidsController : BaseController
+    public class GeneralAsteroidsController : BaseController
     {
         private readonly ResourcePath _asteroidsSpawnConfigPath = new(Constants.Configs.Asteroid.AsteroidsSpawnConfig);
         private readonly AsteroidFactory _asteroidFactory;
@@ -32,7 +32,7 @@ namespace Gameplay.Asteroid
 
         const int max_empty_spawn_point_get_tries = 5;
 
-        public AsteroidsController(PlayerController player, List<Vector3> asteroidsSpawnPoints)
+        public GeneralAsteroidsController(PlayerController player, List<Vector3> asteroidsSpawnPoints)
         {
             GameObject asteroidsPool = new("AsteroidsPool");
             asteroidsPool.transform.position = new(9999, 9999);
@@ -138,6 +138,7 @@ namespace Gameplay.Asteroid
                 var randomSpawnPoint = Random.Range(0, spawnPoints.Count);
 
                 asteroidSpawnPoint = spawnPoints[randomSpawnPoint] + (Vector3)Random.insideUnitCircle * _asteroidSpawnRadius;
+                tryCount++;
             }
             while (!UnityHelper.IsAnyObjectAtPosition(asteroidSpawnPoint, asteroidMaxSize) && tryCount <= max_empty_spawn_point_get_tries);
 
@@ -194,13 +195,10 @@ namespace Gameplay.Asteroid
 
         private void TrySpawnAsteroid(SingleAsteroidConfig config, System.Random random)
         {
-            if (RandomPicker.TakeChance(config.SpawnChance, random))
+            if (GetEmptySpawnPoint(_asteroidsSpawnPoints, config.Size.AsteroidScale, out Vector3 spawnPoint))
             {
-                if (GetEmptySpawnPoint(_asteroidsSpawnPoints, config.Size.AsteroidScale, out Vector3 spawnPoint))
-                {
-                    var spawnedAsteroid = _asteroidFactory.CreateAsteroid(spawnPoint, config);
-                    RegisterAsteroidController(spawnedAsteroid);
-                }
+                var spawnedAsteroid = _asteroidFactory.CreateAsteroid(spawnPoint, config);
+                RegisterAsteroidController(spawnedAsteroid);
             }
         }
 
@@ -208,13 +206,10 @@ namespace Gameplay.Asteroid
         {
             if (config.Behavior is AsteroidCloudBehaviour.CreatorEscaping or AsteroidCloudBehaviour.CollisionEscaping) return;
 
-            if (RandomPicker.TakeChance(config.SpawnChance, random))
+            if (GetEmptySpawnPoint(_asteroidsSpawnPoints, config.AsteroidCloudSize, out Vector3 spawnPoint))
             {
-                if (GetEmptySpawnPoint(_asteroidsSpawnPoints, config.AsteroidCloudSize, out Vector3 spawnPoint))
-                {
-                    var asteroidCloudAsteroids = _asteroidFactory.CreateAsteroidCloud(spawnPoint, config);
-                    RegisterAsteroidController(asteroidCloudAsteroids);
-                }
+                var asteroidCloudAsteroids = _asteroidFactory.CreateAsteroidCloud(spawnPoint, config);
+                RegisterAsteroidController(asteroidCloudAsteroids);
             }
         }
 

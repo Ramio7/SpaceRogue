@@ -40,7 +40,7 @@ namespace Gameplay.Asteroid
 
         public AsteroidController CreateAsteroidOnRadius(Vector3 spawnPoint, SingleAsteroidConfig config)
         {
-            var spawnPosition = UnityHelper.GetAPointOnRadius(spawnPoint, config.Behaviour.SpawnRadius);
+            var spawnPosition = new Vector2();
             if (TryGetSpawnPointOnRadius(spawnPoint, config, ref spawnPosition)) return CreateAsteroid(spawnPosition, config);
             else return null;
         }

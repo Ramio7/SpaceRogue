@@ -25,7 +25,7 @@ namespace Gameplay.Asteroid
             {
                 victimView.TakeDamage(this);
             }
-            if (collision.gameObject.TryGetComponent(out IDamagingView agressorView))
+            else if (collision.gameObject.TryGetComponent(out IDamagingView agressorView))
             {
                 TakeDamage(agressorView);
             }

@@ -33,7 +33,7 @@ namespace Gameplay.Asteroid.Behaviour
             return Config.AsteroidMoveType switch
             {
                 AsteroidMoveType.Static => new AsteroidStaticBehavior(View, Config),
-                AsteroidMoveType.LinearMotion => new AsteroidLinearMotionBehavior(View, Config),
+                AsteroidMoveType.RandomDirectedMotion => new AsteroidRandomDirectionMotionBehaviour(View, Config),
                 AsteroidMoveType.PlayerTargeting => new AsteroidPlayerDirectedMotionBehavior(View, Config, Player),
                 AsteroidMoveType.CollisionEscaping => new AsteroidCollisionCounterDirectedMotionBehavior(View, Config, Collision),
                 AsteroidMoveType.CreatorEscaping => new AsteroidEscapeMovementBehaviour(View, Config, CreatorView),

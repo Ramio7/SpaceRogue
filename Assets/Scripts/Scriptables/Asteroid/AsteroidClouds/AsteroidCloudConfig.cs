@@ -11,9 +11,9 @@ namespace Scriptables.Asteroid
     public class AsteroidCloudConfig: AsteroidConfig
     {
         public AsteroidCloudConfig() => ConfigType = AsteroidConfigType.AsteroidCloudConfig;
-        [NonSerialized] public AsteroidCloudType CloudType;
-        [NonSerialized] public int MinAsteroidsInCloud;
-        [NonSerialized] public int MaxAsteroidsInCloud;
+        [field: SerializeField] public AsteroidCloudType CloudType { get; private set; }
+        [field: SerializeField] public int MinAsteroidsInCloud { get; private set; }
+        [field: SerializeField] public int MaxAsteroidsInCloud { get; private set; }
         [field: SerializeField] public bool SpawnAsteroidCloudOnStart { get; private set; }
         [field: SerializeField] public AsteroidCloudBehaviour Behavior { get; private set; }
         [field: SerializeField] public Vector3 AsteroidCloudSize { get; private set; }
