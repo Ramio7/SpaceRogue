@@ -8,7 +8,6 @@ namespace Gameplay.Asteroid
 {
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Rigidbody2D))]
-
     public class AsteroidView : MonoBehaviour, IDamagingView, IDamageableView
     {
         public DamageModel DamageModel { get; private set; }
@@ -26,7 +25,7 @@ namespace Gameplay.Asteroid
             {
                 victimView.TakeDamage(this);
             }
-            if (collision.gameObject.TryGetComponent(out IDamagingView agressorView))
+            else if (collision.gameObject.TryGetComponent(out IDamagingView agressorView))
             {
                 TakeDamage(agressorView);
             }
