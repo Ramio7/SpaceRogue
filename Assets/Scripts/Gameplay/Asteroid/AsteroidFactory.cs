@@ -38,10 +38,10 @@ namespace Gameplay.Asteroid
 
         public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config) => new(config, CreateAsteroidView(spawnPosition, config), _player);
 
-        public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool) =>
+        public AsteroidController CreateAsteroidInPool(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool) =>
             new(config, CreateAsteroidView(spawnPosition, config, pool), _player);
 
-        public AsteroidController CreateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool, Collision2D collision) =>
+        public AsteroidController CreateAsteroidAfterCollision(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject pool, Collision2D collision) =>
             new(config, CreateAsteroidView(spawnPosition, config, pool), collision);
 
         public AsteroidController CreateAsteroidOnRadius(Vector3 spawnPoint, SingleAsteroidConfig config)
@@ -54,25 +54,30 @@ namespace Gameplay.Asteroid
         public AsteroidController CreateAsteroidInsideRadius(Vector3 spawnPoint, SingleAsteroidConfig config)
         {
             var spawnPosition = (Vector2)spawnPoint + Random.insideUnitCircle * config.Behaviour.SpawnRadius;
-            if (TryGetSpawnPoint(spawnPoint, config, ref spawnPosition)) return CreateAsteroid(spawnPosition, config, _pool);
+            if (TryGetSpawnPointNearSpawnPoint(spawnPoint, config, ref spawnPosition)) return CreateAsteroidInPool(spawnPosition, config, _pool);
             else return null;
         }
 
-        public AsteroidController CreateAsteroidInsideRadius(Vector3 spawnPoint, SingleAsteroidConfig config, GameObject pool, Vector3 asteroidCloudSize)
+        public AsteroidController CreateAsteroidInsideAsteroidCloud(Vector3 spawnPoint, SingleAsteroidConfig config, GameObject pool, Vector3 asteroidCloudSize)
         {
             var spawnRadius = asteroidCloudSize.MaxVector3CoordinateOnPlane() / 2;
             var spawnPosition = (Vector2)spawnPoint + Random.insideUnitCircle * spawnRadius;
 
-            if (TryGetSpawnPoint(spawnPoint, config, spawnRadius, ref spawnPosition)) return CreateAsteroid(spawnPosition, config, pool);
+            if (TryGetSpawnPointIncideAsteroidCloud(spawnPoint, config, spawnRadius, ref spawnPosition)) return CreateAsteroidInPool(spawnPosition, config, pool);
             else return null;
         }
 
-        public AsteroidController CreateAsteroidInsideRadius(Vector3 spawnPoint, SingleAsteroidConfig config, GameObject pool, Vector3 asteroidCloudSize, Collision2D collision)
+        public AsteroidController CreateAsteroidInsideAsteroidCloudAfterCollision(
+            Vector3 spawnPoint,
+            SingleAsteroidConfig config,
+            GameObject pool,
+            Vector3 asteroidCloudSize,
+            Collision2D collision)
         {
             var spawnRadius = asteroidCloudSize.MaxVector3CoordinateOnPlane() / 2;
             var spawnPosition = (Vector2)spawnPoint + Random.insideUnitCircle * spawnRadius;
 
-            if (TryGetSpawnPoint(spawnPoint, config, spawnRadius, ref spawnPosition)) return CreateAsteroid(spawnPosition, config, pool, collision);
+            if (TryGetSpawnPointIncideAsteroidCloud(spawnPoint, config, spawnRadius, ref spawnPosition)) return CreateAsteroidAfterCollision(spawnPosition, config, pool, collision);
             else return null;
         }
 
@@ -82,13 +87,14 @@ namespace Gameplay.Asteroid
 
             var asteroidControllersOutput = new List<AsteroidController>();
             var asteroidsInCloud = Random.Range(config.MinAsteroidsInCloud, config.MaxAsteroidsInCloud + 1);
+            SetAsteroidInCloudMoveType(config);
 
-            SpawnAsteroids(spawnPosition, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud);
+            SpawnAsteroidsInCloud(spawnPosition, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud);
 
             return asteroidControllersOutput;
         }
 
-        public List<AsteroidController> CreateAsteroidCloud(AsteroidView asteroidView, AsteroidCloudConfig config)
+        public List<AsteroidController> CreateAsteroidCloudAfterAsteroidDestroyed(AsteroidView asteroidView, AsteroidCloudConfig config)
         {
             var asteroidCloudPool = CreateAsteroidCloudPool(config);
 
@@ -96,40 +102,41 @@ namespace Gameplay.Asteroid
             var asteroidsInCloud = Random.Range(config.MinAsteroidsInCloud, config.MaxAsteroidsInCloud + 1);
             SetAsteroidInCloudMoveType(config);
 
-            SpawnAsteroids(asteroidView, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud);
+            SpawnAsteroidsFromDestroyedAsteroid(asteroidView, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud);
 
             return asteroidControllersOutput;
         }
 
-        public List<AsteroidController> CreateAsteroidCloud(Vector3 spawnPosition, AsteroidCloudConfig config, Collision2D collision)
+        public List<AsteroidController> CreateAsteroidCloudAfterCollision(Vector3 spawnPosition, AsteroidCloudConfig config, Collision2D collision)
         {
             var asteroidCloudPool = CreateAsteroidCloudPool(config);
 
             var asteroidControllersOutput = new List<AsteroidController>();
             var asteroidsInCloud = Random.Range(config.MinAsteroidsInCloud, config.MaxAsteroidsInCloud + 1);
+            SetAsteroidInCloudMoveType(config);
 
-            SpawnAsteroids(spawnPosition, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud, collision);
+            SpawnAsteroidsInCloudAfterCollision(spawnPosition, config, asteroidCloudPool, asteroidControllersOutput, asteroidsInCloud, collision);
 
             return asteroidControllersOutput;
         }
 
-        public AsteroidController CreateAsteroidNearPlayer(SingleAsteroidConfig config) => CreateAsteroidOnRadius(_player.transform.position, config);
+        public AsteroidController CreateAsteroidOnDistanceFromPlayer(SingleAsteroidConfig config) => CreateAsteroidOnRadius(_player.transform.position, config);
 
         private AsteroidView CreateAsteroidView(Vector3 spawnPosition, SingleAsteroidConfig config)
         {
-            var asteroid = Instantiate(spawnPosition, config);
+            var asteroid = InstantiateAsteroid(spawnPosition, config);
             asteroid.transform.SetParent(_pool.transform, true);
             return asteroid;
         }
 
         private AsteroidView CreateAsteroidView(Vector3 spawnPosition, SingleAsteroidConfig config, GameObject asteroidCloudPool)
         {
-            var asteroid = Instantiate(spawnPosition, config);
+            var asteroid = InstantiateAsteroid(spawnPosition, config);
             asteroid.transform.SetParent(asteroidCloudPool.transform, true);
             return asteroid;
         }
 
-        private AsteroidView Instantiate(Vector3 spawnPosition, SingleAsteroidConfig config)
+        private AsteroidView InstantiateAsteroid(Vector3 spawnPosition, SingleAsteroidConfig config)
         {
             var asteroid = Object.Instantiate(config.Prefab, spawnPosition, Quaternion.identity);
             asteroid.transform.name = config.Size.SizeType.ToString() + config.AsteroidType.ToString();
@@ -156,7 +163,7 @@ namespace Gameplay.Asteroid
             else return true;
         }
 
-        private bool TryGetSpawnPoint(Vector3 spawnPoint, SingleAsteroidConfig config, ref Vector2 spawnPosition)
+        private bool TryGetSpawnPointNearSpawnPoint(Vector3 spawnPoint, SingleAsteroidConfig config, ref Vector2 spawnPosition)
         {
             int spawnTries = 0;
             do
@@ -170,7 +177,7 @@ namespace Gameplay.Asteroid
             else return true;
         }
 
-        private bool TryGetSpawnPoint(Vector3 spawnPoint, SingleAsteroidConfig config, float spawnRadius, ref Vector2 spawnPosition)
+        private bool TryGetSpawnPointIncideAsteroidCloud(Vector3 spawnPoint, SingleAsteroidConfig config, float spawnRadius, ref Vector2 spawnPosition)
         {
             int spawnTries = 0;
             do
@@ -191,7 +198,7 @@ namespace Gameplay.Asteroid
             return asteroidCloudPool;
         }
 
-        private void SpawnAsteroids(
+        private void SpawnAsteroidsInCloud(
             Vector3 spawnPosition,
             AsteroidCloudConfig config,
             GameObject asteroidCloudPool,
@@ -204,7 +211,7 @@ namespace Gameplay.Asteroid
                 var random = new System.Random();
                 var asteroidConfigToSpawn = RandomPicker.PickOneElementByWeights(config.CloudAsteroidsConfigs, random);
 
-                var currentAsteroid = CreateAsteroidInsideRadius(
+                var currentAsteroid = CreateAsteroidInsideAsteroidCloud(
                     spawnPosition,
                     asteroidConfigToSpawn,
                     asteroidCloudPool,
@@ -214,33 +221,33 @@ namespace Gameplay.Asteroid
             }
         }
 
-        private void SpawnAsteroids(Vector3 spawnPosition,
-                                    AsteroidCloudConfig config,
-                                    GameObject asteroidCloudPool,
-                                    List<AsteroidController> asteroidControllersOutput,
-                                    int asteroidsInCloud,
-                                    Collision2D collision)
+        private void SpawnAsteroidsInCloudAfterCollision(
+            Vector3 spawnPosition,
+            AsteroidCloudConfig config,
+            GameObject asteroidCloudPool,
+            List<AsteroidController> asteroidControllersOutput,
+            int asteroidsInCloud,
+            Collision2D collision)
         {
             int spawnTries = 0;
-            while (asteroidControllersOutput.Count < asteroidsInCloud && spawnTries <= _maxSpawnTries)
+            while (asteroidControllersOutput.Count < asteroidsInCloud && spawnTries <= max_spawn_tries)
             {
                 var random = new System.Random();
-                var currentConfig = Random.Range(0, config.CloudAsteroidsConfigs.Count);
+                var asteroidConfigToSpawn = RandomPicker.PickOneElementByWeights(config.CloudAsteroidsConfigs, random);
 
-                if (RandomPicker.TakeChance(config.CloudAsteroidsConfigs[currentConfig].SpawnChance, random))
-                {
-                    var currentAsteroid = CreateAsteroidInsideRadius(spawnPosition,
-                                                                     config.CloudAsteroidsConfigs[currentConfig],
-                                                                     asteroidCloudPool,
-                                                                     config.AsteroidCloudSize,
-                                                                     collision);
-                    if (currentAsteroid == null) spawnTries++;
-                    if (currentAsteroid != null) asteroidControllersOutput.Add(currentAsteroid);
-                }
+
+                var currentAsteroid = CreateAsteroidInsideAsteroidCloudAfterCollision(
+                    spawnPosition,
+                    asteroidConfigToSpawn,
+                    asteroidCloudPool,
+                    config.AsteroidCloudSize,
+                    collision);
+                if (currentAsteroid == null) spawnTries++;
+                else asteroidControllersOutput.Add(currentAsteroid);
             }
         }
 
-        private void SpawnAsteroids(
+        private void SpawnAsteroidsFromDestroyedAsteroid(
             AsteroidView asteroidView,
             AsteroidCloudConfig config,
             GameObject asteroidCloudPool,
@@ -254,7 +261,7 @@ namespace Gameplay.Asteroid
                 var asteroidConfigToSpawn = RandomPicker.PickOneElementByWeights(config.CloudAsteroidsConfigs, random);
 
 
-                var currentAsteroid = CreateAsteroidInsideRadius(
+                var currentAsteroid = CreateAsteroidInsideAsteroidCloud(
                     asteroidView.transform.position,
                     asteroidConfigToSpawn,
                     asteroidCloudPool,

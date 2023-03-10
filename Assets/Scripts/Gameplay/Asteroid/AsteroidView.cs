@@ -13,6 +13,8 @@ namespace Gameplay.Asteroid
         public DamageModel DamageModel { get; private set; }
 
         public event Action<DamageModel> DamageTaken = (DamageModel _) => { };
+        public event Action<Collision2D> CollisionEntered;
+        public event Action AsteroidDestroyed;
 
         public void Init(DamageModel damageModel)
         {
@@ -25,10 +27,8 @@ namespace Gameplay.Asteroid
             {
                 victimView.TakeDamage(this);
             }
-            else if (collision.gameObject.TryGetComponent(out IDamagingView agressorView))
-            {
-                TakeDamage(agressorView);
-            }
+            CollisionEntered?.Invoke(collision);
+            AsteroidDestroyed?.Invoke();
         }
 
         public void TakeDamage(IDamagingView damageComponent)

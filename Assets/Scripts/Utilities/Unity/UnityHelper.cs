@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 namespace Utilities.Unity
 {
@@ -33,18 +34,12 @@ namespace Utilities.Unity
 
         public static Vector2 GetAPointOnRadius(Vector2 referencePoint, float radius)
         {
-            GameObject tempTransform = new();
+            var rotation = UnityEngine.Random.Range(0f, (float)(2 * Math.PI));
+            var xCoordinate = (float)(radius * Math.Cos(rotation));
+            var yCoordinate = (float)(radius * Math.Sin(rotation));
 
-            var tempRotation = Random.Range(0, 359);
-
-            tempTransform.transform.position = new Vector3(referencePoint.x, referencePoint.y, 0);
-            tempTransform.transform.RotateAround(referencePoint, Vector3.forward, tempRotation);
-            tempTransform.transform.Translate(Vector2.up * radius, Space.Self);
-
-            var output = tempTransform.transform.position;
-            Object.Destroy(tempTransform);
-
-            return output;
+            
+            return new(referencePoint.x + xCoordinate, referencePoint.y + yCoordinate);
         }
     }
 }

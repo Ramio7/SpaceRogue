@@ -20,7 +20,6 @@ namespace Gameplay.Asteroid
         private readonly ResourcePath _asteroidsSpawnConfigPath = new(Constants.Configs.Asteroid.AsteroidsSpawnConfig);
         private readonly AsteroidFactory _asteroidFactory;
         private readonly AsteroidsSpawnConfig _config;
-        private readonly System.Random _random = new();
         private readonly Timer _timer;
 
         private readonly List<Vector3> _asteroidsSpawnPoints;
@@ -84,12 +83,12 @@ namespace Gameplay.Asteroid
                     case AsteroidConfigType.SingleAsteroidConfig:
                         var config = asteroidToSpawn as SingleAsteroidConfig;
                         if (config.Equals(_fastAsteroidConfig)) break;
-                        TrySpawnAsteroid(config, _random);
+                        TrySpawnAsteroid(config);
                         break;
 
                     case AsteroidConfigType.AsteroidCloudConfig:
                         var cloudConfig = asteroidToSpawn as AsteroidCloudConfig;
-                        TrySpawnAsteroidCloud(cloudConfig, _random);
+                        TrySpawnAsteroidCloud(cloudConfig);
                         break;
 
                     default:
@@ -103,19 +102,32 @@ namespace Gameplay.Asteroid
 
         private void SpawnNewFastAsteroid()
         {
-            var newAsteroid = _asteroidFactory.CreateAsteroidNearPlayer(_fastAsteroidConfig);
+            var newAsteroid = _asteroidFactory.CreateAsteroidOnDistanceFromPlayer(_fastAsteroidConfig);
             _asteroidControllers.Add(newAsteroid.Id, newAsteroid);
             _timer.Start();
+        }
+
+        private void RegisterAsteroidController(AsteroidController spawnedAsteroid)
+        {
+            _asteroidControllers.Add(spawnedAsteroid.Id, spawnedAsteroid);
+            spawnedAsteroid.OnDestroy += DeleteAsteroidController;
+        }
+
+        private void RegisterAsteroidControllers(List<AsteroidController> asteroidCloudAsteroids)
+        {
+            for (int j = 0; j < asteroidCloudAsteroids.Count; j++)
+            {
+                _asteroidControllers.Add(asteroidCloudAsteroids[j].Id, asteroidCloudAsteroids[j]);
+                asteroidCloudAsteroids[j].OnDestroy += DeleteAsteroidController;
+            }
         }
 
         private void DeleteAsteroidController(AsteroidController asteroidController)
         {
             if (!_appIsQuiting && asteroidController.Config.Cloud != null)
             {
-                var view = asteroidController.View;
-                var cloud = asteroidController.Config.Cloud;
-                var asteroidControllers = SelectAsteroidsMoveBehaviour(asteroidController, view, cloud);
-                RegisterAsteroidController(asteroidControllers);
+                var asteroidControllers = SpawnSpecificAsteroidCloudOnDestroy(asteroidController);
+                RegisterAsteroidControllers(asteroidControllers);
             }
 
             _asteroidControllers.Remove(asteroidController.Id);
@@ -178,22 +190,7 @@ namespace Gameplay.Asteroid
             return (SingleAsteroidConfig)configOutput;
         }
 
-        private void RegisterAsteroidController(AsteroidController spawnedAsteroid)
-        {
-            _asteroidControllers.Add(spawnedAsteroid.Id, spawnedAsteroid);
-            spawnedAsteroid.OnDestroy += DeleteAsteroidController;
-        }
-
-        private void RegisterAsteroidController(List<AsteroidController> asteroidCloudAsteroids)
-        {
-            for (int j = 0; j < asteroidCloudAsteroids.Count; j++)
-            {
-                _asteroidControllers.Add(asteroidCloudAsteroids[j].Id, asteroidCloudAsteroids[j]);
-                asteroidCloudAsteroids[j].OnDestroy += DeleteAsteroidController;
-            }
-        }
-
-        private void TrySpawnAsteroid(SingleAsteroidConfig config, System.Random random)
+        private void TrySpawnAsteroid(SingleAsteroidConfig config)
         {
             if (GetEmptySpawnPoint(_asteroidsSpawnPoints, config.Size.AsteroidScale, out Vector3 spawnPoint))
             {
@@ -202,24 +199,30 @@ namespace Gameplay.Asteroid
             }
         }
 
-        private void TrySpawnAsteroidCloud(AsteroidCloudConfig config, System.Random random)
+        private void TrySpawnAsteroidCloud(AsteroidCloudConfig config)
         {
             if (config.Behavior is AsteroidCloudBehaviour.CreatorEscaping or AsteroidCloudBehaviour.CollisionEscaping) return;
 
             if (GetEmptySpawnPoint(_asteroidsSpawnPoints, config.AsteroidCloudSize, out Vector3 spawnPoint))
             {
                 var asteroidCloudAsteroids = _asteroidFactory.CreateAsteroidCloud(spawnPoint, config);
-                RegisterAsteroidController(asteroidCloudAsteroids);
+                RegisterAsteroidControllers(asteroidCloudAsteroids);
             }
         }
 
-        private List<AsteroidController> SelectAsteroidsMoveBehaviour(AsteroidController asteroidController, AsteroidView view, AsteroidCloudConfig cloud)
+        private List<AsteroidController> SpawnSpecificAsteroidCloudOnDestroy(AsteroidController asteroidController)
         {
+            if (asteroidController.LastCollision != null) asteroidController.Config.Cloud.Behavior = AsteroidCloudBehaviour.CollisionEscaping;
+
             return asteroidController.Config.Cloud.Behavior switch
             {
                 AsteroidCloudBehaviour.None => throw new Exception("Cloud behaviour not set"),
-                AsteroidCloudBehaviour.Static => _asteroidFactory.CreateAsteroidCloud(view, cloud),
-                AsteroidCloudBehaviour.CreatorEscaping => _asteroidFactory.CreateAsteroidCloud(view, cloud),
+                AsteroidCloudBehaviour.Static => _asteroidFactory.CreateAsteroidCloud(asteroidController.View.transform.position, asteroidController.Config.Cloud),
+                AsteroidCloudBehaviour.CreatorEscaping => _asteroidFactory.CreateAsteroidCloudAfterAsteroidDestroyed(asteroidController.View, asteroidController.Config.Cloud),
+                AsteroidCloudBehaviour.CollisionEscaping => _asteroidFactory.CreateAsteroidCloudAfterCollision(
+                    asteroidController.View.transform.position,
+                    asteroidController.Config.Cloud,
+                    asteroidController.LastCollision),
                 _ => throw new NotImplementedException(),
             };
         }

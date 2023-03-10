@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: OnPlanetDestroySingleAsteroidConfig
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 916961ea-e268-4cad-b134-1acb551bf09c
-  <SpawnChance>k__BackingField: 100
   <AsteroidType>k__BackingField: 1
   <Prefab>k__BackingField: {fileID: 7966837340507342344, guid: 10c95f1d3116c314fbc1e1753c78950f, type: 3}
   <CollisionDamageAmount>k__BackingField: 15
@@ -22,10 +21,11 @@ MonoBehaviour:
     <SizeType>k__BackingField: 2
     <AsteroidScale>k__BackingField: {x: 0.15, y: 0.15, z: 1}
   <Behaviour>k__BackingField:
-    <AsteroidMoveType>k__BackingField: 1
-    <AsteroidSpeed>k__BackingField: 0
+    <AsteroidMoveType>k__BackingField: 5
+    <AsteroidStartingForce>k__BackingField: 5
+    <MaxRotationSpeed>k__BackingField: 0
     <SpawnRadius>k__BackingField: 10
     <TargetDispersion>k__BackingField: 0
-    <AsteroidLifeTime>k__BackingField: 0
+    <AsteroidLifeTime>k__BackingField: 60
   <Health>k__BackingField: {fileID: 11400000, guid: 6dd304588d8587e4e9dbee3fae234edf, type: 2}
   <Cloud>k__BackingField: {fileID: 11400000, guid: 0a91dc81ce9c8144984db5b892e9fd6d, type: 2}

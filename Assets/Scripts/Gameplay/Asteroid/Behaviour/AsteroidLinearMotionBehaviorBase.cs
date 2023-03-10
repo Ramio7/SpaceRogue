@@ -1,3 +1,4 @@
+using Gameplay.Health;
 using UnityEngine;
 
 namespace Gameplay.Asteroid.Behaviour
@@ -6,8 +7,9 @@ namespace Gameplay.Asteroid.Behaviour
     {
         protected Rigidbody2D Rigidbody;
         protected Vector3 AsteroidDirection;
+        private readonly HealthController _healthController;
 
-        public AsteroidLinearMotionBehaviorBase(AsteroidView view, AsteroidBehaviourConfig config) : base(view, config)
+        public AsteroidLinearMotionBehaviorBase(AsteroidView view, AsteroidBehaviourConfig config, HealthController healthController) : base(view, config)
         {
             Rigidbody = View.GetComponent<Rigidbody2D>();
             
@@ -17,13 +19,15 @@ namespace Gameplay.Asteroid.Behaviour
                 Timer.Start();
                 Timer.OnExpire += DestroyAsteroidOnTimerExpired;
             }
+
+            _healthController = healthController;
         }
 
         protected abstract void AsteroidStart();
 
         protected void DestroyAsteroidOnTimerExpired()
         {
-            Object.Destroy(View.gameObject);
+            _healthController.DestroyUnit();
             Timer.Dispose();
             OnDispose();
         }

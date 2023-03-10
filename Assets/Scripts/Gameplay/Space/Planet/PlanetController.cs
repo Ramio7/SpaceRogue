@@ -47,7 +47,7 @@ namespace Gameplay.Space.Planet
         private void CreateAsteroidCloudOnDestroy(Collision2D collision)
         {
             var asteroidFactory = new AsteroidFactory(_view);
-            asteroidFactory.CreateAsteroidCloud(_view.transform.position, _planetConfig.AsteroidCloudConfig, collision);
+            asteroidFactory.CreateAsteroidCloudAfterCollision(_view.transform.position, _planetConfig.AsteroidCloudConfig, collision);
             asteroidFactory.Dispose();
         }
 
