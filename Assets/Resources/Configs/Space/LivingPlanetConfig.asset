@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LivingPlanetConfig
   m_EditorClassIdentifier: 
   <Prefab>k__BackingField: {fileID: 1286931685511058213, guid: 1cf11efd2427add4f959a650fb34934e, type: 3}
+  <AsteroidCloudConfig>k__BackingField: {fileID: 11400000, guid: 9adfb148f72014640b64af21ac05e5e7, type: 2}
   <MinSpeed>k__BackingField: 2
   <MaxSpeed>k__BackingField: 4
   <RetrogradeMovementChance>k__BackingField: 0.5

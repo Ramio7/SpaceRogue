@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/Configs/Asteroid/OnCollisionDestroyAsteroidCloudConfig.asset.meta
 guid: bbbceed3aace8284ba2f59a70e874eff
 NativeFormatImporter:
+========
+guid: 0ed2115716717c24fb1e2529e72a3b8b
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> 2c735b4b0ae59d5da449a031439282b1618f36d3:Assets/Resources/Configs/Space/OnPlanetDestroy.meta
   externalObjects: {}
   mainObjectFileID: 11400000
   userData: 

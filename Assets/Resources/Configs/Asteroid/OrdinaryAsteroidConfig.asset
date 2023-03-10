@@ -22,7 +22,7 @@ MonoBehaviour:
     <AsteroidScale>k__BackingField: {x: 0.1, y: 0.1, z: 1}
   <Behaviour>k__BackingField:
     <AsteroidMoveType>k__BackingField: 3
-    <AsteroidStartingForce>k__BackingField: 50
+    <AsteroidStartingForce>k__BackingField: 5
     <MaxRotationSpeed>k__BackingField: 0
     <SpawnRadius>k__BackingField: 25
     <TargetDispersion>k__BackingField: 0

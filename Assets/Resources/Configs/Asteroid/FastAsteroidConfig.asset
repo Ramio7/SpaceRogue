@@ -22,10 +22,10 @@ MonoBehaviour:
     <AsteroidScale>k__BackingField: {x: 0.1, y: 0.1, z: 1}
   <Behaviour>k__BackingField:
     <AsteroidMoveType>k__BackingField: 4
-    <AsteroidStartingForce>k__BackingField: 200
+    <AsteroidStartingForce>k__BackingField: 20
     <MaxRotationSpeed>k__BackingField: 0
     <SpawnRadius>k__BackingField: 50
     <TargetDispersion>k__BackingField: 10
-    <AsteroidLifeTime>k__BackingField: 10
+    <AsteroidLifeTime>k__BackingField: 30
   <Health>k__BackingField: {fileID: 11400000, guid: 6dd304588d8587e4e9dbee3fae234edf, type: 2}
   <Cloud>k__BackingField: {fileID: 11400000, guid: 1125f82442aa77d4fb2f64753c84c52e, type: 2}

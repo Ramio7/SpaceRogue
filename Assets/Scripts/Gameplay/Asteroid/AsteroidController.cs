@@ -17,6 +17,7 @@ namespace Gameplay.Asteroid
         
         public AsteroidView View { get; private set; }
         public SingleAsteroidConfig Config { get; private set; }
+        public Collision2D LastCollision { get; private set; }
 
         private readonly AsteroidBehaviourController _behaviourController;
         private readonly HealthController _healthController;
@@ -29,14 +30,16 @@ namespace Gameplay.Asteroid
 
             View = view;
             AddGameObject(View.gameObject);
+            View.CollisionEntered += GetCollision;
 
             var damageModel = new DamageModel(config.CollisionDamageAmount);
             View.Init(damageModel);
 
-            _behaviourController = new PlayerBasedAsteroidBehaviourController(view, Config.Behaviour, player);
-            AddController(_behaviourController);
-
             _healthController = AddHealthController(Config.Health);
+            View.AsteroidDestroyed += _healthController.DestroyUnit;
+
+            _behaviourController = new PlayerBasedAsteroidBehaviourController(view, Config.Behaviour, _healthController, player);
+            AddController(_behaviourController);
         }
 
         public AsteroidController(SingleAsteroidConfig config, AsteroidView escapingView, AsteroidView creatorView)
@@ -47,14 +50,16 @@ namespace Gameplay.Asteroid
 
             View = escapingView;
             AddGameObject(View.gameObject);
+            View.CollisionEntered += GetCollision;
 
             var damageModel = new DamageModel(config.CollisionDamageAmount);
             View.Init(damageModel);
 
-            _behaviourController = new CreatorBasedAsteroidBehaviourController(escapingView, Config.Behaviour, creatorView);
-            AddController(_behaviourController);
-
             _healthController = AddHealthController(Config.Health);
+            View.AsteroidDestroyed += _healthController.DestroyUnit;
+
+            _behaviourController = new CreatorBasedAsteroidBehaviourController(escapingView, Config.Behaviour, _healthController, creatorView);
+            AddController(_behaviourController);
         }
 
         public AsteroidController(SingleAsteroidConfig config, AsteroidView escapingView, Collision2D collision)
@@ -65,20 +70,23 @@ namespace Gameplay.Asteroid
 
             View = escapingView;
             AddGameObject(View.gameObject);
+            View.CollisionEntered += GetCollision;
 
             var damageModel = new DamageModel(config.CollisionDamageAmount);
             View.Init(damageModel);
 
-            _behaviourController = new CollisionBasedAsteroidBehaviourController(escapingView, Config.Behaviour, collision);
-            AddController(_behaviourController);
-
             _healthController = AddHealthController(Config.Health);
+            View.AsteroidDestroyed += _healthController.DestroyUnit;
+
+            _behaviourController = new CollisionBasedAsteroidBehaviourController(escapingView, Config.Behaviour, _healthController, collision);
+            AddController(_behaviourController);
         }
 
         protected override void OnDispose()
         {
             _behaviourController?.Dispose();
             _healthController?.Dispose();
+            View.AsteroidDestroyed -= _healthController.DestroyUnit;
             OnDestroy?.Invoke(this);
             Config = null;
         }
@@ -94,5 +102,7 @@ namespace Gameplay.Asteroid
 
             return healthController;
         }
+
+        private void GetCollision(Collision2D collision) => LastCollision = collision;
     }
 }

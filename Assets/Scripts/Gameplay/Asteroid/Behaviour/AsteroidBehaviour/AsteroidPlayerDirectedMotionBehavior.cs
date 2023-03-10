@@ -1,5 +1,6 @@
 using Gameplay.Asteroid;
 using Gameplay.Asteroid.Behaviour;
+using Gameplay.Health;
 using Gameplay.Player;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -8,7 +9,10 @@ public sealed class AsteroidPlayerDirectedMotionBehavior : AsteroidLinearMotionB
 {
     private readonly PlayerView _playerView;
 
-    public AsteroidPlayerDirectedMotionBehavior(AsteroidView view, AsteroidBehaviourConfig config, PlayerView player) : base(view, config)
+    public AsteroidPlayerDirectedMotionBehavior(AsteroidView view,
+        AsteroidBehaviourConfig config,
+        HealthController healthController,
+        PlayerView player) : base(view, config, healthController)
     {
         _playerView = player;
         AsteroidStart();

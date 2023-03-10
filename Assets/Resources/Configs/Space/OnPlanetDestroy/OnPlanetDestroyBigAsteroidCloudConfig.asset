@@ -9,15 +9,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 912eebbdf40012f40b9f88cb24d551b4, type: 3}
+  m_Script: {fileID: 11500000, guid: d8cf60b7f4d6da64e8d9af33d5e1ba92, type: 3}
   m_Name: OnPlanetDestroyBigAsteroidCloudConfig
   m_EditorClassIdentifier: 
-  <Id>k__BackingField: f19c6c19-4c21-42d9-b083-2aa51ce1624a
-  <SpawnChance>k__BackingField: 100
-  <SpawnAsteroidCloudOnStart>k__BackingField: 0
-  <Behavior>k__BackingField: 0
-  <AsteroidCloudSize>k__BackingField: {x: 15, y: 15, z: 0}
-  <CloudAsteroidsConfigs>k__BackingField:
-  - {fileID: 11400000, guid: a171615c6c700ca4a8b97b3f07584e64, type: 2}
-  <MinAsteroidsInCloud>k__BackingField: 12
+  <Id>k__BackingField: 6187a209-58bb-40c7-bdb8-40a8ae94669d
+  <CloudType>k__BackingField: 3
+  <MinAsteroidsInCloud>k__BackingField: 10
   <MaxAsteroidsInCloud>k__BackingField: 25
+  <SpawnAsteroidCloudOnStart>k__BackingField: 0
+  <Behavior>k__BackingField: 3
+  <AsteroidCloudSize>k__BackingField: {x: 30, y: 30, z: 0}
+  <CloudAsteroidsConfigs>k__BackingField:
+  - <Weight>k__BackingField: 1
+    <Config>k__BackingField: {fileID: 11400000, guid: 64116c3de699e8441875cd8bda875f36, type: 2}
+  - <Weight>k__BackingField: 1
+    <Config>k__BackingField: {fileID: 11400000, guid: a171615c6c700ca4a8b97b3f07584e64, type: 2}
+  - <Weight>k__BackingField: 1
+    <Config>k__BackingField: {fileID: 11400000, guid: a171615c6c700ca4a8b97b3f07584e64, type: 2}
