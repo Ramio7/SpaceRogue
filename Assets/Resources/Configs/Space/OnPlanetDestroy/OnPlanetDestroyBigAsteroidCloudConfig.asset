@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 912eebbdf40012f40b9f88cb24d551b4, type: 3}
+  m_Name: OnPlanetDestroyBigAsteroidCloudConfig
+  m_EditorClassIdentifier: 
+  <Id>k__BackingField: f19c6c19-4c21-42d9-b083-2aa51ce1624a
+  <SpawnChance>k__BackingField: 100
+  <SpawnAsteroidCloudOnStart>k__BackingField: 0
+  <Behavior>k__BackingField: 0
+  <AsteroidCloudSize>k__BackingField: {x: 15, y: 15, z: 0}
+  <CloudAsteroidsConfigs>k__BackingField:
+  - {fileID: 11400000, guid: a171615c6c700ca4a8b97b3f07584e64, type: 2}
+  <MinAsteroidsInCloud>k__BackingField: 12
+  <MaxAsteroidsInCloud>k__BackingField: 25
