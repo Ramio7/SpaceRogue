@@ -10,7 +10,6 @@ namespace Gameplay.Shooting
         
         private readonly Transform _projectileSpawnTransform;
         private readonly UnitType _unitType;
-        private readonly GameObject _projectilePool;
 
 
         public ProjectileFactory(ProjectileConfig projectileConfig, ProjectileView view, 
@@ -20,24 +19,11 @@ namespace Gameplay.Shooting
             _view = view;
             _projectileSpawnTransform = projectileSpawnTransform;
             _unitType = unitType;
-
-            _projectilePool = GameObject.Find("ProjectilePool");
-            if (_projectilePool == null)
-            {
-                _projectilePool = new GameObject("ProjectilePool");
-                _projectilePool.transform.position.Set(9999, 9999, 0);
-            }
         }
 
         public ProjectileController CreateProjectile() => CreateProjectile(Vector3.up);
         public ProjectileController CreateProjectile(Vector3 direction) => new(_config, CreateProjectileView(), _projectileSpawnTransform.parent.TransformDirection(direction), _unitType);
 
-        private ProjectileView CreateProjectileView()
-        {
-            var projectile = Object.Instantiate(_view, _projectileSpawnTransform.position, Quaternion.identity);
-            projectile.transform.SetParent(_projectilePool.transform, true);
-
-            return projectile;
-        }
+        private ProjectileView CreateProjectileView() => Object.Instantiate(_view, _projectileSpawnTransform.position, Quaternion.identity);
     }
 }

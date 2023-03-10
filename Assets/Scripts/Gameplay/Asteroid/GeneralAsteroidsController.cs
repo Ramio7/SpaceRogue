@@ -124,7 +124,7 @@ namespace Gameplay.Asteroid
 
         private void DeleteAsteroidController(AsteroidController asteroidController)
         {
-            if (!_appIsQuiting && asteroidController.Config.Cloud != null)
+            if (!_appIsQuiting && asteroidController.Config.CloudOnDestroy != null)
             {
                 var asteroidControllers = SpawnSpecificAsteroidCloudOnDestroy(asteroidController);
                 RegisterAsteroidControllers(asteroidControllers);
@@ -201,8 +201,6 @@ namespace Gameplay.Asteroid
 
         private void TrySpawnAsteroidCloud(AsteroidCloudConfig config)
         {
-            if (config.Behavior is AsteroidCloudBehaviour.CreatorEscaping or AsteroidCloudBehaviour.CollisionEscaping) return;
-
             if (GetEmptySpawnPoint(_asteroidsSpawnPoints, config.AsteroidCloudSize, out Vector3 spawnPoint))
             {
                 var asteroidCloudAsteroids = _asteroidFactory.CreateAsteroidCloud(spawnPoint, config);
@@ -212,19 +210,16 @@ namespace Gameplay.Asteroid
 
         private List<AsteroidController> SpawnSpecificAsteroidCloudOnDestroy(AsteroidController asteroidController)
         {
-            if (asteroidController.LastCollision != null) asteroidController.Config.Cloud.Behavior = AsteroidCloudBehaviour.CollisionEscaping;
-
-            return asteroidController.Config.Cloud.Behavior switch
-            {
-                AsteroidCloudBehaviour.None => throw new Exception("Cloud behaviour not set"),
-                AsteroidCloudBehaviour.Static => _asteroidFactory.CreateAsteroidCloud(asteroidController.View.transform.position, asteroidController.Config.Cloud),
-                AsteroidCloudBehaviour.CreatorEscaping => _asteroidFactory.CreateAsteroidCloudAfterAsteroidDestroyed(asteroidController.View, asteroidController.Config.Cloud),
-                AsteroidCloudBehaviour.CollisionEscaping => _asteroidFactory.CreateAsteroidCloudAfterCollision(
+            if (asteroidController.LastCollision != null) 
+                return _asteroidFactory.CreateAsteroidCloudAfterCollision(
                     asteroidController.View.transform.position,
-                    asteroidController.Config.Cloud,
-                    asteroidController.LastCollision),
-                _ => throw new NotImplementedException(),
-            };
+                    asteroidController.Config.CloudOnCollisionDestroy,
+                    asteroidController.LastCollision);
+
+            else 
+                return _asteroidFactory.CreateAsteroidCloudAfterAsteroidDestroyed(
+                    asteroidController.View,
+                    asteroidController.Config.CloudOnDestroy);
         }
 
         #endregion
