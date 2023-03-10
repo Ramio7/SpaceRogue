@@ -15,7 +15,6 @@ namespace Scriptables.Asteroid
         [field: SerializeField] public int MinAsteroidsInCloud { get; private set; }
         [field: SerializeField] public int MaxAsteroidsInCloud { get; private set; }
         [field: SerializeField] public bool SpawnAsteroidCloudOnStart { get; private set; }
-        [field: SerializeField] public AsteroidCloudBehaviour Behavior { get; set; }
         [field: SerializeField] public Vector3 AsteroidCloudSize { get; private set; }
         [field: SerializeField] public List<WeightConfig<SingleAsteroidConfig>> CloudAsteroidsConfigs { get; private set; }
     }

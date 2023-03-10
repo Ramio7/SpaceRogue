@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecd4d7326d4cc24f8305c49ea348328, type: 3}
-  m_Name: SmallAsteroidConfig
+  m_Name: SmallAsteroidOnAsteroidSelfDestroyConfig
   m_EditorClassIdentifier: 
   <Id>k__BackingField: e91d0e69-703e-4a32-858a-88001ba59acb
   <AsteroidType>k__BackingField: 1
@@ -20,12 +20,12 @@ MonoBehaviour:
     <SizeType>k__BackingField: 1
     <AsteroidScale>k__BackingField: {x: 0.5, y: 0.5, z: 1}
   <Behaviour>k__BackingField:
-    <AsteroidMoveType>k__BackingField: 3
+    <AsteroidMoveType>k__BackingField: 6
     <AsteroidStartingForce>k__BackingField: 3
     <MaxRotationSpeed>k__BackingField: 0
     <SpawnRadius>k__BackingField: 10
     <TargetDispersion>k__BackingField: 0
-    <AsteroidLifeTime>k__BackingField: 360
+    <AsteroidLifeTime>k__BackingField: 600
   <Health>k__BackingField: {fileID: 11400000, guid: 6dd304588d8587e4e9dbee3fae234edf, type: 2}
   <CloudOnDestroy>k__BackingField: {fileID: 0}
   <CloudOnCollisionDestroy>k__BackingField: {fileID: 0}
