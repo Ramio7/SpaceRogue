@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Abstracts;
 using Gameplay.Damage;
 using Gameplay.Shooting.Scriptables;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Gameplay.Shooting
         private readonly Vector3 _movementDirection;
         private float _remainingLifeTime;
         
-        public ProjectileController(ProjectileConfig config, ProjectileView view, Vector3 movementDirection, UnitType unitType)
+        public ProjectileController(ProjectileConfig config, ProjectileView view, Vector3 movementDirection, EntityType entityType)
         {
             _config = config;
             _movementDirection = movementDirection;
@@ -20,7 +21,7 @@ namespace Gameplay.Shooting
             AddGameObject(_view.gameObject);
             _remainingLifeTime = config.LifeTime;
             
-            var damageModel = new DamageModel(config.DamageAmount, unitType);
+            var damageModel = new DamageModel(config.DamageAmount, entityType);
             _view.Init(damageModel);
             if (config.IsDestroyedOnHit) _view.CollidedObject += Dispose;
 

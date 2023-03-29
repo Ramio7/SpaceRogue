@@ -1,9 +1,6 @@
-using Gameplay.Pooling;
-using Gameplay.Space.SpaceObjects;
 using Gameplay.Space.SpaceObjects.Scriptables;
 using Gameplay.Space.SpaceObjects.SpaceObjectsEffects;
 using UnityEngine;
-using Utilities.Mathematics;
 using Zenject;
 
 namespace Gameplay.Space.Factories
@@ -20,7 +17,7 @@ namespace Gameplay.Space.Factories
         public override DamageOnTouchEffect Create(Transform transform, DamageOnTouchConfig config)
         {
             var view = _viewFactory.Create(transform, config);
-            return new DamageOnTouchEffect(view, config);
+            return new DamageOnTouchEffect(view);
         }
     }
 }

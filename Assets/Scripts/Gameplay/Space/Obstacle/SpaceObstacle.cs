@@ -3,6 +3,7 @@ using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gameplay.Abstracts;
 using UnityEngine;
 
 namespace Gameplay.Space.Obstacle
@@ -16,7 +17,7 @@ namespace Gameplay.Space.Obstacle
         private readonly Collider2D _obstacleCollider;
         private readonly float _obstacleForce;
 
-        private readonly Dictionary<UnitView, Vector3> _unitCollection = new();
+        private readonly Dictionary<EntityView, Vector3> _unitCollection = new();
 
         public SpaceObstacle(Updater updater, SpaceObstacleView obstacleView, float obstacleForce)
         {
@@ -74,31 +75,31 @@ namespace Gameplay.Space.Obstacle
             }
         }
 
-        private void OnObstacleEnter(UnitView unitView)
+        private void OnObstacleEnter(EntityView entityView)
         {
-            if (_unitCollection.ContainsKey(unitView))
+            if (_unitCollection.ContainsKey(entityView))
             {
                 return;
             }
 
-            var closestPoint = _obstacleCollider.ClosestPoint(unitView.transform.position);
+            var closestPoint = _obstacleCollider.ClosestPoint(entityView.transform.position);
             
-            if (closestPoint == (Vector2)unitView.transform.position)
+            if (closestPoint == (Vector2)entityView.transform.position)
             {
-                var searchPoint = unitView.transform.TransformPoint(Vector3.down * SearchDistance);
+                var searchPoint = entityView.transform.TransformPoint(Vector3.down * SearchDistance);
                 closestPoint = _obstacleCollider.ClosestPoint(searchPoint);
             }
 
-            _unitCollection.Add(unitView, closestPoint);
+            _unitCollection.Add(entityView, closestPoint);
         }
 
-        private void OnObstacleExit(UnitView unitView)
+        private void OnObstacleExit(EntityView entityView)
         {
-            if (!_unitCollection.ContainsKey(unitView))
+            if (!_unitCollection.ContainsKey(entityView))
             {
                 return;
             }
-            _unitCollection.Remove(unitView);
+            _unitCollection.Remove(entityView);
         }
     }
 }

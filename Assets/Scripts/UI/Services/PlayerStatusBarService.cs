@@ -29,7 +29,11 @@ namespace UI.Services
             if(_playerSurvival != null)
             {
                 _playerSurvival.EntityHealth.HealthChanged -= UpdateHealthBar;
-                _playerSurvival.EntityShield.ShieldChanged -= UpdateShieldBar;
+
+                if (_playerSurvival.EntityShield != null)
+                {
+                    _playerSurvival.EntityShield.ShieldChanged -= UpdateShieldBar;
+                }
             }
         }
 
@@ -39,11 +43,15 @@ namespace UI.Services
 
             _playerStatusBarView.HealthBar.Init(0f, entitySurvival.EntityHealth.MaximumHealth, 
                 entitySurvival.EntityHealth.CurrentHealth);
-            _playerStatusBarView.ShieldBar.Init(0f, entitySurvival.EntityShield.MaximumShield, 
-                entitySurvival.EntityShield.CurrentShield);
-
+            
             _playerSurvival.EntityHealth.HealthChanged += UpdateHealthBar;
-            _playerSurvival.EntityShield.ShieldChanged += UpdateShieldBar;
+            
+            if(_playerSurvival.EntityShield != null)
+            {
+                _playerStatusBarView.ShieldBar.Init(0f, entitySurvival.EntityShield.MaximumShield,
+                entitySurvival.EntityShield.CurrentShield);
+                _playerSurvival.EntityShield.ShieldChanged += UpdateShieldBar;
+            }
             
             _playerStatusBarView.Show();
         }

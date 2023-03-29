@@ -4,9 +4,8 @@ using Gameplay.Space.Generator;
 using UnityEngine;
 using Zenject;
 using Gameplay.Pooling;
-using Gameplay.Player;
-using Gameplay.Survival;
-using Scriptables;
+using Gameplay.Movement;
+using Gameplay.Enemy.Movement;
 
 namespace Gameplay.Installers
 {
@@ -18,10 +17,9 @@ namespace Gameplay.Installers
         public override void InstallBindings()
         {
             InstallEnemyPool();
-            InstallEnemyForces();
-            InstallEnemyHealth();
-            InstallEnemy();
             InstallEnemyView();
+            InstallEnemyForces();
+            InstallEnemy();
         }
 
         private void InstallEnemyPool()
@@ -29,6 +27,13 @@ namespace Gameplay.Installers
             Container
                 .Bind<EnemyPool>()
                 .FromInstance(EnemyPool)
+                .AsSingle();
+        }
+
+        private void InstallEnemyView()
+        {
+            Container
+                .BindFactory<Vector2, EnemyConfig, EnemyView, EnemyViewFactory>()
                 .AsSingle();
         }
 
@@ -43,25 +48,11 @@ namespace Gameplay.Installers
                 .BindFactory<int, SpawnPointsFinder, EnemyForces, EnemyForcesFactory>()
                 .AsSingle();
         }
-
-        private void InstallEnemyHealth()
-        {
-            Container
-                .BindFactory<EntitySurvivalConfig, EntitySurvival, EnemySurvivalFactory>()
-                .AsSingle();
-        }
-
+        
         private void InstallEnemy()
         {
             Container
                 .BindFactory<Vector2, EnemyConfig, Enemy.Enemy, EnemyFactory>()
-                .AsSingle();
-        }
-
-        private void InstallEnemyView()
-        {
-            Container
-                .BindFactory<Vector2, EnemyConfig, EnemyView, EnemyViewFactory>()
                 .AsSingle();
         }
     }

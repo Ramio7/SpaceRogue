@@ -437,6 +437,8 @@ MonoBehaviour:
   <LevelInfoView>k__BackingField: {fileID: 2030144635}
   <MinimapView>k__BackingField: {fileID: 1550631455}
   <EnemyHealthBarsView>k__BackingField: {fileID: 1024208123}
+  <HealthShieldStatusBarView>k__BackingField: {fileID: 4510019004231548740, guid: dd61e8ef8ca2574438bbff898a3db5c0, type: 3}
+  <HealthStatusBarView>k__BackingField: {fileID: 1853970955932722102, guid: 0ce30fd6c2206f54f8a7b263d9033611, type: 3}
   <GameEventIndicatorsView>k__BackingField: {fileID: 1024208120}
 --- !u!1 &564741017
 GameObject:

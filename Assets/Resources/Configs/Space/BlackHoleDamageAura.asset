@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bb83efcef3b20f4597b06c6ec1ec61c, type: 3}
+  m_Name: BlackHoleDamageAura
+  m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 8828685623546728080, guid: 703bf5a5f56da924aa444a565fdc1aba, type: 3}
+  <Radius>k__BackingField: 4
+  <Damage>k__BackingField: 10
+  <DamageInterval>k__BackingField: 0.3

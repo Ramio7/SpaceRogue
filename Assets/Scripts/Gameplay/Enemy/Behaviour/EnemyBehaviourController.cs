@@ -12,8 +12,8 @@ namespace Gameplay.Enemy.Behaviour
     {
         private readonly EnemyView _view;
         private readonly UnitMovementModel _unitMovementModel;
-        private readonly EnemyInputController _inputController;
-        private readonly EnemyMovementController _movementController;
+        private readonly EnemyInput _inputController;
+        private readonly UnitMovement _movementController;
         private readonly Weapon _turretController;
         private readonly PlayerController _playerController;
         private readonly Transform _target;
@@ -28,8 +28,6 @@ namespace Gameplay.Enemy.Behaviour
         {
             _view = view;
             _unitMovementModel = unitMovementModel;
-            _inputController = AddInputController();
-            _movementController = AddMovementController();
 
             _turretController = turretController;
             _playerController = playerController;
@@ -71,21 +69,6 @@ namespace Gameplay.Enemy.Behaviour
                     break;
                 default: return;
             }
-        }
-
-        private EnemyInputController AddInputController()
-        {
-            var inputController = new EnemyInputController();
-            AddController(inputController);
-            return inputController;
-        }
-
-        private EnemyMovementController AddMovementController()
-        {
-            var (horizontalInput, verticalInput) = _inputController;
-            var movementController = new EnemyMovementController(horizontalInput, verticalInput, _unitMovementModel, _view);
-            AddController(movementController);
-            return movementController;
         }
     }
 }

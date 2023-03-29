@@ -11,7 +11,7 @@ namespace Gameplay.Enemy.Behaviour
 
         public EnemyCombatWithRetreatBehaviour(
             SubscribedProperty<EnemyState> enemyState, EnemyView view, PlayerController playerController,
-            EnemyInputController inputController, Weapon frontalTurret, EnemyBehaviourConfig config,
+            EnemyInput inputController, Weapon frontalTurret, EnemyBehaviourConfig config,
             EnemyState lastEnemyState) 
             : base(enemyState, view, playerController, inputController, frontalTurret, config)
         {

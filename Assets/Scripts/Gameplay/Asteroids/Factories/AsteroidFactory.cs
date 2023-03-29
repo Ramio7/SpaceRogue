@@ -22,7 +22,7 @@ namespace Gameplay.Asteroids.Factories
         {
             var view = _asteroidViewFactory.Create(spawnPoint, config);
             var movement = _asteroidMovementFactory.Create(config.StartingSpeed, view);
-            var survival = _entitySurvivalFactory.Create(config.SurvivalConfig);
+            var survival = _entitySurvivalFactory.Create(view, config.SurvivalConfig);
             return new(view, movement, survival);
         }
     }

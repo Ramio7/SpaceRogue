@@ -30,7 +30,6 @@ namespace Gameplay.Survival.Shield
 
         internal void TakeDamage(float damageAmount, out float remainingDamage)
         {
-            ShieldChanged.Invoke();
             if (damageAmount > CurrentShield)
             {
                 remainingDamage = damageAmount - CurrentShield;
@@ -41,6 +40,7 @@ namespace Gameplay.Survival.Shield
                 remainingDamage = 0.0f;
                 CurrentShield -= damageAmount;
             }
+            ShieldChanged.Invoke();
             
             StartShieldCooldown();
         }

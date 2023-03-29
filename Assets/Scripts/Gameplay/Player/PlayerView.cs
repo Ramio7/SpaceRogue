@@ -1,9 +1,10 @@
 using Abstracts;
+using Gameplay.Abstracts;
 
 namespace Gameplay.Player
 {
-    public sealed class PlayerView : UnitView
+    public sealed class PlayerView : EntityView
     {
-        public override UnitType UnitType => UnitType.Player;
+        public override EntityType EntityType => EntityType.Player;
     }
 }

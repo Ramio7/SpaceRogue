@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Abstracts;
 using Gameplay.Damage;
 using Gameplay.Survival;
 using UnityEngine;
@@ -6,9 +7,9 @@ using UnityEngine;
 namespace Gameplay.GameEvent.Caravan
 {
     [RequireComponent(typeof(BoxCollider2D))]
-    public sealed class CaravanView : UnitView, IDamagingView
+    public sealed class CaravanView : EntityView, IDamagingView
     {
-        public override UnitType UnitType => UnitType.Assistant;
+        public override EntityType EntityType => EntityType.EnemyAssistant;
         public bool IsLastDamageFromPlayer { get; private set; }
         public DamageModel DamageModel { get; private set; }
 
@@ -26,7 +27,7 @@ namespace Gameplay.GameEvent.Caravan
         {
             if(collision.TryGetComponent(out IDamagingView damagingView))
             {
-                if(damagingView.DamageModel.UnitType == UnitType.Player)
+                if(damagingView.DamageModel.EntityType == EntityType.Player)
                 {
                     IsLastDamageFromPlayer = true;
                 }

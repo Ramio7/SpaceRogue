@@ -1,34 +1,47 @@
 using System;
+using Gameplay.Abstracts;
+using Gameplay.Damage;
 using Gameplay.Survival.DamageImmunityFrame;
 using Gameplay.Survival.Health;
 using Gameplay.Survival.Shield;
+using Utilities.Mathematics;
 
 namespace Gameplay.Survival
 {
     public sealed class EntitySurvival : IDisposable
     {
+        private readonly EntityView _entityView;
         private readonly EntityDamageImmunityFrame _entityDamageImmunityFrame;
 
         public EntityHealth EntityHealth { get; }
         public EntityShield EntityShield { get; }
         public event Action UnitDestroyed = () => { };
 
-        public EntitySurvival(EntityHealth entityHealth, EntityShield entityShield, EntityDamageImmunityFrame entityDamageImmunityFrame)
+        public EntitySurvival(EntityView entityView, EntityHealth entityHealth, EntityShield entityShield, EntityDamageImmunityFrame entityDamageImmunityFrame)
         {
             EntityHealth = entityHealth;
             EntityShield = entityShield;
+            _entityView = entityView;
             _entityDamageImmunityFrame = entityDamageImmunityFrame;
 
             EntityHealth.HealthReachedZero += OnHealthReachedZero;
+            _entityView.DamageTaken += ReceiveDamage;
         }
 
         public void Dispose()
         {
+            _entityView.DamageTaken -= ReceiveDamage;
             EntityHealth.HealthReachedZero -= OnHealthReachedZero;
             
             EntityHealth.Dispose();
-            EntityShield.Dispose();
-            _entityDamageImmunityFrame.Dispose();
+            EntityShield?.Dispose();
+            _entityDamageImmunityFrame?.Dispose();
+        }
+
+        internal void ReceiveDamage(DamageModel damageModel)
+        {
+            var damage = RandomPicker.PickRandomBetweenTwoValues(damageModel.MinDamage, damageModel.MaxDamage);
+            TakeDamage(damage);
         }
 
         internal void TakeDamage(float damageAmount)

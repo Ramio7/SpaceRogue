@@ -8,7 +8,7 @@ namespace Gameplay.Enemy.Behaviour
 {
     public sealed class EnemyEscortBehaviour : EnemyBehaviour
     {
-        private readonly EnemyInputController _inputController;
+        private readonly EnemyInput _inputController;
         private readonly Transform _target;
         private Vector3 _targetDirection;
         private Vector3 _currentDirection;
@@ -18,7 +18,7 @@ namespace Gameplay.Enemy.Behaviour
             SubscribedProperty<EnemyState> enemyState, 
             EnemyView view,
             PlayerController playerController,
-            EnemyInputController inputController,
+            EnemyInput inputController,
             EnemyBehaviourConfig config,
             Transform target) : base(enemyState, view, playerController, config)
         {

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 458fe88dffedd2040976413acbda2678, type: 3}
   m_Name: SunStar
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 1916895435219536677, guid: 796ce20e71d95af459b00990c646b520, type: 3}
+  <Prefab>k__BackingField: {fileID: 6601994281132383027, guid: b97ee42c7ac5cc442a75ff7f1444db88, type: 3}
   <MinSize>k__BackingField: 40
   <MaxSize>k__BackingField: 60
   <Effects>k__BackingField:
   - {fileID: 11400000, guid: 02102cc1672243749993ecc4d5cc27cd, type: 2}
+  - {fileID: 11400000, guid: 9da844cf9f8a91b41bd1a5ada11c2bf4, type: 2}

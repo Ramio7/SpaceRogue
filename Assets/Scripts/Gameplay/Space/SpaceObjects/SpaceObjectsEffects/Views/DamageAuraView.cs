@@ -77,7 +77,11 @@ namespace Gameplay.Space.SpaceObjects.SpaceObjectsEffects.Views
 
         private void DamageTick()
         {
-            if (!_damageablesInAura.Any()) return;
+            if (!_damageablesInAura.Any())
+            {
+                _damageTimer.Start();
+                return;
+            }
 
             foreach (var damageable in _damageablesInAura)
             {

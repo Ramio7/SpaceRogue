@@ -22,7 +22,7 @@ namespace Gameplay.Enemy
 
                 if (!spawnPointsFinder.TryGetEnemySpawnPoint(enemyCount, out var spawnPoint))
                 {
-                    Debug.Log("Not Found point");
+                    Debug.Log("Enemy spawn point not found");
                     continue;
                 }
 

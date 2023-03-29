@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 458fe88dffedd2040976413acbda2678, type: 3}
   m_Name: RedGiant
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 3821993396933306145, guid: 741897e1e3fcd674cbd2cb3b30e737b5, type: 3}
+  <Prefab>k__BackingField: {fileID: 4589262279004478954, guid: 1d47aab2f39cbfd47973acd12d1d2d5e, type: 3}
   <MinSize>k__BackingField: 50
   <MaxSize>k__BackingField: 150
   <Effects>k__BackingField:
   - {fileID: 11400000, guid: 02102cc1672243749993ecc4d5cc27cd, type: 2}
+  - {fileID: 11400000, guid: 9da844cf9f8a91b41bd1a5ada11c2bf4, type: 2}

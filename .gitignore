@@ -80,3 +80,4 @@ crashlytics-build.properties
 
 # Some conflicting files
 *Zenject.csproj.meta
+*Zenject-Signals.csproj.meta

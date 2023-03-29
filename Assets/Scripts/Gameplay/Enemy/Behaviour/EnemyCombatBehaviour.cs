@@ -9,7 +9,7 @@ namespace Gameplay.Enemy.Behaviour
 {
     public class EnemyCombatBehaviour : EnemyBehaviour
     {
-        private readonly EnemyInputController _inputController;
+        private readonly EnemyInput _inputController;
         private readonly Weapon _frontalTurret;
         private readonly float _firingAngle;
 
@@ -22,7 +22,7 @@ namespace Gameplay.Enemy.Behaviour
 
         public EnemyCombatBehaviour(
             SubscribedProperty<EnemyState> enemyState, EnemyView view, PlayerController playerController,
-            EnemyInputController inputController, Weapon frontalTurret, EnemyBehaviourConfig config) 
+            EnemyInput inputController, Weapon frontalTurret, EnemyBehaviourConfig config) 
             : base(enemyState, view, playerController, config)
         {
             _inputController = inputController;

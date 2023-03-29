@@ -1,3 +1,4 @@
+using Gameplay.Abstracts;
 using Gameplay.Survival;
 using Gameplay.Survival.DamageImmunityFrame;
 using Gameplay.Survival.Health;
@@ -23,7 +24,7 @@ namespace Gameplay.Installers
                 .AsSingle();
             
             Container
-                .BindFactory<EntitySurvivalConfig, EntitySurvival, EntitySurvivalFactory>()
+                .BindFactory<EntityView, EntitySurvivalConfig, EntitySurvival, EntitySurvivalFactory>()
                 .AsSingle();
         }
     }

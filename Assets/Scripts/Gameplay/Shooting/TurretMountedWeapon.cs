@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Abstracts;
 using Gameplay.Shooting.Factories;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Gameplay.Shooting
         private readonly Transform _turretViewTransform;
         private readonly Transform _gunPointViewTransform;
         
-        public TurretMountedWeapon(Weapon weapon, UnitView unitView, TurretViewFactory turretViewFactory, GunPointViewFactory gunPointViewFactory) : base(weapon, unitView)
+        public TurretMountedWeapon(Weapon weapon, EntityView entityView, TurretViewFactory turretViewFactory, GunPointViewFactory gunPointViewFactory) : base(weapon, entityView)
         {
             var unitScale = UnitViewTransform.localScale;
             var gunPointPosition = UnitViewTransform.position + UnitViewTransform.TransformDirection(0.6f * Mathf.Max(unitScale.x, unitScale.y) * Vector3.up);

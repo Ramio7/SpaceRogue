@@ -13,7 +13,7 @@ namespace Gameplay.GameEvent.Caravan
 
         private readonly UnitMovementModel _unitMovementModel;
         private readonly CaravanView _view;
-        private readonly EnemyInputController _inputController;
+        private readonly EnemyInput _inputController;
         private readonly Vector3 _targetPosition;
 
         private Vector3 _targetDirection;
@@ -25,8 +25,6 @@ namespace Gameplay.GameEvent.Caravan
             _unitMovementModel = unitMovementModel;
             _view = view;
             AddGameObject(_view.gameObject);
-            _inputController = AddInputController();
-            AddMovementController();
             _targetPosition = targetPosition;
 
             EntryPoint.SubscribeToUpdate(MoveToTarget);
@@ -87,21 +85,6 @@ namespace Gameplay.GameEvent.Caravan
                 return;
             }
             _inputController.Accelerate();
-        }
-
-        private EnemyInputController AddInputController()
-        {
-            var inputController = new EnemyInputController();
-            AddController(inputController);
-            return inputController;
-        }
-
-        private EnemyMovementController AddMovementController()
-        {
-            var (horizontalInput, verticalInput) = _inputController;
-            var movementController = new EnemyMovementController(horizontalInput, verticalInput, _unitMovementModel, _view);
-            AddController(movementController);
-            return movementController;
         }
     }
 }

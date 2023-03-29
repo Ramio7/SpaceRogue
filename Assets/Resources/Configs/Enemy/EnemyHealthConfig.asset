@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: EnemyHealthConfig
   m_EditorClassIdentifier: 
   <MaximumHealth>k__BackingField: 50
-  <StartingHealth>k__BackingField: 50
-  <HealthRegen>k__BackingField: 0
-  <DamageImmunityFrameDuration>k__BackingField: 0
+  <StartingHealth>k__BackingField: 25
+  <HealthRegen>k__BackingField: 5

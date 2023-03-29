@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Abstracts;
 using Gameplay.Mechanics.Timer;
 using Gameplay.Shooting.Factories;
 using Gameplay.Shooting.Scriptables;
@@ -10,13 +11,13 @@ namespace Gameplay.Shooting.Weapons
     public class Shotgun : Weapon
     {
         private readonly ShotgunConfig _config;
-        private readonly UnitType _unitType;
+        private readonly EntityType _entityType;
         private readonly ProjectileFactory _projectileFactory;
 
-        public Shotgun(ShotgunConfig config, UnitType unitType, ProjectileFactory projectileFactory, TimerFactory timerFactory)
+        public Shotgun(ShotgunConfig config, EntityType entityType, ProjectileFactory projectileFactory, TimerFactory timerFactory)
         {
             _config = config;
-            _unitType = unitType;
+            _entityType = entityType;
             _projectileFactory = projectileFactory;
             CooldownTimer = timerFactory.Create(config.Cooldown);
         }
@@ -27,7 +28,7 @@ namespace Gameplay.Shooting.Weapons
 
             FireMultipleProjectiles(bulletPosition, turretDirection, _config.PelletCount, _config.SprayAngle);
 
-            _projectileFactory.Create(new ProjectileSpawnParams(bulletPosition, turretDirection, _unitType, _config.ShotgunProjectile));
+            _projectileFactory.Create(new ProjectileSpawnParams(bulletPosition, turretDirection, _entityType, _config.ShotgunProjectile));
             
             CooldownTimer.Start();
         }
@@ -46,7 +47,7 @@ namespace Gameplay.Shooting.Weapons
                 Vector3 pelletVector = (pelletAngle + 90).ToVector3();
                 Quaternion pelletDirection = turretDirection * Quaternion.Euler(pelletVector.x, pelletVector.y, pelletVector.z);
                 
-                _projectileFactory.Create(new ProjectileSpawnParams(bulletPosition, pelletDirection, _unitType, _config.ShotgunProjectile));
+                _projectileFactory.Create(new ProjectileSpawnParams(bulletPosition, pelletDirection, _entityType, _config.ShotgunProjectile));
             }
         }
     }

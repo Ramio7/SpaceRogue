@@ -1,13 +1,14 @@
 using Abstracts;
+using Gameplay.Abstracts;
 using Gameplay.Damage;
 using Gameplay.Space.SpaceObjects;
 using UnityEngine;
 
 namespace Gameplay.Enemy
 {
-    public sealed class EnemyView : UnitView
+    public sealed class EnemyView : EntityView
     {
-        public override UnitType UnitType => UnitType.Enemy;
+        public override EntityType EntityType => EntityType.Enemy;
 
         public void OnTriggerEnter2D(Collider2D collider)
         {

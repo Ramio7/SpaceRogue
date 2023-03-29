@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Abstracts;
 using UnityEngine;
 
 namespace Gameplay.Shooting
@@ -8,10 +9,10 @@ namespace Gameplay.Shooting
         protected Weapon Weapon { get; set; }
         protected Transform UnitViewTransform { get; set; }
         
-        public MountedWeapon(Weapon weapon, UnitView unitView)
+        public MountedWeapon(Weapon weapon, EntityView entityView)
         {
             Weapon = weapon;
-            UnitViewTransform = unitView.transform;
+            UnitViewTransform = entityView.transform;
         }
 
         public abstract void CommenceFiring();

@@ -1,5 +1,6 @@
 using System;
 using Abstracts;
+using Gameplay.Abstracts;
 using Gameplay.Mechanics.Meter;
 using Gameplay.Mechanics.Timer;
 using Gameplay.Shooting.Factories;
@@ -12,7 +13,7 @@ namespace Gameplay.Shooting.Weapons
     public class Minigun : Weapon, IDisposable
     {
         private readonly MinigunConfig _config;
-        private readonly UnitType _unitType;
+        private readonly EntityType _entityType;
         private readonly ProjectileFactory _projectileFactory;
         private readonly MeterWithCooldown _overheatMeter;
         
@@ -20,10 +21,10 @@ namespace Gameplay.Shooting.Weapons
         
         private float SprayIncrease => (_config.MaxSprayAngle - _config.SprayAngle) / (_config.TimeToOverheat * (1 / _config.Cooldown));
 
-        public Minigun(MinigunConfig config, UnitType unitType, ProjectileFactory projectileFactory, TimerFactory timerFactory)
+        public Minigun(MinigunConfig config, EntityType entityType, ProjectileFactory projectileFactory, TimerFactory timerFactory)
         {
             _config = config;
-            _unitType = unitType;
+            _entityType = entityType;
             _projectileFactory = projectileFactory;
             CooldownTimer = timerFactory.Create(config.Cooldown);
             
@@ -74,7 +75,7 @@ namespace Gameplay.Shooting.Weapons
             Vector3 pelletVector = (pelletAngle + 90).ToVector3();
             Quaternion pelletDirection = turretDirection * Quaternion.Euler(pelletVector.x, pelletVector.y, pelletVector.z);
             //TODO check 90 degrees turn
-            _projectileFactory.Create(new ProjectileSpawnParams(bulletPosition, pelletDirection, _unitType, _config.MinigunProjectile));
+            _projectileFactory.Create(new ProjectileSpawnParams(bulletPosition, pelletDirection, _entityType, _config.MinigunProjectile));
         }
     }
 }

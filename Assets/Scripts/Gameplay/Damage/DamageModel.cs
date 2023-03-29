@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Abstracts;
 
 namespace Gameplay.Damage
 {
@@ -6,34 +7,34 @@ namespace Gameplay.Damage
     {
         public float MinDamage { get; }
         public float MaxDamage { get; }
-        public UnitType UnitType { get; }
+        public EntityType EntityType { get; }
 
         public DamageModel(float minDamage, float maxDamage)
         {
             MinDamage = minDamage;
             MaxDamage = maxDamage;
-            UnitType = UnitType.None;
+            EntityType = EntityType.None;
         }
         
         public DamageModel(float damageAmount)
         {
             MinDamage = damageAmount;
             MaxDamage = damageAmount;
-            UnitType = UnitType.None;
+            EntityType = EntityType.None;
         }
 
-        public DamageModel(float minDamage, float maxDamage, UnitType unitType)
+        public DamageModel(float minDamage, float maxDamage, EntityType entityType)
         {
             MinDamage = minDamage;
             MaxDamage = maxDamage;
-            UnitType = unitType;
+            EntityType = entityType;
         }
         
-        public DamageModel(float damageAmount, UnitType unitType)
+        public DamageModel(float damageAmount, EntityType entityType)
         {
             MinDamage = damageAmount;
             MaxDamage = damageAmount;
-            UnitType = unitType;
+            EntityType = entityType;
         }
     }
 }

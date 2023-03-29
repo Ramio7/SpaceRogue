@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbf8db06754f436ebffd55396cdb5130, type: 3}
   m_Name: RuinedPlanetConfig
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: -6696340050246795805, guid: bbc684a12b2195d4386b167008a495b3, type: 3}
+  <Prefab>k__BackingField: {fileID: 308893660795576165, guid: 033f2348dba51f64db1498ba9b7df2b2, type: 3}
   <MinSpeed>k__BackingField: 2
   <MaxSpeed>k__BackingField: 4
   <RetrogradeMovementChance>k__BackingField: 0.5

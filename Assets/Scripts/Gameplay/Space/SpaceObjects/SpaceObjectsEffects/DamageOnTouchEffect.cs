@@ -1,4 +1,3 @@
-using Gameplay.Space.SpaceObjects.Scriptables;
 using Gameplay.Space.SpaceObjects.SpaceObjectsEffects.Views;
 using Object = UnityEngine.Object;
 
@@ -9,10 +8,9 @@ namespace Gameplay.Space.SpaceObjects.SpaceObjectsEffects
     {
         private readonly DamageOnTouchEffectView _effectView;
 
-        public DamageOnTouchEffect(DamageOnTouchEffectView effectView, DamageOnTouchConfig config)
+        public DamageOnTouchEffect(DamageOnTouchEffectView effectView)
         {
             _effectView = effectView;
-            //TODO damageOnTouch
         }
 
         public override void Dispose()

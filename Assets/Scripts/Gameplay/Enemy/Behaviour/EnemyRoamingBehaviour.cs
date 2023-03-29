@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Abstracts;
 using Gameplay.Enemy.Movement;
 using Gameplay.Mechanics.Timer;
 using Gameplay.Movement;
@@ -15,7 +16,7 @@ namespace Gameplay.Enemy.Behaviour
         private const float TurnValueAtObstacle = 0.1f;
 
         private readonly UnitMovementModel _unitMovementModel;
-        private readonly EnemyInputController _inputController;
+        private readonly EnemyInput _inputController;
         private readonly Timer _timer;
         
         private Vector3 _targetDirection;
@@ -25,7 +26,7 @@ namespace Gameplay.Enemy.Behaviour
 
         public EnemyRoamingBehaviour(
             SubscribedProperty<EnemyState> enemyState, EnemyView view, PlayerController playerController,
-            UnitMovementModel unitMovementModel, EnemyInputController inputController, EnemyBehaviourConfig config) 
+            UnitMovementModel unitMovementModel, EnemyInput inputController, EnemyBehaviourConfig config) 
             : base(enemyState, view, playerController, config)
         {
             _unitMovementModel = unitMovementModel;
@@ -72,9 +73,9 @@ namespace Gameplay.Enemy.Behaviour
             var hitLeft = Physics2D.Raycast(rayLeftPosition, View.transform.TransformDirection(Vector3.left),
                 Config.SideCheckDistance);
 
-            _frontObstacle = hitUp.collider != null && !hitUp.collider.TryGetComponent<UnitView>(out _);
-            _rightObstacle = hitRight.collider != null && !hitRight.collider.TryGetComponent<UnitView>(out _);
-            _leftObstacle = hitLeft.collider != null && !hitLeft.collider.TryGetComponent<UnitView>(out _);
+            _frontObstacle = hitUp.collider != null && !hitUp.collider.TryGetComponent<EntityView>(out _);
+            _rightObstacle = hitRight.collider != null && !hitRight.collider.TryGetComponent<EntityView>(out _);
+            _leftObstacle = hitLeft.collider != null && !hitLeft.collider.TryGetComponent<EntityView>(out _);
         }
 
         private void CheckTimer()

@@ -1,4 +1,5 @@
 using Abstracts;
+using Gameplay.Abstracts;
 using Gameplay.Mechanics.Timer;
 using Gameplay.Shooting.Factories;
 using Gameplay.Shooting.Scriptables;
@@ -9,13 +10,13 @@ namespace Gameplay.Shooting.Weapons
     public class Railgun : Weapon
     {
         private readonly RailgunConfig _railgunConfig;
-        private readonly UnitType _unitType;
+        private readonly EntityType _entityType;
         private readonly ProjectileFactory _projectileFactory;
 
-        public Railgun(RailgunConfig railgunConfig, UnitType unitType, ProjectileFactory projectileFactory, TimerFactory timerFactory)
+        public Railgun(RailgunConfig railgunConfig, EntityType entityType, ProjectileFactory projectileFactory, TimerFactory timerFactory)
         {
             _railgunConfig = railgunConfig;
-            _unitType = unitType;
+            _entityType = entityType;
             _projectileFactory = projectileFactory;
             CooldownTimer = timerFactory.Create(railgunConfig.Cooldown);
         }
@@ -24,7 +25,7 @@ namespace Gameplay.Shooting.Weapons
         {
             if (IsOnCooldown) return;
 
-            _projectileFactory.Create(new ProjectileSpawnParams(bulletPosition, turretDirection, _unitType, _railgunConfig.RailgunProjectile));
+            _projectileFactory.Create(new ProjectileSpawnParams(bulletPosition, turretDirection, _entityType, _railgunConfig.RailgunProjectile));
             
             CooldownTimer.Start();
         }

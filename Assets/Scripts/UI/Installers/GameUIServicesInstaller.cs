@@ -18,7 +18,9 @@ namespace UI.Installers
             InstallPlayerSpeedometerService();
             InstallLevelInfoService();
             InstallMinimapService();
-            //TODO For instantiate other UI service
+            
+            InstallEnemyStatusBarService();
+            //TODO GameEventUIService
         }
 
         private void InstallPlayerInfoService()
@@ -69,6 +71,14 @@ namespace UI.Installers
             
             Container
                 .BindInterfacesAndSelfTo<MinimapService>()
+                .AsSingle()
+                .NonLazy();
+        }
+
+        private void InstallEnemyStatusBarService()
+        {
+            Container
+                .BindInterfacesAndSelfTo<EnemyStatusBarService>()
                 .AsSingle()
                 .NonLazy();
         }
