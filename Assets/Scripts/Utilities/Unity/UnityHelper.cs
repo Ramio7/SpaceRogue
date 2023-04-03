@@ -1,5 +1,6 @@
 using UnityEngine;
 using Utilities.Mathematics;
+using Math = System.Math;
 
 namespace Utilities.Unity
 {
@@ -47,6 +48,16 @@ namespace Utilities.Unity
             }
 
             return unitSpawnPoint;
+        }
+
+        public static Vector2 GetAPointOnRadius(Vector2 referencePoint, float radius)
+        {
+            var rotation = Random.Range(0f, (float)(2 * Math.PI));
+            var xCoordinate = (float)(radius * Math.Cos(rotation));
+            var yCoordinate = (float)(radius * Math.Sin(rotation));
+
+
+            return new(referencePoint.x + xCoordinate, referencePoint.y + yCoordinate);
         }
     }
 }

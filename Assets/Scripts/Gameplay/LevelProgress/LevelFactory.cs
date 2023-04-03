@@ -3,6 +3,7 @@ using Asteroids;
 using Gameplay.Asteroids;
 using Gameplay.Asteroids.Factories;
 using Gameplay.Enemy;
+using Gameplay.Mechanics.Timer;
 using Gameplay.Player;
 using Gameplay.Services;
 using Gameplay.Space.Factories;
@@ -78,6 +79,8 @@ namespace Gameplay.LevelProgress
 
             var asteroids = _asteroidsInSpaceFactory.Create(_currentLevelPreset.SpaceConfig.AsteroidsOnStartCount, spawnPointsFinder);
             asteroids.SpawnStartAsteroids();
+            if (_currentLevelPreset.SpaceConfig.SpawnPlayerTargetedAsteroids) 
+                asteroids.StartPlayerTargetedAsteroidsSpawn(_currentLevelPreset.SpaceConfig.PlayerTargetedAsteroidsSpawnDelay);
 
             var level = new Level(levelNumber, _currentLevelPreset.EnemiesCountToWin, mapCameraSize, player, enemyForces, space, asteroids);
             LevelCreated.Invoke(level);

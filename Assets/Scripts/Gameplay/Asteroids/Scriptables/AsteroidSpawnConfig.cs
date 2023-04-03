@@ -8,5 +8,6 @@ namespace Gameplay.Asteroids.Scriptables
     public class AsteroidSpawnConfig : ScriptableObject
     {
         [field: SerializeField] public List<WeightConfig<AsteroidConfig>> AsteroidConfigs { get; private set; }
+        [field: SerializeField] public AsteroidConfig FastAsteroid { get; private set; }
     }
 }
