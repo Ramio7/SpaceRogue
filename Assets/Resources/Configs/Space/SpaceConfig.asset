@@ -21,9 +21,12 @@ MonoBehaviour:
   <SpaceObjectCount>k__BackingField: 20
   <EnemyGroupCount>k__BackingField: 20
   <ObstacleForce>k__BackingField: 1.5
+  <AsteroidsOnStartCount>k__BackingField: 50
   <OuterBorder>k__BackingField: 3
   <InnerBorder>k__BackingField: 12
   <SmoothMapType>k__BackingField: 0
   <FactorSmooth>k__BackingField: 8
   <RandomType>k__BackingField: 0
   <Chance>k__BackingField: 0.43
+  <SpawnPlayerTargetedAsteroids>k__BackingField: 1
+  <PlayerTargetedAsteroidsSpawnDelay>k__BackingField: 30

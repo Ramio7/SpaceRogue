@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c568d461dd05a04cab9ea3c3e19df7e, type: 3}
-  m_Name: AsteroidConfig
+  m_Name: RandomDirectedAsteroidConfig
   m_EditorClassIdentifier: 
   <Prefab>k__BackingField: {fileID: -855076941684117732, guid: ae4d463454dcd3f4f8546cef1366ff03, type: 3}
+  <SurvivalConfig>k__BackingField: {fileID: 11400000, guid: a975cfa3cacf95945ada093cc30cc710, type: 2}
   <Type>k__BackingField: 1
   <SizeType>k__BackingField: 2
-  <SurvivalConfig>k__BackingField: {fileID: 11400000, guid: a975cfa3cacf95945ada093cc30cc710, type: 2}
-  <MoveConfig>k__BackingField: {fileID: 11400000, guid: f012dd68efe45624786152543e5ed425, type: 2}
-  <MaxSpawnOrbit>k__BackingField: 100
+  <MoveType>k__BackingField: 1
+  <DirectionScattering>k__BackingField: 0
+  <StartingSpeed>k__BackingField: 4
+  <MaxSpawnRadius>k__BackingField: 100
   <AsteroidLifeTime>k__BackingField: 20
-  <Damage>k__BackingField: 1
+  <Damage>k__BackingField: 25

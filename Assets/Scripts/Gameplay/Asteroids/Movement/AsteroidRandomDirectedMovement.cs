@@ -8,7 +8,7 @@ namespace Gameplay.Asteroids.Movement
         private readonly AsteroidView _view;
         private readonly float _startingSpeed;
 
-        public AsteroidRandomDirectedMovement(float startingSpeed, AsteroidView view)
+        public AsteroidRandomDirectedMovement(AsteroidView view, float startingSpeed)
         {
             _view = view;
             _startingSpeed = startingSpeed;

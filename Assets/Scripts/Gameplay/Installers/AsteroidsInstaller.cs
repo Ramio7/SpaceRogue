@@ -18,8 +18,8 @@ namespace Gameplay.Installers
         {
             InstallAsteroidsPool();
             InstallAsteroidViewFactory();
-            InstallAsteroidMovementFactory();
-            InstallAsteroidFactory();
+            InstallAsteroidMovementFactories();
+            InstallAsteroidsFactories();
             InstallAsteroidsInSpaceFactory();
         }
 
@@ -38,17 +38,23 @@ namespace Gameplay.Installers
                 .AsSingle();
         }
 
-        private void InstallAsteroidMovementFactory()
+        private void InstallAsteroidMovementFactories()
         {
             Container
-                .BindFactory<float, AsteroidView, AsteroidRandomDirectedMovement, AsteroidMovementFactory>()
+                .BindFactory<float, AsteroidView, AsteroidRandomDirectedMovement, AsteroidRandomDirectedMovementFactory>()
                 .AsSingle();
+            Container
+                .BindFactory<float, AsteroidView, Vector2, float, AsteroidTargetedMovement, AsteroidTargetedMovementFactory>().
+                AsSingle();
         }
 
-        private void InstallAsteroidFactory()
+        private void InstallAsteroidsFactories()
         {
             Container
-                .BindFactory<Vector2, AsteroidConfig, Asteroid, AsteroidFactory>()
+                .BindFactory<Vector2, AsteroidConfig, Asteroid, RandomDirectedAsteroidFactory>()
+                .AsSingle();
+            Container
+                .BindFactory<Vector2, AsteroidConfig, Vector2, Asteroid, TargetedAsteroidFactory>()
                 .AsSingle();
         }
 
