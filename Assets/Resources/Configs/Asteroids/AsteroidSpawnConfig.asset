@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ab27a8d0c893949a87a469c5b44695, type: 3}
   m_Name: AsteroidSpawnConfig
   m_EditorClassIdentifier: 
-  <AsteroidConfigs>k__BackingField:
+  <AsteroidSpawnConfigs>k__BackingField:
   - <Weight>k__BackingField: 1
     <Config>k__BackingField: {fileID: 11400000, guid: 6c04353e713b2124c912f1779132d614, type: 2}
-  <FastAsteroid>k__BackingField: {fileID: 11400000, guid: 796c2d09cb020f84d89b23b231520360, type: 2}
+  <FastAsteroidConfigs>k__BackingField:
+  - <Weight>k__BackingField: 1
+    <Config>k__BackingField: {fileID: 11400000, guid: 796c2d09cb020f84d89b23b231520360, type: 2}
