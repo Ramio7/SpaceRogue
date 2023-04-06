@@ -1,7 +1,6 @@
 using Asteroids;
 using Gameplay.Asteroids;
 using Gameplay.Asteroids.Factories;
-using Gameplay.Asteroids.Movement;
 using Gameplay.Asteroids.Scriptables;
 using Gameplay.Space.Generator;
 using UnityEngine;
@@ -18,9 +17,9 @@ namespace Gameplay.Installers
         {
             InstallAsteroidsPool();
             InstallAsteroidViewFactory();
-            InstallAsteroidMovementFactories();
-            InstallAsteroidsFactories();
+            InstallAsteroidFactory();
             InstallAsteroidsInSpaceFactory();
+            InstallAsteroidSpawner();
         }
 
         private void InstallAsteroidsPool()
@@ -38,23 +37,10 @@ namespace Gameplay.Installers
                 .AsSingle();
         }
 
-        private void InstallAsteroidMovementFactories()
+        private void InstallAsteroidFactory()
         {
             Container
-                .BindFactory<float, AsteroidView, AsteroidRandomDirectedMovement, AsteroidRandomDirectedMovementFactory>()
-                .AsSingle();
-            Container
-                .BindFactory<float, AsteroidView, Vector2, float, AsteroidTargetedMovement, AsteroidTargetedMovementFactory>().
-                AsSingle();
-        }
-
-        private void InstallAsteroidsFactories()
-        {
-            Container
-                .BindFactory<Vector2, AsteroidConfig, Asteroid, RandomDirectedAsteroidFactory>()
-                .AsSingle();
-            Container
-                .BindFactory<Vector2, AsteroidConfig, Vector2, Asteroid, TargetedAsteroidFactory>()
+                .BindFactory<Vector2, AsteroidConfig, Asteroid, AsteroidFactory>()
                 .AsSingle();
         }
 
@@ -64,9 +50,16 @@ namespace Gameplay.Installers
                 .Bind<AsteroidSpawnConfig>()
                 .FromInstance(AsteroidSpawnConfig)
                 .WhenInjectedInto<AsteroidsInSpaceFactory>();
-            
+
             Container
                 .BindFactory<int, SpawnPointsFinder, AsteroidsInSpace, AsteroidsInSpaceFactory>()
+                .AsSingle();
+        }
+
+        private void InstallAsteroidSpawner()
+        {
+            Container
+                .BindFactory<SpawnPointsFinder, AsteroidSpawner, AsteroidSpawnerFactory>()
                 .AsSingle();
         }
     }

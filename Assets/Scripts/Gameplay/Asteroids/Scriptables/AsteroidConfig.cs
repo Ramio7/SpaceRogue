@@ -12,7 +12,7 @@ namespace Gameplay.Asteroids.Scriptables
         [field: SerializeField] public AsteroidType Type { get; private set; }
         [field: SerializeField] public AsteroidSizeType SizeType { get; private set; }
         [field: SerializeField] public AsteroidMoveType MoveType { get; private set; }
-        [field: SerializeField, Min(0.0f)] public float DirectionScattering { get; private set; } = 0.0f;
+        [field: SerializeField, Min(0.0f)] public float DeviationRadius { get; private set; } = 0.0f;
         [field: SerializeField, Min(0.0f)] public float StartingSpeed { get; private set; } = 4.0f;
         [field: SerializeField, Min(0.0f)] public float MaxSpawnRadius { get; private set; } = 100.0f;
         [field: SerializeField, Min(0.0f)] public float AsteroidLifeTime { get; private set; } = 20.0f;
