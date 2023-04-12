@@ -17,7 +17,7 @@ MonoBehaviour:
   <Type>k__BackingField: 2
   <SizeType>k__BackingField: 2
   <MoveType>k__BackingField: 2
-  <DeviationRadius>k__BackingField: 0
+  <DeviationRadius>k__BackingField: 2
   <StartingSpeed>k__BackingField: 10
   <MaxSpawnRadius>k__BackingField: 10
   <AsteroidLifeTime>k__BackingField: 20
