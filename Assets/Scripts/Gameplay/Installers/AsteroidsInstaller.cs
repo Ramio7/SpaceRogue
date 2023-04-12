@@ -2,6 +2,7 @@ using Asteroids;
 using Gameplay.Asteroids;
 using Gameplay.Asteroids.Factories;
 using Gameplay.Asteroids.Scriptables;
+using Gameplay.Services;
 using Gameplay.Space.Generator;
 using UnityEngine;
 using Zenject;
@@ -19,7 +20,7 @@ namespace Gameplay.Installers
             InstallAsteroidViewFactory();
             InstallAsteroidFactory();
             InstallAsteroidsInSpaceFactory();
-            InstallAsteroidSpawner();
+            InstallAsteroidSpawners();
         }
 
         private void InstallAsteroidsPool()
@@ -48,18 +49,21 @@ namespace Gameplay.Installers
         {
             Container
                 .Bind<AsteroidSpawnConfig>()
-                .FromInstance(AsteroidSpawnConfig)
-                .WhenInjectedInto<AsteroidsInSpaceFactory>();
+                .FromInstance(AsteroidSpawnConfig);
 
             Container
-                .BindFactory<int, SpawnPointsFinder, AsteroidsInSpace, AsteroidsInSpaceFactory>()
+                .BindFactory<int, SpawnPointsFinder, StartingAsteroids, StartingAsteroidsFactory>()
                 .AsSingle();
         }
 
-        private void InstallAsteroidSpawner()
+        private void InstallAsteroidSpawners()
         {
             Container
                 .BindFactory<SpawnPointsFinder, AsteroidSpawner, AsteroidSpawnerFactory>()
+                .AsSingle();
+
+            Container
+                .BindFactory<float, SpawnPointsFinder, PlayerTargetedAsteroidSpawner, PlayerTargetedAsteroidsSpawnerFactory>()
                 .AsSingle();
         }
     }

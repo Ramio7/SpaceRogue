@@ -9,7 +9,7 @@ namespace Gameplay.Services
         private readonly Player.Player _player;
         private readonly EnemyForces _enemyForces;
         private readonly Space.Space _space;
-        private readonly AsteroidsInSpace _asteroids;
+        private readonly StartingAsteroids _asteroids;
 
         public int CurrentLevelNumber { get; private set; }
         public int EnemiesCountToWin { get; private set; }
@@ -23,7 +23,7 @@ namespace Gameplay.Services
             Player.Player player,
             EnemyForces enemyForces,
             Space.Space space,
-            AsteroidsInSpace asteroids)
+            StartingAsteroids asteroids)
         {
             CurrentLevelNumber = currentLevelNumber;
             EnemiesCountToWin = enemiesCountToWin;

@@ -17,7 +17,7 @@ namespace Gameplay.Asteroids
 
         private const int MaxSpawnTriesPerAsteroid = 5;
 
-        public event Action<Asteroid> AsteroidSpawned;
+        public event Action<Asteroid> AsteroidSpawned = _ => { };
 
         public AsteroidSpawner(SpawnPointsFinder spawnPointsFinder, AsteroidFactory asteroidFactory)
         {
