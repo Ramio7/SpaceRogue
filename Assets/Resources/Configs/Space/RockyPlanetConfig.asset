@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: RockyPlanetConfig
   m_EditorClassIdentifier: 
   <Prefab>k__BackingField: {fileID: 4648875211501111105, guid: fa18befe62afe1d4f9aa970f0e1a4933, type: 3}
-  <MinSpeed>k__BackingField: 2
-  <MaxSpeed>k__BackingField: 4
+  <MinSpeed>k__BackingField: 21
+  <MaxSpeed>k__BackingField: 23
   <RetrogradeMovementChance>k__BackingField: 0.5
   <MinSize>k__BackingField: 5
   <MaxSize>k__BackingField: 10

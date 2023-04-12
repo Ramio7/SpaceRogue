@@ -15,7 +15,6 @@ namespace Gameplay.GameEvent
     {
         protected readonly GameEventConfig _config;
         protected readonly PlayerController _playerController;
-        protected readonly Random _random = new();
         protected Timer _timer;
 
         private readonly ResourcePath _gameEventIndicatorCanvasPath =
@@ -47,7 +46,7 @@ namespace Gameplay.GameEvent
         {
             if (_timer.IsExpired)
             {
-                if(RandomPicker.TakeChance(_config.Chance, _random))
+                if(RandomPicker.TakeChance(_config.Chance))
                 {
                     _isOnceSuccessfully = RunGameEvent();
                 }

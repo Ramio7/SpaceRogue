@@ -82,8 +82,7 @@ namespace Gameplay.Space.Generator
             {
                 for (int y = innerBorder; y < map.GetLength(1) - innerBorder; y++)
                 {
-                    map[x, y] = RandomPicker.TakeChance(chance, pseudoRandom) ? 
-                        (int)CellType.Obstacle : (int)CellType.None;
+                    map[x, y] = RandomPicker.TakeChance(chance) ? (int)CellType.Obstacle : (int)CellType.None;
                 }
             }
         }

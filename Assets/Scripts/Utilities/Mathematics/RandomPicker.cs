@@ -29,9 +29,9 @@ namespace Utilities.Mathematics
             return orderedWeights[^1].Config;
         }
 
-        public static bool TakeChance(float chance, Random r)
+        public static bool TakeChance(float chance)
         {
-            double randomDouble = r.NextDouble();
+            double randomDouble = new Random().NextDouble();
             return randomDouble <= chance;
         }
 

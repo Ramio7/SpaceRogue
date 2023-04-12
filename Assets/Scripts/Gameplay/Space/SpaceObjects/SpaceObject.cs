@@ -19,7 +19,7 @@ namespace Gameplay.Space.SpaceObjects
         public void Dispose()
         {
             DisposeObjectEffects();
-            Object.Destroy(_view);
+            Object.Destroy(_view.gameObject);
         }
 
         private void DisposeObjectEffects()

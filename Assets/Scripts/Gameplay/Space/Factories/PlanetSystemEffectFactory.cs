@@ -27,7 +27,7 @@ namespace Gameplay.Space.Factories
             {
                 var planetConfig = RandomPicker.PickOneElementByWeights(config.PlanetConfigs);
                 Vector2 planetPosition = GetPlanetPosition(spaceObjectTransform, planetOrbits[i], planetConfig);
-                var planet = _planetFactory.Create(planetPosition, planetConfig);
+                var planet = _planetFactory.Create(planetPosition, planetConfig, spaceObjectTransform);
                 planets.Add(planet);
             }
 

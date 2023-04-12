@@ -39,11 +39,11 @@ namespace Gameplay.Installers
                .AsSingle();
 
             Container
-               .BindFactory<PlanetView, PlanetMovement, PlanetMovementFactory>()
+               .BindFactory<PlanetView, PlanetConfig, Transform, PlanetMovement, PlanetMovementFactory>()
                .AsSingle();
 
             Container
-               .BindFactory<Vector2, PlanetConfig, Planet, PlanetFactory>()
+               .BindFactory<Vector2, PlanetConfig, Transform, Planet, PlanetFactory>()
                .AsSingle();
 
             Container
